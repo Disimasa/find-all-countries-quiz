@@ -2,9 +2,6 @@ import adapter from '@sveltejs/adapter-static'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	compilerOptions: {
-		runes: false
-	},
 	kit: {
 		adapter: adapter({
 			fallback: 'index.html'
@@ -13,7 +10,8 @@ const config = {
 			'@domain': 'src/lib/domain',
 			'@infrastructure': 'src/lib/infrastructure',
 			'@shared': 'src/lib/shared',
-			'@i18n': 'src/lib/i18n'
+			'@i18n': 'src/lib/i18n',
+			'@theme': 'src/lib/theme'
 		}
 	}
 }

@@ -1,1 +1,141 @@
 @import 'tailwindcss';
+
+@plugin 'daisyui' {
+	themes: quiz --default, quiz-night --prefersdark;
+}
+
+@plugin 'daisyui/theme' {
+	name: 'quiz';
+	default: true;
+	prefersdark: false;
+	color-scheme: light;
+
+	--color-base-100: #faf9f7;
+	--color-base-200: #f3f1ec;
+	--color-base-300: #e8e4dc;
+	--color-base-content: #2a2e37;
+	--color-primary: #c4b5fd;
+	--color-primary-content: #3b2f6e;
+	--color-secondary: #f2e0c8;
+	--color-secondary-content: #5c4a32;
+	--color-accent: #58b67d;
+	--color-accent-content: #143a24;
+	--color-neutral: #7a838e;
+	--color-neutral-content: #f5f5f4;
+	--color-info: #7eb8dd;
+	--color-info-content: #0f2a3d;
+	--color-success: #58b67d;
+	--color-success-content: #143a24;
+	--color-warning: #d9a55c;
+	--color-warning-content: #4a3412;
+	--color-error: #e06b5c;
+	--color-error-content: #4a1410;
+
+	--map-country-default: #eceae4;
+	--map-country-default-outline: #5c6570;
+	--map-country-default-opacity: 0.52;
+	--map-country-default-weight: 0.9;
+	--map-country-hover: #ddd6fe;
+	--map-country-hover-outline: #8f7fd8;
+	--map-country-hover-opacity: 0.58;
+	--map-country-hover-weight: 1;
+	--map-country-selected: #c4b5fd;
+	--map-country-selected-outline: #6d5cc0;
+	--map-country-selected-opacity: 0.86;
+	--map-country-selected-weight: 2.25;
+	--map-country-guessed: #58b67d;
+	--map-country-guessed-outline: #247a45;
+	--map-country-guessed-opacity: 0.8;
+	--map-country-guessed-weight: 0.8;
+	--map-country-wrong: #e06b5c;
+	--map-country-wrong-outline: #b83a2f;
+	--map-country-wrong-opacity: 0.92;
+	--map-country-wrong-weight: 1.55;
+	--map-water: #b8daf0;
+	--map-waterway: #7eb8dd;
+	--map-waterway-opacity: 0.9;
+}
+
+@plugin 'daisyui/theme' {
+	name: 'quiz-night';
+	prefersdark: true;
+	color-scheme: dark;
+
+	--color-base-100: #1c1f26;
+	--color-base-200: #252a33;
+	--color-base-300: #313742;
+	--color-base-content: #e8eaed;
+	--color-primary: #9f8fe8;
+	--color-primary-content: #1a1433;
+	--color-secondary: #5c4f3f;
+	--color-secondary-content: #f2e8d8;
+	--color-accent: #4a9e6e;
+	--color-accent-content: #0d2418;
+	--color-neutral: #6b7280;
+	--color-neutral-content: #e8eaed;
+	--color-info: #2d5f82;
+	--color-info-content: #d8ecf8;
+	--color-success: #4a9e6e;
+	--color-success-content: #d8f3e4;
+	--color-warning: #c9954a;
+	--color-warning-content: #2a1e0c;
+	--color-error: #d45a52;
+	--color-error-content: #3a100d;
+
+	--map-country-default: #3a3f4a;
+	--map-country-default-outline: #8a919c;
+	--map-country-default-opacity: 0.58;
+	--map-country-default-weight: 0.9;
+	--map-country-hover: #6b5fa8;
+	--map-country-hover-outline: #9d92e0;
+	--map-country-hover-opacity: 0.62;
+	--map-country-hover-weight: 1;
+	--map-country-selected: #9f8fe8;
+	--map-country-selected-outline: #5a4ab8;
+	--map-country-selected-opacity: 0.88;
+	--map-country-selected-weight: 2.25;
+	--map-country-guessed: #4a9e6e;
+	--map-country-guessed-outline: #3d8f62;
+	--map-country-guessed-opacity: 0.82;
+	--map-country-guessed-weight: 0.8;
+	--map-country-wrong: #d45a52;
+	--map-country-wrong-outline: #a8322a;
+	--map-country-wrong-opacity: 0.92;
+	--map-country-wrong-weight: 1.55;
+	--map-water: #1e3a52;
+	--map-waterway: #2d5f82;
+	--map-waterway-opacity: 0.85;
+}
+
+@keyframes wrong-shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	18% {
+		transform: translateX(-7px);
+	}
+	36% {
+		transform: translateX(7px);
+	}
+	54% {
+		transform: translateX(-4px);
+	}
+	72% {
+		transform: translateX(4px);
+	}
+}
+
+.map-host .maplibregl-map {
+	height: 100%;
+	width: 100%;
+	font-family: inherit;
+}
+
+.map-host:not(.is-ready) .maplibregl-canvas {
+	visibility: hidden;
+}
+
+.map-host .maplibregl-canvas {
+	outline: none;
+}

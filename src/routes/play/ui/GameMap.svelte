@@ -2,7 +2,7 @@
 	import { onMount, onDestroy, tick } from 'svelte'
 	import { createEventDispatcher } from 'svelte'
 	import type { GameSnapshot } from '@domain/entities'
-	import { LeafletMapRenderer } from '@infrastructure/map'
+	import { MapRenderer } from '@infrastructure/map'
 	import { getSession, mapResetTick } from '../controller'
 
 	export let snapshot: GameSnapshot
@@ -11,7 +11,8 @@
 	const dispatch = createEventDispatcher<{ select: string }>()
 
 	let mapEl: HTMLDivElement
-	let renderer: LeafletMapRenderer | null = null
+	let renderer: MapRenderer | null = null
+	let mapReady = false
 	let unsubReset: (() => void) | undefined
 
 	async function mountMap() {
@@ -20,8 +21,16 @@
 		await tick()
 		if (!mapEl) return
 
-		renderer = new LeafletMapRenderer()
-		renderer.mount(mapEl, session.getEra(), (id) => dispatch('select', id))
+		mapReady = false
+		renderer = new MapRenderer()
+		renderer.mount(
+			mapEl,
+			session.getEra(),
+			(id) => dispatch('select', id),
+			() => {
+				mapReady = true
+			}
+		)
 		renderer.updateStyles(snapshot)
 	}
 
@@ -33,25 +42,22 @@
 	onDestroy(() => {
 		unsubReset?.()
 		renderer?.destroy()
+		mapReady = false
 	})
 
 	$: if (snapshot.status === 'playing') void mountMap()
 	$: if (renderer) renderer.updateStyles(snapshot)
+
+	export function flashWrong(id: string): void {
+		renderer?.flashWrong(id)
+	}
 </script>
 
 <div class="relative h-full min-h-[320px] w-full">
-	{#if snapshot.status === 'loading'}
-		<div class="absolute inset-0 z-10 flex items-center justify-center bg-white/80 text-gray-600">
+	{#if snapshot.status === 'loading' || !mapReady}
+		<div class="absolute inset-0 z-10 flex items-center justify-center bg-base-100/90 text-base-content">
 			{loadingLabel}
 		</div>
 	{/if}
-	<div bind:this={mapEl} class="h-full w-full"></div>
+	<div bind:this={mapEl} class="map-host h-full w-full" class:is-ready={mapReady}></div>
 </div>
-
-<style>
-	:global(.leaflet-container) {
-		height: 100%;
-		width: 100%;
-		font-family: inherit;
-	}
-</style>

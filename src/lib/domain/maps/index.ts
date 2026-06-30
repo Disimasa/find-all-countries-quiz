@@ -22,7 +22,6 @@ export class MapEraRegistry {
 
 MapEraRegistry.register(MODERN_ERA_ID, () => new ModernWorldMap())
 
-export { MAP_STYLE } from './constants.ts'
 export { MODERN_ERA_ID } from './modern/constants.ts'
 export { BaseMapEra } from './base.ts'
 export { ModernWorldMap } from './modern/map.ts'

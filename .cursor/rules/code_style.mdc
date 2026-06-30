@@ -52,6 +52,25 @@ Stores (`writable`/`derived`) объявляются в `controller.ts`, не в
 
 `export let` — только входные данные для отображения.
 
+## Стили — только Tailwind
+
+В `.svelte` не используем блок `<style>` и кастомные CSS-классы.
+
+- Разметка: utility-классы Tailwind + DaisyUI (`btn`, `input`, `menu`…)
+- Минимум классов — только нужные для layout, цвета, отступов
+- Классы пишем прямо в `class`, условные — через `{cond ? '...' : ''}` внутри атрибута
+- Динамические значения — `style:` (например ширина progress bar)
+- Исключение: глобальные стили третьих сторон и `@keyframes` — в `src/routes/layout.css`
+
+```svelte
+<!-- ❌ -->
+<div class="panel-card">
+<style>.panel-card { padding: 1rem; }</style>
+
+<!-- ✅ -->
+<div class="rounded-2xl border border-base-300 p-4">
+```
+
 ## Импорты
 
 - Domain: `$lib/domain`

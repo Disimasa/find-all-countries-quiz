@@ -2,19 +2,21 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitest/config'
 import { playwright } from '@vitest/browser-playwright'
 import { sveltekit } from '@sveltejs/kit/vite'
+import Icons from 'unplugin-icons/vite'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const dir = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [tailwindcss(), Icons({ compiler: 'svelte' }), sveltekit()],
 	resolve: {
 		alias: {
 			'@domain': path.resolve(dir, 'src/lib/domain'),
 			'@infrastructure': path.resolve(dir, 'src/lib/infrastructure'),
 			'@shared': path.resolve(dir, 'src/lib/shared'),
-			'@i18n': path.resolve(dir, 'src/lib/i18n')
+			'@i18n': path.resolve(dir, 'src/lib/i18n'),
+			'@theme': path.resolve(dir, 'src/lib/theme')
 		}
 	},
 	test: {

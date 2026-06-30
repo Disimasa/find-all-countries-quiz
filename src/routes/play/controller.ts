@@ -1,7 +1,7 @@
 import { get, writable } from 'svelte/store'
 import { openDialog } from 'svelte-awaitable-dialog'
 import { EMPTY_SNAPSHOT, GameSessionFactory, type GameSession } from '@domain/session'
-import type { GameConfig, GameSnapshot, GeoEntity } from '@domain/entities'
+import type { AnswerResult, GameConfig, GameSnapshot, GeoEntity } from '@domain/entities'
 import { getLocale, messages } from '@i18n'
 import { parseConfig } from './parse_config.ts'
 import GameOverModal from './ui/GameOverModal.svelte'
@@ -58,12 +58,12 @@ export function resetMapView(): void {
 	mapResetTick.update((n) => n + 1)
 }
 
-export function submitGuess(entityId: string): void {
-	session?.submitEntityId(entityId)
+export function submitGuess(entityId: string): AnswerResult | null {
+	return session?.submitEntityId(entityId) ?? null
 }
 
-export function submitGuessText(text: string): void {
-	session?.submitAnswer(text)
+export function submitGuessText(text: string): AnswerResult | null {
+	return session?.submitAnswer(text) ?? null
 }
 
 export function updateAutocomplete(query: string): void {

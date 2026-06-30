@@ -2,7 +2,7 @@ export type Locale = 'en' | 'ru'
 
 export type GameStatus = 'idle' | 'loading' | 'playing' | 'won' | 'lost'
 
-export type EntityVisualState = 'default' | 'hover' | 'selected' | 'guessed'
+export type EntityVisualState = 'default' | 'hover' | 'selected' | 'guessed' | 'wrong'
 
 export type EntityType = 'country' | 'polity' | 'province'
 

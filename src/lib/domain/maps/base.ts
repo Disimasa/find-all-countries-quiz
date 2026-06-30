@@ -1,13 +1,10 @@
 import type { Feature, FeatureCollection } from 'geojson'
 import type {
 	EntityMetaRaw,
-	EntityVisualState,
 	EntityType,
 	GeoEntity,
-	Locale,
-	PolygonStyle
+	Locale
 } from '@domain/entities'
-import { MAP_STYLE } from './constants.ts'
 import type { GeoJsonLoader } from '@infrastructure/data/geo_json_loader'
 
 export abstract class BaseMapEra {
@@ -97,10 +94,6 @@ export abstract class BaseMapEra {
 		if (!code || code.length !== 2) return null
 		const points = [...code.toUpperCase()].map((c) => 0x1f1e6 - 65 + c.charCodeAt(0))
 		return String.fromCodePoint(...points)
-	}
-
-	getFeatureStyle(state: EntityVisualState): PolygonStyle {
-		return { ...MAP_STYLE[state] }
 	}
 
 	getEntityIdFromFeature(feature: Feature): string | null {
