@@ -1,0 +1,58 @@
+---
+description: Стиль кода — snake_case TS, PascalCase Svelte, controller
+globs: "**/*.{svelte,ts}"
+alwaysApply: false
+---
+
+# Code Style
+
+Минималистичный код: короткие файлы, без лишних абстракций.
+
+## Именование файлов
+
+| Тип | Стиль | Пример |
+|-----|-------|--------|
+| `.ts` | snake_case | `game_session.ts`, `controller.ts`, `base_map_era.ts` |
+| `.svelte` | PascalCase | `GameMap.svelte`, `GuessDialog.svelte` |
+| SvelteKit | как есть | `+page.svelte`, `+layout.svelte` |
+
+Классы в коде — `PascalCase` (`class GameSession`).
+
+## TypeScript everywhere
+
+Логика в `.ts`. Svelte — разметка + `$store` + dispatcher.
+
+## Файлы route-модуля
+
+| Файл | Содержимое |
+|------|------------|
+| `controller.ts` | stores, domain-инстансы, подписки, handlers |
+| `types.ts` | типы модуля |
+| `constants.ts` | `UPPER_SNAKE_CASE` |
+| `index.ts` | публичный re-export |
+| `ui/*.svelte` | UI-компоненты |
+
+## Svelte — без runes
+
+Не используем `$state`, `$derived`, `$effect`, `$props`.
+
+## State — в controller.ts
+
+Stores (`writable`/`derived`) объявляются в `controller.ts`, не в отдельных файлах.
+
+`+page.svelte` импортирует store и handlers из `controller.ts`.
+
+Новый код — с тестами (`tests/unit/` или `tests/integration/`). См. `testing.mdc`.
+
+## Events — createEventDispatcher
+
+Действия наверх через dispatcher, не callback-props.
+
+## Props
+
+`export let` — только входные данные для отображения.
+
+## Импорты
+
+- Domain: `$lib/domain`
+- Route-модуль: `./controller`, `./ui/...`, `./index.ts`

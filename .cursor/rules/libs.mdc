@@ -1,0 +1,38 @@
+---
+description: Внешние UI-библиотеки проекта
+globs: "**/*.{svelte,ts}"
+alwaysApply: false
+---
+
+# Libraries
+
+## Модалки — svelte-awaitable-dialog
+
+https://www.npmjs.com/package/svelte-awaitable-dialog
+
+- Один `<AwaitableDialog />` в корневом `routes/+layout.svelte`
+- Открытие из `controller.ts`: `openDialog(Component, props).then(...)`
+- Внутри диалога: `resolveDialog(data)` / `closeDialog()`
+- Не плодить `showModal` store-флаги — `GameOverModal`, confirm и т.д. через `openDialog`
+
+```typescript
+import { openDialog } from 'svelte-awaitable-dialog';
+import GameOverModal from './ui/GameOverModal.svelte';
+
+await openDialog(GameOverModal, { snapshot });
+```
+
+## Тёмная тема (post-MVP) — svelte-dark-mode-toggle
+
+https://www.npmjs.com/package/svelte-dark-mode-toggle
+
+- Только кнопка-переключатель; логику темы (`class="dark"` на `<html>`) — в `controller.ts` или layout
+- `DarkModeToggle` с `bind:darkMode` / `on:click`
+
+```svelte
+<DarkModeToggle {darkMode} on:click={() => (darkMode = !darkMode)} />
+```
+
+## i18n — Paraglide JS
+
+UI-строки через Paraglide, не хардкод в компонентах.

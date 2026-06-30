@@ -1,0 +1,1248 @@
+[
+  {
+    "id": "AF",
+    "nameEn": "Afghanistan",
+    "nameRu": "Афганистан",
+    "region": "Asia",
+    "flagCode": "AF"
+  },
+  {
+    "id": "AO",
+    "nameEn": "Angola",
+    "nameRu": "Ангола",
+    "region": "Africa",
+    "flagCode": "AO"
+  },
+  {
+    "id": "AL",
+    "nameEn": "Albania",
+    "nameRu": "Албания",
+    "region": "Europe",
+    "flagCode": "AL"
+  },
+  {
+    "id": "AE",
+    "nameEn": "United Arab Emirates",
+    "nameRu": "ОАЭ",
+    "region": "Asia",
+    "flagCode": "AE"
+  },
+  {
+    "id": "AR",
+    "nameEn": "Argentina",
+    "nameRu": "Аргентина",
+    "region": "Americas",
+    "flagCode": "AR"
+  },
+  {
+    "id": "AM",
+    "nameEn": "Armenia",
+    "nameRu": "Армения",
+    "region": "Asia",
+    "flagCode": "AM"
+  },
+  {
+    "id": "AU",
+    "nameEn": "Australia",
+    "nameRu": "Австралия",
+    "region": "Oceania",
+    "flagCode": "AU"
+  },
+  {
+    "id": "AT",
+    "nameEn": "Austria",
+    "nameRu": "Австрия",
+    "region": "Europe",
+    "flagCode": "AT"
+  },
+  {
+    "id": "AZ",
+    "nameEn": "Azerbaijan",
+    "nameRu": "Азербайджан",
+    "region": "Asia",
+    "flagCode": "AZ"
+  },
+  {
+    "id": "BI",
+    "nameEn": "Burundi",
+    "nameRu": "Бурунди",
+    "region": "Africa",
+    "flagCode": "BI"
+  },
+  {
+    "id": "BE",
+    "nameEn": "Belgium",
+    "nameRu": "Бельгия",
+    "region": "Europe",
+    "flagCode": "BE"
+  },
+  {
+    "id": "BJ",
+    "nameEn": "Benin",
+    "nameRu": "Бенин",
+    "region": "Africa",
+    "flagCode": "BJ"
+  },
+  {
+    "id": "BF",
+    "nameEn": "Burkina Faso",
+    "nameRu": "Буркина-Фасо",
+    "region": "Africa",
+    "flagCode": "BF"
+  },
+  {
+    "id": "BD",
+    "nameEn": "Bangladesh",
+    "nameRu": "Бангладеш",
+    "region": "Asia",
+    "flagCode": "BD"
+  },
+  {
+    "id": "BG",
+    "nameEn": "Bulgaria",
+    "nameRu": "Болгария",
+    "region": "Europe",
+    "flagCode": "BG"
+  },
+  {
+    "id": "BS",
+    "nameEn": "The Bahamas",
+    "nameRu": "Багамы",
+    "region": "Americas",
+    "flagCode": "BS"
+  },
+  {
+    "id": "BA",
+    "nameEn": "Bosnia and Herzegovina",
+    "nameRu": "Босния и Герцеговина",
+    "region": "Europe",
+    "flagCode": "BA"
+  },
+  {
+    "id": "BY",
+    "nameEn": "Belarus",
+    "nameRu": "Беларусь",
+    "region": "Europe",
+    "flagCode": "BY"
+  },
+  {
+    "id": "BZ",
+    "nameEn": "Belize",
+    "nameRu": "Белиз",
+    "region": "Americas",
+    "flagCode": "BZ"
+  },
+  {
+    "id": "BO",
+    "nameEn": "Bolivia",
+    "nameRu": "Боливия",
+    "region": "Americas",
+    "flagCode": "BO"
+  },
+  {
+    "id": "BR",
+    "nameEn": "Brazil",
+    "nameRu": "Бразилия",
+    "region": "Americas",
+    "flagCode": "BR"
+  },
+  {
+    "id": "BN",
+    "nameEn": "Brunei",
+    "nameRu": "Бруней",
+    "region": "Asia",
+    "flagCode": "BN"
+  },
+  {
+    "id": "BT",
+    "nameEn": "Bhutan",
+    "nameRu": "Бутан",
+    "region": "Asia",
+    "flagCode": "BT"
+  },
+  {
+    "id": "BW",
+    "nameEn": "Botswana",
+    "nameRu": "Ботсвана",
+    "region": "Africa",
+    "flagCode": "BW"
+  },
+  {
+    "id": "CF",
+    "nameEn": "Central African Republic",
+    "nameRu": "ЦАР",
+    "region": "Africa",
+    "flagCode": "CF"
+  },
+  {
+    "id": "CA",
+    "nameEn": "Canada",
+    "nameRu": "Канада",
+    "region": "Americas",
+    "flagCode": "CA"
+  },
+  {
+    "id": "CH",
+    "nameEn": "Switzerland",
+    "nameRu": "Швейцария",
+    "region": "Europe",
+    "flagCode": "CH"
+  },
+  {
+    "id": "CL",
+    "nameEn": "Chile",
+    "nameRu": "Чили",
+    "region": "Americas",
+    "flagCode": "CL"
+  },
+  {
+    "id": "CN",
+    "nameEn": "China",
+    "nameRu": "КНР (Китайская Народная Республика)",
+    "region": "Asia",
+    "flagCode": "CN"
+  },
+  {
+    "id": "CI",
+    "nameEn": "Côte d'Ivoire",
+    "nameRu": "Кот-д’Ивуар",
+    "region": "Africa",
+    "flagCode": "CI"
+  },
+  {
+    "id": "CM",
+    "nameEn": "Cameroon",
+    "nameRu": "Камерун",
+    "region": "Africa",
+    "flagCode": "CM"
+  },
+  {
+    "id": "CD",
+    "nameEn": "Democratic Republic of the Congo",
+    "nameRu": "Демократическая Республика Конго",
+    "region": "Africa",
+    "flagCode": "CD"
+  },
+  {
+    "id": "CG",
+    "nameEn": "Republic of the Congo",
+    "nameRu": "Республика Конго",
+    "region": "Africa",
+    "flagCode": "CG"
+  },
+  {
+    "id": "CO",
+    "nameEn": "Colombia",
+    "nameRu": "Колумбия",
+    "region": "Americas",
+    "flagCode": "CO"
+  },
+  {
+    "id": "CR",
+    "nameEn": "Costa Rica",
+    "nameRu": "Коста-Рика",
+    "region": "Americas",
+    "flagCode": "CR"
+  },
+  {
+    "id": "CU",
+    "nameEn": "Cuba",
+    "nameRu": "Куба",
+    "region": "Americas",
+    "flagCode": "CU"
+  },
+  {
+    "id": "SYN_NORTHERN_CYPRUS",
+    "nameEn": "Northern Cyprus",
+    "nameRu": "Northern Cyprus",
+    "region": "Europe",
+    "flagCode": "SYN_NORTHERN_CYPRUS"
+  },
+  {
+    "id": "CY",
+    "nameEn": "Cyprus",
+    "nameRu": "Кипр",
+    "region": "Asia",
+    "flagCode": "CY"
+  },
+  {
+    "id": "CZ",
+    "nameEn": "Czech Republic",
+    "nameRu": "Чехия",
+    "region": "Europe",
+    "flagCode": "CZ"
+  },
+  {
+    "id": "DE",
+    "nameEn": "Germany",
+    "nameRu": "Германия",
+    "region": "Europe",
+    "flagCode": "DE"
+  },
+  {
+    "id": "DJ",
+    "nameEn": "Djibouti",
+    "nameRu": "Джибути",
+    "region": "Africa",
+    "flagCode": "DJ"
+  },
+  {
+    "id": "DK",
+    "nameEn": "Denmark",
+    "nameRu": "Дания",
+    "region": "Europe",
+    "flagCode": "DK"
+  },
+  {
+    "id": "DO",
+    "nameEn": "Dominican Republic",
+    "nameRu": "Доминиканская Республика",
+    "region": "Americas",
+    "flagCode": "DO"
+  },
+  {
+    "id": "DZ",
+    "nameEn": "Algeria",
+    "nameRu": "Алжир",
+    "region": "Africa",
+    "flagCode": "DZ"
+  },
+  {
+    "id": "EC",
+    "nameEn": "Ecuador",
+    "nameRu": "Эквадор",
+    "region": "Americas",
+    "flagCode": "EC"
+  },
+  {
+    "id": "EG",
+    "nameEn": "Egypt",
+    "nameRu": "Египет",
+    "region": "Africa",
+    "flagCode": "EG"
+  },
+  {
+    "id": "ER",
+    "nameEn": "Eritrea",
+    "nameRu": "Эритрея",
+    "region": "Africa",
+    "flagCode": "ER"
+  },
+  {
+    "id": "ES",
+    "nameEn": "Spain",
+    "nameRu": "Испания",
+    "region": "Europe",
+    "flagCode": "ES"
+  },
+  {
+    "id": "EE",
+    "nameEn": "Estonia",
+    "nameRu": "Эстония",
+    "region": "Europe",
+    "flagCode": "EE"
+  },
+  {
+    "id": "ET",
+    "nameEn": "Ethiopia",
+    "nameRu": "Эфиопия",
+    "region": "Africa",
+    "flagCode": "ET"
+  },
+  {
+    "id": "FI",
+    "nameEn": "Finland",
+    "nameRu": "Финляндия",
+    "region": "Europe",
+    "flagCode": "FI"
+  },
+  {
+    "id": "FJ",
+    "nameEn": "Fiji",
+    "nameRu": "Фиджи",
+    "region": "Oceania",
+    "flagCode": "FJ"
+  },
+  {
+    "id": "FR",
+    "nameEn": "France",
+    "nameRu": "Франция",
+    "region": "Europe",
+    "flagCode": "FR"
+  },
+  {
+    "id": "GA",
+    "nameEn": "Gabon",
+    "nameRu": "Габон",
+    "region": "Africa",
+    "flagCode": "GA"
+  },
+  {
+    "id": "GB",
+    "nameEn": "United Kingdom",
+    "nameRu": "Великобритания",
+    "region": "Europe",
+    "flagCode": "GB"
+  },
+  {
+    "id": "GE",
+    "nameEn": "Georgia",
+    "nameRu": "Грузия",
+    "region": "Asia",
+    "flagCode": "GE"
+  },
+  {
+    "id": "GH",
+    "nameEn": "Ghana",
+    "nameRu": "Гана",
+    "region": "Africa",
+    "flagCode": "GH"
+  },
+  {
+    "id": "GN",
+    "nameEn": "Guinea",
+    "nameRu": "Гвинея",
+    "region": "Africa",
+    "flagCode": "GN"
+  },
+  {
+    "id": "GM",
+    "nameEn": "Gambia",
+    "nameRu": "Гамбия",
+    "region": "Africa",
+    "flagCode": "GM"
+  },
+  {
+    "id": "GW",
+    "nameEn": "Guinea Bissau",
+    "nameRu": "Гвинея-Бисау",
+    "region": "Africa",
+    "flagCode": "GW"
+  },
+  {
+    "id": "GQ",
+    "nameEn": "Equatorial Guinea",
+    "nameRu": "Экваториальная Гвинея",
+    "region": "Africa",
+    "flagCode": "GQ"
+  },
+  {
+    "id": "GR",
+    "nameEn": "Greece",
+    "nameRu": "Греция",
+    "region": "Europe",
+    "flagCode": "GR"
+  },
+  {
+    "id": "GL",
+    "nameEn": "Greenland",
+    "nameRu": "Гренландия",
+    "region": "Americas",
+    "flagCode": "GL"
+  },
+  {
+    "id": "MT",
+    "nameEn": "Malta",
+    "nameRu": "Мальта",
+    "region": "Europe",
+    "flagCode": "MT"
+  },
+  {
+    "id": "SC",
+    "nameEn": "Seychelles",
+    "nameRu": "Сейшельские Острова",
+    "region": "Africa",
+    "flagCode": "SC"
+  },
+  {
+    "id": "GT",
+    "nameEn": "Guatemala",
+    "nameRu": "Гватемала",
+    "region": "Americas",
+    "flagCode": "GT"
+  },
+  {
+    "id": "GF",
+    "nameEn": "French Guiana",
+    "nameRu": "Гвиана",
+    "region": "Americas",
+    "flagCode": "GF"
+  },
+  {
+    "id": "GY",
+    "nameEn": "Guyana",
+    "nameRu": "Гайана",
+    "region": "Americas",
+    "flagCode": "GY"
+  },
+  {
+    "id": "HN",
+    "nameEn": "Honduras",
+    "nameRu": "Гондурас",
+    "region": "Americas",
+    "flagCode": "HN"
+  },
+  {
+    "id": "HR",
+    "nameEn": "Croatia",
+    "nameRu": "Хорватия",
+    "region": "Europe",
+    "flagCode": "HR"
+  },
+  {
+    "id": "HT",
+    "nameEn": "Haiti",
+    "nameRu": "Гаити",
+    "region": "Americas",
+    "flagCode": "HT"
+  },
+  {
+    "id": "HU",
+    "nameEn": "Hungary",
+    "nameRu": "Венгрия",
+    "region": "Europe",
+    "flagCode": "HU"
+  },
+  {
+    "id": "ID",
+    "nameEn": "Indonesia",
+    "nameRu": "Индонезия",
+    "region": "Asia",
+    "flagCode": "ID"
+  },
+  {
+    "id": "IN",
+    "nameEn": "India",
+    "nameRu": "Индия",
+    "region": "Asia",
+    "flagCode": "IN"
+  },
+  {
+    "id": "IE",
+    "nameEn": "Ireland",
+    "nameRu": "Ирландия",
+    "region": "Europe",
+    "flagCode": "IE"
+  },
+  {
+    "id": "IR",
+    "nameEn": "Iran",
+    "nameRu": "Иран",
+    "region": "Asia",
+    "flagCode": "IR"
+  },
+  {
+    "id": "IQ",
+    "nameEn": "Iraq",
+    "nameRu": "Ирак",
+    "region": "Asia",
+    "flagCode": "IQ"
+  },
+  {
+    "id": "IS",
+    "nameEn": "Iceland",
+    "nameRu": "Исландия",
+    "region": "Europe",
+    "flagCode": "IS"
+  },
+  {
+    "id": "IL",
+    "nameEn": "Israel",
+    "nameRu": "Израиль",
+    "region": "Asia",
+    "flagCode": "IL"
+  },
+  {
+    "id": "IT",
+    "nameEn": "Italy",
+    "nameRu": "Италия",
+    "region": "Europe",
+    "flagCode": "IT"
+  },
+  {
+    "id": "JM",
+    "nameEn": "Jamaica",
+    "nameRu": "Ямайка",
+    "region": "Americas",
+    "flagCode": "JM"
+  },
+  {
+    "id": "JO",
+    "nameEn": "Jordan",
+    "nameRu": "Иордания",
+    "region": "Asia",
+    "flagCode": "JO"
+  },
+  {
+    "id": "JP",
+    "nameEn": "Japan",
+    "nameRu": "Япония",
+    "region": "Asia",
+    "flagCode": "JP"
+  },
+  {
+    "id": "KZ",
+    "nameEn": "Kazakhstan",
+    "nameRu": "Казахстан",
+    "region": "Asia",
+    "flagCode": "KZ"
+  },
+  {
+    "id": "KE",
+    "nameEn": "Kenya",
+    "nameRu": "Кения",
+    "region": "Africa",
+    "flagCode": "KE"
+  },
+  {
+    "id": "KG",
+    "nameEn": "Kyrgyzstan",
+    "nameRu": "Киргизия",
+    "region": "Asia",
+    "flagCode": "KG"
+  },
+  {
+    "id": "KH",
+    "nameEn": "Cambodia",
+    "nameRu": "Камбоджа",
+    "region": "Asia",
+    "flagCode": "KH"
+  },
+  {
+    "id": "KR",
+    "nameEn": "South Korea",
+    "nameRu": "Республика Корея",
+    "region": "Asia",
+    "flagCode": "KR"
+  },
+  {
+    "id": "XK",
+    "nameEn": "Kosovo",
+    "nameRu": "Косово",
+    "region": "Europe",
+    "flagCode": "XK"
+  },
+  {
+    "id": "KW",
+    "nameEn": "Kuwait",
+    "nameRu": "Кувейт",
+    "region": "Asia",
+    "flagCode": "KW"
+  },
+  {
+    "id": "LA",
+    "nameEn": "Laos",
+    "nameRu": "Лаос",
+    "region": "Asia",
+    "flagCode": "LA"
+  },
+  {
+    "id": "LB",
+    "nameEn": "Lebanon",
+    "nameRu": "Ливан",
+    "region": "Asia",
+    "flagCode": "LB"
+  },
+  {
+    "id": "LR",
+    "nameEn": "Liberia",
+    "nameRu": "Либерия",
+    "region": "Africa",
+    "flagCode": "LR"
+  },
+  {
+    "id": "LY",
+    "nameEn": "Libya",
+    "nameRu": "Ливия",
+    "region": "Africa",
+    "flagCode": "LY"
+  },
+  {
+    "id": "LK",
+    "nameEn": "Sri Lanka",
+    "nameRu": "Шри-Ланка",
+    "region": "Asia",
+    "flagCode": "LK"
+  },
+  {
+    "id": "LS",
+    "nameEn": "Lesotho",
+    "nameRu": "Лесото",
+    "region": "Africa",
+    "flagCode": "LS"
+  },
+  {
+    "id": "LT",
+    "nameEn": "Lithuania",
+    "nameRu": "Литва",
+    "region": "Europe",
+    "flagCode": "LT"
+  },
+  {
+    "id": "LU",
+    "nameEn": "Luxembourg",
+    "nameRu": "Люксембург",
+    "region": "Europe",
+    "flagCode": "LU"
+  },
+  {
+    "id": "LV",
+    "nameEn": "Latvia",
+    "nameRu": "Латвия",
+    "region": "Europe",
+    "flagCode": "LV"
+  },
+  {
+    "id": "MA",
+    "nameEn": "Morocco",
+    "nameRu": "Марокко",
+    "region": "Africa",
+    "flagCode": "MA"
+  },
+  {
+    "id": "MD",
+    "nameEn": "Moldova",
+    "nameRu": "Молдавия",
+    "region": "Europe",
+    "flagCode": "MD"
+  },
+  {
+    "id": "MG",
+    "nameEn": "Madagascar",
+    "nameRu": "Мадагаскар",
+    "region": "Africa",
+    "flagCode": "MG"
+  },
+  {
+    "id": "MX",
+    "nameEn": "Mexico",
+    "nameRu": "Мексика",
+    "region": "Americas",
+    "flagCode": "MX"
+  },
+  {
+    "id": "MK",
+    "nameEn": "North Macedonia",
+    "nameRu": "Северная Македония",
+    "region": "Europe",
+    "flagCode": "MK"
+  },
+  {
+    "id": "ML",
+    "nameEn": "Mali",
+    "nameRu": "Мали",
+    "region": "Africa",
+    "flagCode": "ML"
+  },
+  {
+    "id": "MM",
+    "nameEn": "Myanmar",
+    "nameRu": "Мьянма",
+    "region": "Asia",
+    "flagCode": "MM"
+  },
+  {
+    "id": "ME",
+    "nameEn": "Montenegro",
+    "nameRu": "Черногория",
+    "region": "Europe",
+    "flagCode": "ME"
+  },
+  {
+    "id": "MN",
+    "nameEn": "Mongolia",
+    "nameRu": "Монголия",
+    "region": "Asia",
+    "flagCode": "MN"
+  },
+  {
+    "id": "MZ",
+    "nameEn": "Mozambique",
+    "nameRu": "Мозамбик",
+    "region": "Africa",
+    "flagCode": "MZ"
+  },
+  {
+    "id": "MR",
+    "nameEn": "Mauritania",
+    "nameRu": "Мавритания",
+    "region": "Africa",
+    "flagCode": "MR"
+  },
+  {
+    "id": "MW",
+    "nameEn": "Malawi",
+    "nameRu": "Малави",
+    "region": "Africa",
+    "flagCode": "MW"
+  },
+  {
+    "id": "MY",
+    "nameEn": "Malaysia",
+    "nameRu": "Малайзия",
+    "region": "Asia",
+    "flagCode": "MY"
+  },
+  {
+    "id": "NA",
+    "nameEn": "Namibia",
+    "nameRu": "Намибия",
+    "region": "Africa",
+    "flagCode": "NA"
+  },
+  {
+    "id": "NC",
+    "nameEn": "New Caledonia",
+    "nameRu": "Новая Каледония",
+    "region": "Oceania",
+    "flagCode": "NC"
+  },
+  {
+    "id": "NE",
+    "nameEn": "Niger",
+    "nameRu": "Нигер",
+    "region": "Africa",
+    "flagCode": "NE"
+  },
+  {
+    "id": "NG",
+    "nameEn": "Nigeria",
+    "nameRu": "Нигерия",
+    "region": "Africa",
+    "flagCode": "NG"
+  },
+  {
+    "id": "NI",
+    "nameEn": "Nicaragua",
+    "nameRu": "Никарагуа",
+    "region": "Americas",
+    "flagCode": "NI"
+  },
+  {
+    "id": "NL",
+    "nameEn": "Netherlands",
+    "nameRu": "Нидерланды",
+    "region": "Europe",
+    "flagCode": "NL"
+  },
+  {
+    "id": "NO",
+    "nameEn": "Norway",
+    "nameRu": "Норвегия",
+    "region": "Europe",
+    "flagCode": "NO"
+  },
+  {
+    "id": "NP",
+    "nameEn": "Nepal",
+    "nameRu": "Непал",
+    "region": "Asia",
+    "flagCode": "NP"
+  },
+  {
+    "id": "NZ",
+    "nameEn": "New Zealand",
+    "nameRu": "Новая Зеландия",
+    "region": "Oceania",
+    "flagCode": "NZ"
+  },
+  {
+    "id": "OM",
+    "nameEn": "Oman",
+    "nameRu": "Оман",
+    "region": "Asia",
+    "flagCode": "OM"
+  },
+  {
+    "id": "PK",
+    "nameEn": "Pakistan",
+    "nameRu": "Пакистан",
+    "region": "Asia",
+    "flagCode": "PK"
+  },
+  {
+    "id": "PA",
+    "nameEn": "Panama",
+    "nameRu": "Панама",
+    "region": "Americas",
+    "flagCode": "PA"
+  },
+  {
+    "id": "PE",
+    "nameEn": "Peru",
+    "nameRu": "Перу",
+    "region": "Americas",
+    "flagCode": "PE"
+  },
+  {
+    "id": "PH",
+    "nameEn": "Philippines",
+    "nameRu": "Филиппины",
+    "region": "Asia",
+    "flagCode": "PH"
+  },
+  {
+    "id": "PG",
+    "nameEn": "Papua New Guinea",
+    "nameRu": "Папуа — Новая Гвинея",
+    "region": "Oceania",
+    "flagCode": "PG"
+  },
+  {
+    "id": "PL",
+    "nameEn": "Poland",
+    "nameRu": "Польша",
+    "region": "Europe",
+    "flagCode": "PL"
+  },
+  {
+    "id": "PR",
+    "nameEn": "Puerto Rico",
+    "nameRu": "Пуэрто-Рико",
+    "region": "Americas",
+    "flagCode": "PR"
+  },
+  {
+    "id": "KP",
+    "nameEn": "North Korea",
+    "nameRu": "КНДР (Корейская Народно-Демократическая Республика)",
+    "region": "Asia",
+    "flagCode": "KP"
+  },
+  {
+    "id": "PT",
+    "nameEn": "Portugal",
+    "nameRu": "Португалия",
+    "region": "Europe",
+    "flagCode": "PT"
+  },
+  {
+    "id": "PY",
+    "nameEn": "Paraguay",
+    "nameRu": "Парагвай",
+    "region": "Americas",
+    "flagCode": "PY"
+  },
+  {
+    "id": "QA",
+    "nameEn": "Qatar",
+    "nameRu": "Катар",
+    "region": "Asia",
+    "flagCode": "QA"
+  },
+  {
+    "id": "RO",
+    "nameEn": "Romania",
+    "nameRu": "Румыния",
+    "region": "Europe",
+    "flagCode": "RO"
+  },
+  {
+    "id": "RU",
+    "nameEn": "Russia",
+    "nameRu": "Российская Федерация",
+    "region": "Europe",
+    "flagCode": "RU"
+  },
+  {
+    "id": "RW",
+    "nameEn": "Rwanda",
+    "nameRu": "Руанда",
+    "region": "Africa",
+    "flagCode": "RW"
+  },
+  {
+    "id": "EH",
+    "nameEn": "Western Sahara",
+    "nameRu": "САДР",
+    "region": "Africa",
+    "flagCode": "EH"
+  },
+  {
+    "id": "SA",
+    "nameEn": "Saudi Arabia",
+    "nameRu": "Саудовская Аравия",
+    "region": "Asia",
+    "flagCode": "SA"
+  },
+  {
+    "id": "SD",
+    "nameEn": "Sudan",
+    "nameRu": "Судан",
+    "region": "Africa",
+    "flagCode": "SD"
+  },
+  {
+    "id": "SS",
+    "nameEn": "South Sudan",
+    "nameRu": "Южный Судан",
+    "region": "Africa",
+    "flagCode": "SS"
+  },
+  {
+    "id": "SN",
+    "nameEn": "Senegal",
+    "nameRu": "Сенегал",
+    "region": "Africa",
+    "flagCode": "SN"
+  },
+  {
+    "id": "SB",
+    "nameEn": "Solomon Islands",
+    "nameRu": "Соломоновы Острова",
+    "region": "Oceania",
+    "flagCode": "SB"
+  },
+  {
+    "id": "SL",
+    "nameEn": "Sierra Leone",
+    "nameRu": "Сьерра-Леоне",
+    "region": "Africa",
+    "flagCode": "SL"
+  },
+  {
+    "id": "SV",
+    "nameEn": "El Salvador",
+    "nameRu": "Сальвадор",
+    "region": "Americas",
+    "flagCode": "SV"
+  },
+  {
+    "id": "SYN_SOMALILAND",
+    "nameEn": "Somaliland",
+    "nameRu": "Somaliland",
+    "region": "Africa",
+    "flagCode": "SYN_SOMALILAND"
+  },
+  {
+    "id": "SO",
+    "nameEn": "Somalia",
+    "nameRu": "Сомали",
+    "region": "Africa",
+    "flagCode": "SO"
+  },
+  {
+    "id": "RS",
+    "nameEn": "Republic of Serbia",
+    "nameRu": "Сербия",
+    "region": "Europe",
+    "flagCode": "RS"
+  },
+  {
+    "id": "SR",
+    "nameEn": "Suriname",
+    "nameRu": "Суринам",
+    "region": "Americas",
+    "flagCode": "SR"
+  },
+  {
+    "id": "SK",
+    "nameEn": "Slovakia",
+    "nameRu": "Словакия",
+    "region": "Europe",
+    "flagCode": "SK"
+  },
+  {
+    "id": "SI",
+    "nameEn": "Slovenia",
+    "nameRu": "Словения",
+    "region": "Europe",
+    "flagCode": "SI"
+  },
+  {
+    "id": "SE",
+    "nameEn": "Sweden",
+    "nameRu": "Швеция",
+    "region": "Europe",
+    "flagCode": "SE"
+  },
+  {
+    "id": "SZ",
+    "nameEn": "Eswatini",
+    "nameRu": "Эсватини",
+    "region": "Africa",
+    "flagCode": "SZ"
+  },
+  {
+    "id": "SY",
+    "nameEn": "Syria",
+    "nameRu": "Сирия",
+    "region": "Asia",
+    "flagCode": "SY"
+  },
+  {
+    "id": "TD",
+    "nameEn": "Chad",
+    "nameRu": "Чад",
+    "region": "Africa",
+    "flagCode": "TD"
+  },
+  {
+    "id": "TG",
+    "nameEn": "Togo",
+    "nameRu": "Того",
+    "region": "Africa",
+    "flagCode": "TG"
+  },
+  {
+    "id": "TH",
+    "nameEn": "Thailand",
+    "nameRu": "Таиланд",
+    "region": "Asia",
+    "flagCode": "TH"
+  },
+  {
+    "id": "TJ",
+    "nameEn": "Tajikistan",
+    "nameRu": "Таджикистан",
+    "region": "Asia",
+    "flagCode": "TJ"
+  },
+  {
+    "id": "TM",
+    "nameEn": "Turkmenistan",
+    "nameRu": "Туркмения",
+    "region": "Asia",
+    "flagCode": "TM"
+  },
+  {
+    "id": "TL",
+    "nameEn": "Timor-Leste",
+    "nameRu": "Восточный Тимор",
+    "region": "Asia",
+    "flagCode": "TL"
+  },
+  {
+    "id": "TT",
+    "nameEn": "Trinidad and Tobago",
+    "nameRu": "Тринидад и Тобаго",
+    "region": "Americas",
+    "flagCode": "TT"
+  },
+  {
+    "id": "TN",
+    "nameEn": "Tunisia",
+    "nameRu": "Тунис",
+    "region": "Africa",
+    "flagCode": "TN"
+  },
+  {
+    "id": "TR",
+    "nameEn": "Türkiye",
+    "nameRu": "Турция",
+    "region": "Asia",
+    "flagCode": "TR"
+  },
+  {
+    "id": "TW",
+    "nameEn": "Taiwan",
+    "nameRu": "Тайвань",
+    "region": "Asia",
+    "flagCode": "TW"
+  },
+  {
+    "id": "TZ",
+    "nameEn": "United Republic of Tanzania",
+    "nameRu": "Танзания",
+    "region": "Africa",
+    "flagCode": "TZ"
+  },
+  {
+    "id": "UG",
+    "nameEn": "Uganda",
+    "nameRu": "Уганда",
+    "region": "Africa",
+    "flagCode": "UG"
+  },
+  {
+    "id": "UA",
+    "nameEn": "Ukraine",
+    "nameRu": "Украина",
+    "region": "Europe",
+    "flagCode": "UA"
+  },
+  {
+    "id": "UY",
+    "nameEn": "Uruguay",
+    "nameRu": "Уругвай",
+    "region": "Americas",
+    "flagCode": "UY"
+  },
+  {
+    "id": "US",
+    "nameEn": "United States of America",
+    "nameRu": "США",
+    "region": "Americas",
+    "flagCode": "US"
+  },
+  {
+    "id": "UZ",
+    "nameEn": "Uzbekistan",
+    "nameRu": "Узбекистан",
+    "region": "Asia",
+    "flagCode": "UZ"
+  },
+  {
+    "id": "VE",
+    "nameEn": "Venezuela",
+    "nameRu": "Венесуэла",
+    "region": "Americas",
+    "flagCode": "VE"
+  },
+  {
+    "id": "VN",
+    "nameEn": "Vietnam",
+    "nameRu": "Вьетнам",
+    "region": "Asia",
+    "flagCode": "VN"
+  },
+  {
+    "id": "VU",
+    "nameEn": "Vanuatu",
+    "nameRu": "Вануату",
+    "region": "Oceania",
+    "flagCode": "VU"
+  },
+  {
+    "id": "PS",
+    "nameEn": "Palestine",
+    "nameRu": "Государство Палестина",
+    "region": "Asia",
+    "flagCode": "PS"
+  },
+  {
+    "id": "YE",
+    "nameEn": "Yemen",
+    "nameRu": "Йемен",
+    "region": "Asia",
+    "flagCode": "YE"
+  },
+  {
+    "id": "ZA",
+    "nameEn": "South Africa",
+    "nameRu": "ЮАР",
+    "region": "Africa",
+    "flagCode": "ZA"
+  },
+  {
+    "id": "ZM",
+    "nameEn": "Zambia",
+    "nameRu": "Замбия",
+    "region": "Africa",
+    "flagCode": "ZM"
+  },
+  {
+    "id": "ZW",
+    "nameEn": "Zimbabwe",
+    "nameRu": "Зимбабве",
+    "region": "Africa",
+    "flagCode": "ZW"
+  },
+  {
+    "id": "SG",
+    "nameEn": "Singapore",
+    "nameRu": "Сингапур",
+    "region": "Asia",
+    "flagCode": "SG"
+  }
+]

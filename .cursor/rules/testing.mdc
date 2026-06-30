@@ -1,0 +1,39 @@
+---
+description: Тесты — unit/integration, писать вместе с кодом
+globs: "**/*.{ts,svelte}"
+alwaysApply: true
+---
+
+# Testing
+
+## Структура
+
+```
+tests/
+  unit/           # domain, services, controller logic
+  integration/    # сценарии экранов и flows
+```
+
+## Правило
+
+Новый функционал = тесты в том же PR/задаче. Не считать фичу готовой без тестов.
+
+| Слой | `tests/unit/` | `tests/integration/` |
+|------|---------------|----------------------|
+| `lib/domain/` | обязательно | — |
+| `controller.ts` | обязательно | по необходимости |
+| UI / Leaflet | — | ключевые flows |
+
+## Команды (после scaffold)
+
+```bash
+pnpm test:unit
+pnpm test:integration
+pnpm test          # все
+```
+
+## Стиль
+
+- Vitest + `@testing-library/svelte` для компонентов при необходимости
+- Имена: `game_session.test.ts`, `scoring_service.test.ts`
+- Минимум: happy path + один edge case на публичный API

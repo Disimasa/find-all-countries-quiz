@@ -1,0 +1,67 @@
+---
+description: Архитектура — domain в lib, feature-модули в routes
+globs: src/**
+alwaysApply: false
+---
+
+# Архитектура
+
+## Разделение lib vs routes
+
+| `lib/` | `routes/` |
+|--------|-----------|
+| Абстракции: domain-классы, infrastructure | Экраны, UI, wiring |
+| `BaseMapEra`, `GameSession`, сервисы | Инстансы классов в `controller.ts` |
+| Переиспользуемо между экранами | Привязано к route |
+
+## Слои в lib/
+
+```
+lib/domain/          — классы, сущности, сервисы
+lib/infrastructure/  — Leaflet, fetch, JSON
+lib/i18n/            — локализация UI-строк
+lib/shared/          — только то, что реально общее для 2+ routes
+```
+
+## Модули routes
+
+Стартовый экран — на корне `routes/` (без папки `lobby/`).
+Игра — `routes/play/`.
+
+```
+routes/
+  +layout.svelte
+  +page.svelte              # старт, импорт ./controller, ./ui
+  controller.ts             # store, locale, настройки, старт игры
+  ui/
+  types.ts
+  constants.ts
+  index.ts
+
+  play/
+    +page.svelte            # импорт ./controller, ./ui
+    controller.ts           # GameSession, store, bind domain → UI
+    ui/                     # GameMap, GuessDialog…
+    types.ts
+    constants.ts
+    index.ts
+```
+
+- `controller.ts` — вся TS-логика модуля: stores, domain-инстансы, `openDialog()` для модалок
+- Отдельных `stores/` нет
+- Публичный API — `index.ts`
+
+## Две оси расширения (domain)
+
+- **MapEra** (`base_map_era.ts`) — что на карте
+- **GameMode** (`base_game_mode.ts`) — как играем
+
+`GameSession` = Facade. Паттерны: Template Method, Strategy, Registry, State Machine, Observer, Adapter.
+
+## Язык
+
+Без slug в URL. `localStorage` (+ `navigator.language`, default **`en`**). Опционально `?lang=ru` при старте.
+
+## Leaflet
+
+`onMount` only. `leaflet_map_renderer.ts` в `lib/infrastructure/`. Клики → `GameSession` → `controller.ts` → store.

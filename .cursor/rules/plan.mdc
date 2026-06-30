@@ -1,0 +1,41 @@
+---
+description: План проекта — гео-квиз, MVP и этапы
+alwaysApply: true
+---
+
+# План
+
+Гео-квиз на **SvelteKit 5 + Tailwind + Leaflet + pnpm**. Референс: [Elsewhere Challenge](https://challenge.elsewhere.to/?time=0).
+
+## Стек
+
+- **pnpm**, Svelte 5 (без runes)
+- **Vitest**: `tests/unit/`, `tests/integration/`
+- Модалки: `svelte-awaitable-dialog`
+- Тема (post-MVP): `svelte-dark-mode-toggle`
+
+## MVP
+
+- Клик по стране на карте → ввод названия (autocomplete + флаги)
+- Настройки: таймер on/off (30 мин), жизни on/off (3 ошибки)
+- Языки UI: EN / RU (localStorage, default **EN**). i18n: Paraglide JS
+- Курируемый датасет ~170–180 сущностей (Natural Earth 50m)
+- Режим: `IdentifyByNameMode` + эпоха `ModernWorldMap`
+
+## Вне MVP (post-MVP)
+
+Горячие клавиши, региональный прогресс, stats, **dark mode** (`svelte-dark-mode-toggle`), исторические эпохи, режимы `LocateOnMap`, `MatchFlag`.
+
+## Этапы
+
+1. Скелет SvelteKit + Tailwind + Vitest + Paraglide + `tests/unit`, `tests/integration`
+2. Данные: GeoJSON, entities meta, алиасы RU/EN
+3. Domain layer + `game_session` (+ unit-тесты)
+4. Карта: Leaflet + `leaflet_map_renderer`
+5. UI: старт, игра (`svelte-awaitable-dialog` для модалок)
+6. Полировка: адаптив, loading, дисклеймер, integration-тесты flows
+
+## Данные
+
+- Границы: Natural Earth → `static/data/eras/modern/boundaries.geojson`
+- Названия: отдельный `entities.json` + `aliases.{ru,en}.json` (не поля GeoJSON)
