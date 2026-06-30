@@ -35,6 +35,10 @@ export class TimerService {
 		return this.enabled ? this.remaining : null
 	}
 
+	setRemaining(seconds: number): void {
+		this.remaining = Math.max(0, seconds)
+	}
+
 	isExpired(): boolean {
 		return this.enabled && this.remaining <= 0
 	}

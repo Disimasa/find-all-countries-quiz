@@ -20,6 +20,10 @@ export class LivesService {
 		return this.enabled ? this.remaining : MAX_LIVES
 	}
 
+	setRemaining(value: number): void {
+		this.remaining = Math.max(0, Math.min(value, MAX_LIVES))
+	}
+
 	isExhausted(): boolean {
 		return this.enabled && this.remaining <= 0
 	}

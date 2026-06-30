@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { get } from 'svelte/store'
 	import { onMount } from 'svelte'
-	import { page } from '$app/stores'
 	import { closeDialog } from 'svelte-awaitable-dialog'
 	import type { GameSnapshot } from '@domain/entities'
-	import { parseConfig, startGame } from '../controller'
+	import { buildGameConfig, clearSavedGame, loadGameSettings } from '@persist'
+	import { startGame } from '../controller'
 	import { transitionToHome } from '../../map_shell'
 
 	export let snapshot: GameSnapshot
@@ -26,8 +25,8 @@
 
 	function playAgain() {
 		closeDialog()
-		const config = parseConfig(get(page).url.search)
-		void startGame(config)
+		clearSavedGame()
+		void startGame(buildGameConfig(loadGameSettings()))
 	}
 </script>
 

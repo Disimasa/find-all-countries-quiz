@@ -9,9 +9,11 @@ import {
 	gameSnapshot,
 	getSession,
 	mapResetTick,
+	resumeGame,
 	startGame
 } from './play/controller'
 import { parseConfig } from './play/parse_config.ts'
+import { buildGameConfig, loadGameSettings, loadSavedGame, type SavedGameProgress } from '@persist'
 import { setSharedMapEra } from './map_era.ts'
 import { startLobbyTeaser, stopLobbyTeaser } from './_sub/lobby_teaser'
 
@@ -116,7 +118,7 @@ export function flashWrongOnMap(id: string): void {
 	renderer?.flashWrong(id)
 }
 
-export async function transitionToPlay(href: string): Promise<void> {
+export async function transitionToPlay(href: string, options?: { resume?: boolean }): Promise<void> {
 	if (get(mapShellTransitioning)) return
 
 	const map = await ensureReady()
@@ -126,13 +128,24 @@ export async function transitionToPlay(href: string): Promise<void> {
 	try {
 		await map.flyToWideView()
 		await goto(href)
-		const config = parseConfig(new URL(href, 'http://local').search)
-		await startGame(config)
+		const config = options?.resume
+			? loadSavedGame()?.config ?? buildGameConfig(loadGameSettings())
+			: buildGameConfig(loadGameSettings())
+		const saved = options?.resume ? loadSavedGame() : null
+		if (saved?.progress) {
+			await resumeGame(config, saved.progress)
+		} else {
+			await startGame(config)
+		}
 		if (selectHandler) map.activatePlay(selectHandler, get(gameSnapshot))
 		await finishZoomWithUiReveal(map.flyToPlayView())
 	} finally {
 		mapShellTransitioning.set(false)
 	}
+}
+
+export async function transitionToPlayResume(href: string): Promise<void> {
+	await transitionToPlay(href, { resume: true })
 }
 
 export async function transitionToHome(): Promise<void> {
@@ -154,10 +167,17 @@ export async function transitionToHome(): Promise<void> {
 	}
 }
 
-export async function enterPlayDirect(config: GameConfig): Promise<void> {
+export async function enterPlayDirect(
+	config: GameConfig,
+	options?: { resume?: SavedGameProgress }
+): Promise<void> {
 	const map = await ensureReady()
 	stopLobbyTeaser()
-	await startGame(config)
+	if (options?.resume) {
+		await resumeGame(config, options.resume)
+	} else {
+		await startGame(config)
+	}
 	if (selectHandler) map.activatePlay(selectHandler, get(gameSnapshot))
 	await map.flyToPlayView(0)
 }

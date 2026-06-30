@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Find All Countries">
+	<defs>
+		<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+			<stop offset="0%" stop-color="#f5f3ff" />
+			<stop offset="55%" stop-color="#ede9fe" />
+			<stop offset="100%" stop-color="#ddd6fe" />
+		</linearGradient>
+		<linearGradient id="badge" x1="0%" y1="0%" x2="100%" y2="100%">
+			<stop offset="0%" stop-color="#a78bfa" />
+			<stop offset="100%" stop-color="#7c3aed" />
+		</linearGradient>
+	</defs>
+	<rect width="1200" height="630" fill="url(#bg)" />
+	<circle cx="980" cy="120" r="180" fill="#c4b5fd" opacity="0.35" />
+	<circle cx="180" cy="520" r="140" fill="#58b67d" opacity="0.18" />
+	<path
+		fill="none"
+		stroke="#8b5cf6"
+		stroke-width="8"
+		stroke-linecap="round"
+		opacity="0.35"
+		d="M80 430c160-90 320-120 520-120s360 30 520 120"
+	/>
+	<g transform="translate(80 59) scale(0.55)">
+		<rect width="512" height="512" rx="112" fill="url(#badge)" />
+		<g transform="translate(256 245) scale(1.07) translate(-256 -245)">
+			<path
+				fill="#faf9f7"
+				stroke="#3b2f6e"
+				stroke-width="18"
+				stroke-linejoin="round"
+				paint-order="stroke fill"
+				d="M256 118C206 118 166 158 166 208C166 278 256 372 256 372S346 278 346 208C346 158 306 118 256 118Z"
+			/>
+			<circle cx="256" cy="205" r="34" fill="#58b67d" stroke="#143a24" stroke-width="10" />
+		</g>
+	</g>
+	<text
+		x="390"
+		y="250"
+		fill="#2a2e37"
+		font-family="Segoe UI, system-ui, sans-serif"
+		font-size="72"
+		font-weight="800"
+	>
+		Find All Countries
+	</text>
+	<text
+		x="392"
+		y="330"
+		fill="#5b6470"
+		font-family="Segoe UI, system-ui, sans-serif"
+		font-size="34"
+		font-weight="500"
+	>
+		Click the map. Name every country.
+	</text>
+</svg>

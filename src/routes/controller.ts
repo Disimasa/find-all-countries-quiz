@@ -1,9 +1,49 @@
 import { get, writable } from 'svelte/store'
+import type { GameConfig } from '@domain/entities'
 import { locale, setLocale, type MessageKey } from '@i18n'
 import type { Locale } from '@domain/entities'
+import {
+	buildGameConfig,
+	loadGameSettings,
+	loadSavedGame,
+	saveGameSettings,
+	type GameSettings,
+	type SavedGame
+} from '@persist'
 
-export const timerEnabled = writable(true)
-export const livesEnabled = writable(true)
+const initialSettings = loadGameSettings()
+
+export const timerEnabled = writable(initialSettings.timerEnabled)
+export const livesEnabled = writable(initialSettings.livesEnabled)
+
+let settingsPersistReady = false
+
+function persistSettings(settings: GameSettings): void {
+	saveGameSettings(settings)
+}
+
+timerEnabled.subscribe((timerOn) => {
+	if (!settingsPersistReady) return
+	persistSettings({ timerEnabled: timerOn, livesEnabled: get(livesEnabled) })
+})
+
+livesEnabled.subscribe((livesOn) => {
+	if (!settingsPersistReady) return
+	persistSettings({ timerEnabled: get(timerEnabled), livesEnabled: livesOn })
+})
+
+settingsPersistReady = true
+
+export function getGameConfig(): GameConfig {
+	return buildGameConfig({
+		timerEnabled: get(timerEnabled),
+		livesEnabled: get(livesEnabled)
+	})
+}
+
+export function getSavedGame(): SavedGame | null {
+	return loadSavedGame()
+}
 
 export function toggleLocale(): void {
 	const next: Locale = get(locale) === 'en' ? 'ru' : 'en'
@@ -17,7 +57,5 @@ export function buildPlayHref(): string {
 	const query = params.toString()
 	return query ? `/play?${query}` : '/play'
 }
-
-export { transitionToPlay, transitionToHome } from './map_shell'
 
 export type { MessageKey }

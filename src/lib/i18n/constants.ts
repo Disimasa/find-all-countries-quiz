@@ -31,7 +31,8 @@ export const messages = {
 		wrong: 'Wrong answer',
 		disclaimer:
 			'Some regions are territories or disputed areas. Borders shown are for quiz purposes only.',
-		lobbyTeaserTyping: 'What country is this?'
+		lobbyTeaserTyping: 'What country is this?',
+		continueGame: 'Continue ({n}/{total})'
 	},
 	ru: {
 		title: 'Найди все страны',
@@ -60,6 +61,7 @@ export const messages = {
 		wrong: 'Неверный ответ',
 		disclaimer:
 			'Некоторые регионы — территории или спорные зоны. Границы показаны только для квиза.',
-		lobbyTeaserTyping: 'Что это за страна?'
+		lobbyTeaserTyping: 'Что это за страна?',
+		continueGame: 'Продолжить ({n}/{total})'
 	}
 } as const satisfies Record<Locale, Record<string, string>>

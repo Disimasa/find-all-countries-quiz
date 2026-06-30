@@ -12,7 +12,8 @@ const config = {
 			'@shared': 'src/lib/shared',
 			'@i18n': 'src/lib/i18n',
 			'@theme': 'src/lib/theme',
-			'@lobby-teaser': 'src/routes/_sub/lobby_teaser'
+			'@lobby-teaser': 'src/routes/_sub/lobby_teaser',
+			'@persist': 'src/lib/persist'
 		}
 	}
 }

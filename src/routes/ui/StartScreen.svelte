@@ -11,6 +11,7 @@
 	export let livesLabel: string
 	export let languageLabel: string
 	export let startLabel: string
+	export let continueLabel = ''
 	export let disclaimer: string
 	export let timerOn: boolean
 	export let livesOn: boolean
@@ -18,6 +19,7 @@
 
 	const dispatch = createEventDispatcher<{
 		start: void
+		continue: void
 		toggleTimer: void
 		toggleLives: void
 		changeLocale: void
@@ -77,15 +79,35 @@
 				/>
 			</label>
 
-			<button
-				type="button"
-				class="btn btn-primary mt-1 w-full"
-				disabled={$mapShellTransitioning}
-				on:click={() => dispatch('start')}
-			>
-				<IconPlay class="size-4" />
-				{startLabel}
-			</button>
+			{#if continueLabel}
+				<button
+					type="button"
+					class="btn btn-primary mt-1 w-full"
+					disabled={$mapShellTransitioning}
+					on:click={() => dispatch('continue')}
+				>
+					<IconPlay class="size-4" />
+					{continueLabel}
+				</button>
+				<button
+					type="button"
+					class="btn btn-outline w-full border-primary/45 text-primary hover:border-primary hover:bg-primary/10 hover:text-primary"
+					disabled={$mapShellTransitioning}
+					on:click={() => dispatch('start')}
+				>
+					{startLabel}
+				</button>
+			{:else}
+				<button
+					type="button"
+					class="btn btn-primary mt-1 w-full"
+					disabled={$mapShellTransitioning}
+					on:click={() => dispatch('start')}
+				>
+					<IconPlay class="size-4" />
+					{startLabel}
+				</button>
+			{/if}
 
 			<p class="text-center text-[10px] leading-snug text-base-content/45">{disclaimer}</p>
 		</section>

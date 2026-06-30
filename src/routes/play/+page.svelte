@@ -16,6 +16,7 @@
 		updateAutocomplete
 	} from './controller'
 	import { locale, t } from '@i18n'
+	import { loadSavedGame } from '@persist'
 	import {
 		enterPlayDirect,
 		flashWrongOnMap,
@@ -33,8 +34,13 @@
 		setMapSelectHandler(onSelect)
 
 		if (!$mapShellTransitioning && !getSession()) {
-			const config = parseConfig($page.url.search)
-			void enterPlayDirect(config)
+			const saved = loadSavedGame()
+			if (saved) {
+				void enterPlayDirect(saved.config, { resume: saved.progress })
+			} else {
+				const config = parseConfig($page.url.search)
+				void enterPlayDirect(config)
+			}
 		}
 	})
 

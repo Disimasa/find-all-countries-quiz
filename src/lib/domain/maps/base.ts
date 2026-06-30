@@ -6,6 +6,7 @@ import type {
 	Locale
 } from '@domain/entities'
 import type { GeoJsonLoader } from '@infrastructure/data/geo_json_loader'
+import { getFlagEmoji as flagEmojiFromCode } from '@shared/flag_emoji'
 
 export abstract class BaseMapEra {
 	abstract readonly id: string
@@ -95,9 +96,8 @@ export abstract class BaseMapEra {
 
 	getFlagEmoji(id: string): string | null {
 		const code = this.entities.get(id)?.flagCode
-		if (!code || code.length !== 2) return null
-		const points = [...code.toUpperCase()].map((c) => 0x1f1e6 - 65 + c.charCodeAt(0))
-		return String.fromCodePoint(...points)
+		const emoji = flagEmojiFromCode(id, code)
+		return emoji === '🏳️' ? null : emoji
 	}
 
 	getEntityIdFromFeature(feature: Feature): string | null {

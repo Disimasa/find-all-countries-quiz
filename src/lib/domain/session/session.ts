@@ -55,10 +55,18 @@ export class GameSession {
 		return () => this.listeners.delete(listener)
 	}
 
-	async start(): Promise<void> {
+	async start(restore?: { guessedIds: string[]; livesRemaining: number; timeRemaining: number | null }): Promise<void> {
 		this.stateMachine.reset()
 		this.guessedIds.clear()
 		this.selectedId = null
+
+		if (restore) {
+			for (const id of restore.guessedIds) this.guessedIds.add(id)
+			if (restore.timeRemaining !== null) {
+				this.timer.setRemaining(restore.timeRemaining)
+			}
+			this.lives.setRemaining(restore.livesRemaining)
+		}
 
 		if (this.era.isInitialized()) {
 			this.stateMachine.transition({ type: 'start' })
