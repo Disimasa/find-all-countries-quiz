@@ -3,6 +3,7 @@ import { openDialog } from 'svelte-awaitable-dialog'
 import { EMPTY_SNAPSHOT, GameSessionFactory, type GameSession } from '@domain/session'
 import type { AnswerResult, GameConfig, GameSnapshot, GeoEntity } from '@domain/entities'
 import { getLocale, messages } from '@i18n'
+import { getSharedMapEra } from '../map_era.ts'
 import { parseConfig } from './parse_config.ts'
 import GameOverModal from './ui/GameOverModal.svelte'
 
@@ -19,7 +20,8 @@ let gameOverShown = false
 export async function startGame(config: GameConfig): Promise<void> {
 	destroyGame()
 	gameOverShown = false
-	session = GameSessionFactory.create({ config })
+	const era = getSharedMapEra()
+	session = GameSessionFactory.create({ config, era: era ?? undefined })
 	session.setLocale(getLocale())
 	unsubscribe = session.subscribe((snapshot) => {
 		gameSnapshot.set(snapshot)
@@ -36,6 +38,11 @@ export async function startGame(config: GameConfig): Promise<void> {
 		}
 	})
 	await session.start()
+}
+
+/** Prefetch modules while the user is on the lobby so play starts without a loading flash. */
+export function warmupPlay(): void {
+	void import('@infrastructure/data/geo_json_loader')
 }
 
 export function destroyGame(): void {

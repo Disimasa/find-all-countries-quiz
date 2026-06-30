@@ -59,6 +59,15 @@ export class GameSession {
 		this.stateMachine.reset()
 		this.guessedIds.clear()
 		this.selectedId = null
+
+		if (this.era.isInitialized()) {
+			this.stateMachine.transition({ type: 'start' })
+			this.stateMachine.transition({ type: 'loaded' })
+			this.timer.start(() => this.onTimerTick())
+			this.emit()
+			return
+		}
+
 		this.stateMachine.transition({ type: 'start' })
 		this.emit()
 

@@ -79,7 +79,8 @@
 
 	$: formattedTime = formatTime($gameSnapshot.timeRemaining)
 	$: session = ($gameSnapshot.status, getSession())
-	$: mapLoading = $gameSnapshot.status === 'loading' || !$mapShellReady
+	$: mapLoading =
+		($gameSnapshot.status === 'loading' || !$mapShellReady) && !$mapShellTransitioning
 	$: panelRevealed = !$mapShellTransitioning && !mapLoading
 </script>
 

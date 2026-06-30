@@ -67,6 +67,10 @@ export abstract class BaseMapEra {
 		}
 	}
 
+	isInitialized(): boolean {
+		return this.geoJson !== null
+	}
+
 	getGeoJson(): FeatureCollection {
 		if (!this.geoJson) throw new Error('Map era not initialized')
 		return this.geoJson

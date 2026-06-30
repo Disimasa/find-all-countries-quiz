@@ -30,6 +30,11 @@ const WRONG_FLASH_STEP_MS = 95
 const EASE_IN_OUT_CUBIC = (t: number) =>
 	t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
 const EASE_OUT_CUBIC = (t: number) => 1 - Math.pow(1 - t, 3)
+const EASE_OUT_BACK = (t: number) => {
+	const c1 = 1.85
+	const c3 = c1 + 1
+	return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2)
+}
 
 function prefersReducedMotion(): boolean {
 	if (typeof window === 'undefined') return false
@@ -149,11 +154,11 @@ export class MapRenderer {
 	}
 
 	flyToPlayView(duration = MAP_TRANSITION_IN_MS): Promise<void> {
-		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_CUBIC)
+		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_BACK)
 	}
 
 	flyToPreviewView(duration = MAP_TRANSITION_IN_MS): Promise<void> {
-		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_CUBIC)
+		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_BACK)
 	}
 
 	private flyToBounds(

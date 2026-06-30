@@ -12,6 +12,7 @@ import {
 	startGame
 } from './play/controller'
 import { parseConfig } from './play/parse_config.ts'
+import { setSharedMapEra } from './map_era.ts'
 
 export const mapShellReady = writable(false)
 export const mapShellTransitioning = writable(false)
@@ -79,6 +80,8 @@ export function initMapShell(el: HTMLElement): Promise<void> {
 	initPromise = (async () => {
 		const era = MapEraRegistry.create(MODERN_ERA_ID)
 		await era.initialize(new GeoJsonLoader())
+		setSharedMapEra(era)
+		void import('@infrastructure/data/geo_json_loader')
 		renderer = new MapRenderer()
 		await new Promise<void>((resolve) => {
 			renderer!.mountShell(el, era, () => resolve())

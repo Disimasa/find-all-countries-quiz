@@ -16,7 +16,7 @@ export const MAP_DEFAULT_MAX_FIT_ZOOM = 1.65
 export const MAP_WIDE_FIT_PADDING = 220
 export const MAP_WIDE_MAX_ZOOM = 0.35
 export const MAP_TRANSITION_OUT_MS = 1100
-export const MAP_TRANSITION_IN_MS = 1250
+export const MAP_TRANSITION_IN_MS = 1000
 /** 0–1: when zoom-in reaches this progress, route UI starts appearing. */
 export const MAP_TRANSITION_UI_REVEAL_AT = 0.25
 

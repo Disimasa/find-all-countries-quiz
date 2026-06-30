@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { buildPlayHref, livesEnabled, timerEnabled, toggleLocale, transitionToPlay } from './controller'
+	import { warmupPlay } from './play/controller'
+	import { mapShellReady } from './map_shell'
 	import { locale, t } from '@i18n'
 	import StartScreen from './ui/StartScreen.svelte'
 
@@ -8,6 +11,14 @@
 
 	$: timerOn = $timerEnabled
 	$: livesOn = $livesEnabled
+
+	onMount(() => {
+		warmupPlay()
+		const unsub = mapShellReady.subscribe((ready) => {
+			if (ready) warmupPlay()
+		})
+		return unsub
+	})
 
 	function handleStart() {
 		void transitionToPlay(buildPlayHref())
