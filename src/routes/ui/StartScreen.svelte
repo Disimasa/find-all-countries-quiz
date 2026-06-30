@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
-	import LanguageSwitcher from './LanguageSwitcher.svelte'
+	import GameSettingsEditor from './GameSettingsEditor.svelte'
 	import type { Locale } from '@domain/entities'
 	import IconPlay from '~icons/lucide/play'
 	import { mapShellTransitioning } from '../map_shell'
@@ -9,20 +9,23 @@
 	export let modeHint: string
 	export let timerLabel: string
 	export let livesLabel: string
+	export let infiniteLabel: string
 	export let languageLabel: string
 	export let startLabel: string
 	export let continueLabel = ''
 	export let disclaimer: string
 	export let timerOn: boolean
 	export let livesOn: boolean
+	export let timerMinutes: number
+	export let maxLives: number
 	export let currentLocale: Locale
 
 	const dispatch = createEventDispatcher<{
 		start: void
 		continue: void
-		toggleTimer: void
-		toggleLives: void
-		changeLocale: void
+		timerSelect: { enabled: boolean; minutes?: number }
+		livesSelect: { enabled: boolean; count?: number }
+		localeSelect: Locale
 	}>()
 </script>
 
@@ -52,37 +55,26 @@
 		<section
 			class="flex flex-col gap-3 rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md"
 		>
-			<div class="flex items-center justify-between gap-3">
-				<span class="text-sm text-base-content/70">{languageLabel}</span>
-				<LanguageSwitcher {currentLocale} on:change={() => dispatch('changeLocale')} />
-			</div>
-
-			<label class="flex cursor-pointer items-center justify-between gap-3">
-				<span class="text-sm">{timerLabel}</span>
-				<input
-					type="checkbox"
-					class="toggle toggle-sm toggle-primary"
-					checked={timerOn}
-					disabled={$mapShellTransitioning}
-					on:change={() => dispatch('toggleTimer')}
-				/>
-			</label>
-
-			<label class="flex cursor-pointer items-center justify-between gap-3">
-				<span class="text-sm">{livesLabel}</span>
-				<input
-					type="checkbox"
-					class="toggle toggle-sm toggle-primary"
-					checked={livesOn}
-					disabled={$mapShellTransitioning}
-					on:change={() => dispatch('toggleLives')}
-				/>
-			</label>
+			<GameSettingsEditor
+				disabled={$mapShellTransitioning}
+				{currentLocale}
+				{timerOn}
+				{livesOn}
+				{timerMinutes}
+				{maxLives}
+				{languageLabel}
+				{timerLabel}
+				{livesLabel}
+				{infiniteLabel}
+				on:localeSelect={(event) => dispatch('localeSelect', event.detail)}
+				on:timerSelect={(event) => dispatch('timerSelect', event.detail)}
+				on:livesSelect={(event) => dispatch('livesSelect', event.detail)}
+			/>
 
 			{#if continueLabel}
 				<button
 					type="button"
-					class="btn btn-primary mt-1 w-full"
+					class="btn btn-primary mt-1 w-full gap-2"
 					disabled={$mapShellTransitioning}
 					on:click={() => dispatch('continue')}
 				>
@@ -100,7 +92,7 @@
 			{:else}
 				<button
 					type="button"
-					class="btn btn-primary mt-1 w-full"
+					class="btn btn-primary mt-1 w-full gap-2"
 					disabled={$mapShellTransitioning}
 					on:click={() => dispatch('start')}
 				>

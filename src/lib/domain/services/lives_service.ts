@@ -1,11 +1,11 @@
-import { MAX_LIVES } from '@domain/session/constants'
+import { DEFAULT_MAX_LIVES } from '@domain/session/constants'
 
 export class LivesService {
 	private remaining: number
 
 	constructor(
 		private readonly enabled: boolean,
-		maxLives = MAX_LIVES
+		private readonly maxLives = DEFAULT_MAX_LIVES
 	) {
 		this.remaining = maxLives
 	}
@@ -17,11 +17,11 @@ export class LivesService {
 	}
 
 	getRemaining(): number {
-		return this.enabled ? this.remaining : MAX_LIVES
+		return this.enabled ? this.remaining : this.maxLives
 	}
 
 	setRemaining(value: number): void {
-		this.remaining = Math.max(0, Math.min(value, MAX_LIVES))
+		this.remaining = Math.max(0, Math.min(value, this.maxLives))
 	}
 
 	isExhausted(): boolean {

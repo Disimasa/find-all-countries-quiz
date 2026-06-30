@@ -15,30 +15,35 @@ const initialSettings = loadGameSettings()
 
 export const timerEnabled = writable(initialSettings.timerEnabled)
 export const livesEnabled = writable(initialSettings.livesEnabled)
+export const timerMinutes = writable(initialSettings.timerMinutes)
+export const maxLives = writable(initialSettings.maxLives)
 
 let settingsPersistReady = false
 
-function persistSettings(settings: GameSettings): void {
-	saveGameSettings(settings)
+function getCurrentSettings(): GameSettings {
+	return {
+		timerEnabled: get(timerEnabled),
+		livesEnabled: get(livesEnabled),
+		timerMinutes: get(timerMinutes),
+		maxLives: get(maxLives)
+	}
 }
 
-timerEnabled.subscribe((timerOn) => {
-	if (!settingsPersistReady) return
-	persistSettings({ timerEnabled: timerOn, livesEnabled: get(livesEnabled) })
-})
+function persistSettings(): void {
+	saveGameSettings(getCurrentSettings())
+}
 
-livesEnabled.subscribe((livesOn) => {
-	if (!settingsPersistReady) return
-	persistSettings({ timerEnabled: get(timerEnabled), livesEnabled: livesOn })
-})
+for (const store of [timerEnabled, livesEnabled, timerMinutes, maxLives]) {
+	store.subscribe(() => {
+		if (!settingsPersistReady) return
+		persistSettings()
+	})
+}
 
 settingsPersistReady = true
 
 export function getGameConfig(): GameConfig {
-	return buildGameConfig({
-		timerEnabled: get(timerEnabled),
-		livesEnabled: get(livesEnabled)
-	})
+	return buildGameConfig(getCurrentSettings())
 }
 
 export function getSavedGame(): SavedGame | null {

@@ -5,26 +5,33 @@
 		buildPlayHref,
 		getSavedGame,
 		livesEnabled,
+		maxLives,
 		timerEnabled,
-		toggleLocale
+		timerMinutes
 	} from './controller'
 	import { warmupPlay } from './play/controller'
 	import { mapShellReady, transitionToPlay, transitionToPlayResume } from './map_shell'
-	import { locale, t } from '@i18n'
+	import { locale, setLocale, t } from '@i18n'
 	import StartScreen from './ui/StartScreen.svelte'
 
 	let timerOn = true
 	let livesOn = true
+	let minutes = 30
+	let lives = 3
 	let continueLabel = ''
 
 	$: timerOn = $timerEnabled
 	$: livesOn = $livesEnabled
+	$: minutes = $timerMinutes
+	$: lives = $maxLives
 
 	onMount(() => {
 		const saved = getSavedGame()
 		if (saved) {
 			timerEnabled.set(saved.config.timerEnabled)
 			livesEnabled.set(saved.config.livesEnabled)
+			timerMinutes.set(Math.round(saved.config.timerSeconds / 60))
+			maxLives.set(saved.config.maxLives)
 		}
 		updateContinueLabel()
 		warmupPlay()
@@ -62,18 +69,27 @@
 		modeHint={$t('modeHint')}
 		timerLabel={$t('timer')}
 		livesLabel={$t('lives')}
+		infiniteLabel={$t('infinite')}
 		languageLabel={$t('language')}
 		startLabel={$t('start')}
 		{continueLabel}
 		disclaimer={$t('disclaimer')}
 		{timerOn}
 		{livesOn}
+		timerMinutes={minutes}
+		maxLives={lives}
 		currentLocale={$locale}
 		on:start={handleStart}
 		on:continue={handleContinue}
-		on:toggleTimer={() => timerEnabled.update((v) => !v)}
-		on:toggleLives={() => livesEnabled.update((v) => !v)}
-		on:changeLocale={toggleLocale}
+		on:timerSelect={(event) => {
+			timerEnabled.set(event.detail.enabled)
+			if (event.detail.minutes != null) timerMinutes.set(event.detail.minutes)
+		}}
+		on:livesSelect={(event) => {
+			livesEnabled.set(event.detail.enabled)
+			if (event.detail.count != null) maxLives.set(event.detail.count)
+		}}
+		on:localeSelect={(event) => setLocale(event.detail)}
 	/>
 {:else}
 	<div

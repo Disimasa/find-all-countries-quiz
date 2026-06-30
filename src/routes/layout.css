@@ -129,3 +129,23 @@
 		transform: translateX(4px);
 	}
 }
+
+button:not(:disabled),
+input[type='button']:not(:disabled),
+input[type='submit']:not(:disabled),
+input[type='reset']:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+.btn:not(:disabled),
+label:has(input[type='checkbox']),
+label:has(input[type='radio']) {
+	cursor: pointer;
+}
+
+button:disabled,
+input[type='button']:disabled,
+input[type='submit']:disabled,
+input[type='reset']:disabled,
+.btn:disabled,
+.btn[disabled] {
+	cursor: not-allowed;
+}

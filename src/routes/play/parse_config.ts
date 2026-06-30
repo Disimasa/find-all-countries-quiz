@@ -1,4 +1,3 @@
-import { DEFAULT_TIMER_SECONDS, MAX_LIVES } from '@domain/session/constants'
 import type { GameConfig } from '@domain/entities'
 import { loadGameSettings } from '@persist'
 
@@ -8,8 +7,8 @@ export function parseConfig(search: string): GameConfig {
 
 	return {
 		timerEnabled: params.has('timer') ? params.get('timer') !== '0' : stored.timerEnabled,
-		timerSeconds: DEFAULT_TIMER_SECONDS,
+		timerSeconds: stored.timerMinutes * 60,
 		livesEnabled: params.has('lives') ? params.get('lives') !== '0' : stored.livesEnabled,
-		maxLives: MAX_LIVES
+		maxLives: stored.maxLives
 	}
 }

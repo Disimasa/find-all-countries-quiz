@@ -1,7 +1,7 @@
 import type { GameConfig } from '@domain/entities'
 import { MapEraRegistry, MODERN_ERA_ID, type BaseMapEra } from '@domain/maps'
 import { GameModeRegistry, IDENTIFY_BY_NAME_MODE_ID } from '@domain/modes'
-import { DEFAULT_TIMER_SECONDS, MAX_LIVES } from './constants.ts'
+import { DEFAULT_MAX_LIVES, DEFAULT_TIMER_SECONDS } from './constants.ts'
 import { GameSession } from './session.ts'
 
 export interface SessionOptions {
@@ -19,7 +19,7 @@ export class GameSessionFactory {
 			timerEnabled: options.config?.timerEnabled ?? true,
 			timerSeconds: options.config?.timerSeconds ?? DEFAULT_TIMER_SECONDS,
 			livesEnabled: options.config?.livesEnabled ?? true,
-			maxLives: options.config?.maxLives ?? MAX_LIVES
+			maxLives: options.config?.maxLives ?? DEFAULT_MAX_LIVES
 		}
 		return new GameSession(era, mode, config)
 	}

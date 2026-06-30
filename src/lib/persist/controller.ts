@@ -1,13 +1,33 @@
 import type { GameConfig } from '@domain/entities'
 import { MODERN_ERA_ID } from '@domain/maps'
-import { DEFAULT_TIMER_SECONDS, MAX_LIVES } from '@domain/session/constants'
 import {
 	DEFAULT_GAME_SETTINGS,
 	GAME_SAVE_STORAGE_KEY,
-	GAME_SETTINGS_STORAGE_KEY
+	GAME_SETTINGS_STORAGE_KEY,
+	MAX_LIVES_LIMIT,
+	MAX_TIMER_MINUTES,
+	MIN_LIVES,
+	MIN_TIMER_MINUTES
 } from './constants.ts'
 import { canUseStorage } from './storage.ts'
 import type { GameSettings, SavedGame } from './types.ts'
+
+function clamp(value: number, min: number, max: number): number {
+	return Math.min(max, Math.max(min, value))
+}
+
+function normalizeSettings(raw: Partial<GameSettings>): GameSettings {
+	return {
+		timerEnabled: raw.timerEnabled ?? DEFAULT_GAME_SETTINGS.timerEnabled,
+		livesEnabled: raw.livesEnabled ?? DEFAULT_GAME_SETTINGS.livesEnabled,
+		timerMinutes: clamp(
+			raw.timerMinutes ?? DEFAULT_GAME_SETTINGS.timerMinutes,
+			MIN_TIMER_MINUTES,
+			MAX_TIMER_MINUTES
+		),
+		maxLives: clamp(raw.maxLives ?? DEFAULT_GAME_SETTINGS.maxLives, MIN_LIVES, MAX_LIVES_LIMIT)
+	}
+}
 
 export function loadGameSettings(): GameSettings {
 	if (!canUseStorage()) return { ...DEFAULT_GAME_SETTINGS }
@@ -15,11 +35,7 @@ export function loadGameSettings(): GameSettings {
 	try {
 		const raw = localStorage.getItem(GAME_SETTINGS_STORAGE_KEY)
 		if (!raw) return { ...DEFAULT_GAME_SETTINGS }
-		const parsed = JSON.parse(raw) as Partial<GameSettings>
-		return {
-			timerEnabled: parsed.timerEnabled ?? DEFAULT_GAME_SETTINGS.timerEnabled,
-			livesEnabled: parsed.livesEnabled ?? DEFAULT_GAME_SETTINGS.livesEnabled
-		}
+		return normalizeSettings(JSON.parse(raw) as Partial<GameSettings>)
 	} catch {
 		return { ...DEFAULT_GAME_SETTINGS }
 	}
@@ -27,15 +43,16 @@ export function loadGameSettings(): GameSettings {
 
 export function saveGameSettings(settings: GameSettings): void {
 	if (!canUseStorage()) return
-	localStorage.setItem(GAME_SETTINGS_STORAGE_KEY, JSON.stringify(settings))
+	localStorage.setItem(GAME_SETTINGS_STORAGE_KEY, JSON.stringify(normalizeSettings(settings)))
 }
 
 export function buildGameConfig(settings: GameSettings): GameConfig {
+	const normalized = normalizeSettings(settings)
 	return {
-		timerEnabled: settings.timerEnabled,
-		timerSeconds: DEFAULT_TIMER_SECONDS,
-		livesEnabled: settings.livesEnabled,
-		maxLives: MAX_LIVES
+		timerEnabled: normalized.timerEnabled,
+		timerSeconds: normalized.timerMinutes * 60,
+		livesEnabled: normalized.livesEnabled,
+		maxLives: normalized.maxLives
 	}
 }
 

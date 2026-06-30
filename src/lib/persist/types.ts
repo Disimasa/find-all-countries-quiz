@@ -3,6 +3,8 @@ import type { GameConfig } from '@domain/entities'
 export interface GameSettings {
 	timerEnabled: boolean
 	livesEnabled: boolean
+	timerMinutes: number
+	maxLives: number
 }
 
 export interface SavedGameProgress {
