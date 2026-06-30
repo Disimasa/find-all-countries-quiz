@@ -79,7 +79,7 @@
 
 			<button
 				type="button"
-				class="btn btn-primary mt-1 w-full gap-2 rounded-xl"
+				class="btn btn-primary mt-1 w-full"
 				disabled={$mapShellTransitioning}
 				on:click={() => dispatch('start')}
 			>

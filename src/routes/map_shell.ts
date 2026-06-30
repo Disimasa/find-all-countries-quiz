@@ -13,6 +13,7 @@ import {
 } from './play/controller'
 import { parseConfig } from './play/parse_config.ts'
 import { setSharedMapEra } from './map_era.ts'
+import { startLobbyTeaser, stopLobbyTeaser } from './_sub/lobby_teaser'
 
 export const mapShellReady = writable(false)
 export const mapShellTransitioning = writable(false)
@@ -120,6 +121,7 @@ export async function transitionToPlay(href: string): Promise<void> {
 
 	const map = await ensureReady()
 	mapShellTransitioning.set(true)
+	stopLobbyTeaser()
 
 	try {
 		await map.flyToWideView()
@@ -138,6 +140,7 @@ export async function transitionToHome(): Promise<void> {
 
 	const map = await ensureReady()
 	mapShellTransitioning.set(true)
+	stopLobbyTeaser()
 
 	try {
 		setMapSelectHandler(null)
@@ -153,7 +156,15 @@ export async function transitionToHome(): Promise<void> {
 
 export async function enterPlayDirect(config: GameConfig): Promise<void> {
 	const map = await ensureReady()
+	stopLobbyTeaser()
 	await startGame(config)
 	if (selectHandler) map.activatePlay(selectHandler, get(gameSnapshot))
 	await map.flyToPlayView(0)
 }
+
+export async function runLobbyTeaserWhenReady(): Promise<void> {
+	const map = await ensureReady()
+	startLobbyTeaser(map)
+}
+
+export { stopLobbyTeaser } from './_sub/lobby_teaser'

@@ -16,7 +16,8 @@ export default defineConfig({
 			'@infrastructure': path.resolve(dir, 'src/lib/infrastructure'),
 			'@shared': path.resolve(dir, 'src/lib/shared'),
 			'@i18n': path.resolve(dir, 'src/lib/i18n'),
-			'@theme': path.resolve(dir, 'src/lib/theme')
+			'@theme': path.resolve(dir, 'src/lib/theme'),
+			'@lobby-teaser': path.resolve(dir, 'src/routes/_sub/lobby_teaser')
 		}
 	},
 	test: {

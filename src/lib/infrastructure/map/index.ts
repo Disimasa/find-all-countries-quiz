@@ -1,4 +1,5 @@
 export { MapRenderer } from './map_renderer.ts'
+export { featureCentroid, featureBBoxSpan, filterTeaserCountryIds } from './country_centroid.ts'
 export {
 	MAP_STYLE_URL,
 	MAP_ATTRIBUTION,

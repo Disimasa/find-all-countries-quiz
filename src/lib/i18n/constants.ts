@@ -30,7 +30,8 @@ export const messages = {
 		home: 'Home',
 		wrong: 'Wrong answer',
 		disclaimer:
-			'Some regions are territories or disputed areas. Borders shown are for quiz purposes only.'
+			'Some regions are territories or disputed areas. Borders shown are for quiz purposes only.',
+		lobbyTeaserTyping: 'What country is this?'
 	},
 	ru: {
 		title: 'Найди все страны',
@@ -58,6 +59,7 @@ export const messages = {
 		home: 'На главную',
 		wrong: 'Неверный ответ',
 		disclaimer:
-			'Некоторые регионы — территории или спорные зоны. Границы показаны только для квиза.'
+			'Некоторые регионы — территории или спорные зоны. Границы показаны только для квиза.',
+		lobbyTeaserTyping: 'Что это за страна?'
 	}
 } as const satisfies Record<Locale, Record<string, string>>

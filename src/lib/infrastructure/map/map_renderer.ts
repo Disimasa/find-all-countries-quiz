@@ -3,6 +3,12 @@ import type { FeatureCollection } from 'geojson'
 import type { BaseMapEra } from '@domain/maps'
 import type { EntityVisualState, GameSnapshot } from '@domain/entities'
 import { buildCountryBorderPaint, buildCountryPaint, readMapTheme } from '@theme'
+import {
+	clearLobbyMapHint,
+	showLobbyMapHint,
+	type LobbyMapHost,
+	type LobbyPinMode
+} from '@lobby-teaser'
 import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './hover_state.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import {
@@ -45,7 +51,7 @@ function motionDuration(ms: number): number {
 	return prefersReducedMotion() ? 0 : ms
 }
 
-export class MapRenderer {
+export class MapRenderer implements LobbyMapHost {
 	private map: Map | null = null
 	private era: BaseMapEra | null = null
 	private onSelect: ((id: string) => void) | null = null
@@ -55,6 +61,18 @@ export class MapRenderer {
 	private flashToken = 0
 	private ready = false
 	private interactive = false
+
+	getMap(): Map | null {
+		return this.map
+	}
+
+	getEra(): BaseMapEra | null {
+		return this.era
+	}
+
+	setCountryVisual(id: string, visual: EntityVisualState): void {
+		this.setFeatureVisual(id, visual)
+	}
 
 	mountShell(el: HTMLElement, era: BaseMapEra, onReady?: () => void): void {
 		this.era = era
@@ -131,6 +149,7 @@ export class MapRenderer {
 	}
 
 	activatePlay(onSelect: (id: string) => void, snapshot: GameSnapshot): void {
+		this.clearLobbyHint()
 		this.setInteractive(true, onSelect)
 		this.updateStyles(snapshot)
 	}
@@ -138,7 +157,16 @@ export class MapRenderer {
 	activatePreview(): void {
 		this.setInteractive(false)
 		this.snapshot = null
+		this.clearLobbyHint()
 		this.initDefaultFeatureStates()
+	}
+
+	showLobbyHint(countryId: string, mode: LobbyPinMode = 'question'): void {
+		showLobbyMapHint(this, countryId, mode)
+	}
+
+	clearLobbyHint(): void {
+		clearLobbyMapHint(this)
 	}
 
 	isReady(): boolean {
@@ -237,6 +265,7 @@ export class MapRenderer {
 	destroy(): void {
 		this.flashToken++
 		this.flashingId = null
+		this.clearLobbyHint()
 		this.map?.remove()
 		this.map = null
 		this.era = null
