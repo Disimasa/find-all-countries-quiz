@@ -31,7 +31,10 @@
 	}
 </script>
 
-<dialog bind:this={dialog} class="centered-dialog w-[min(100vw-2rem,20rem)] border-0 bg-transparent p-0 shadow-none backdrop:bg-black/40">
+<dialog
+	bind:this={dialog}
+	class="fixed top-1/2 left-1/2 m-0 w-[min(100vw-2rem,20rem)] -translate-x-1/2 -translate-y-1/2 border-0 bg-transparent p-0 shadow-none backdrop:bg-black/40"
+>
 	<div class="rounded-2xl border border-base-300/80 bg-base-100 p-6 text-center shadow-xl">
 		<h2 class="text-2xl font-bold text-base-content">
 			{snapshot.status === 'won' ? victoryTitle : gameOverTitle}

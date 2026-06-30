@@ -1,11 +1,5 @@
 @import 'tailwindcss';
 
-html,
-body {
-	height: 100%;
-	overflow: hidden;
-}
-
 @plugin 'daisyui' {
 	themes: quiz --default, quiz-night --prefersdark;
 }
@@ -130,35 +124,4 @@ body {
 	72% {
 		transform: translateX(4px);
 	}
-}
-
-.map-host .maplibregl-map {
-	height: 100%;
-	width: 100%;
-	font-family: inherit;
-}
-
-.map-host:not(.is-ready) .maplibregl-canvas {
-	visibility: hidden;
-}
-
-.map-host .maplibregl-canvas {
-	outline: none;
-}
-
-.map-vignette {
-	background-color: color-mix(in oklch, var(--color-base-100) 15%, transparent);
-}
-
-.map-vignette-active {
-	background-color: color-mix(in oklch, var(--color-base-300) 40%, transparent);
-}
-
-.centered-dialog {
-	position: fixed;
-	inset: unset;
-	top: 50%;
-	left: 50%;
-	margin: 0;
-	transform: translate(-50%, -50%);
 }

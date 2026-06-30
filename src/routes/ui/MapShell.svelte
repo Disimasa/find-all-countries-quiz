@@ -19,12 +19,13 @@
 <div class="pointer-events-none fixed inset-0 z-0 bg-base-200">
 	<div
 		bind:this={mapEl}
-		class="map-host h-full w-full"
-		class:is-ready={$mapShellReady}
+		class="h-full w-full [&_.maplibregl-canvas]:outline-none [&_.maplibregl-map]:size-full [&_.maplibregl-map]:font-[inherit]"
+		class:[&_.maplibregl-canvas]:invisible={!$mapShellReady}
 		class:pointer-events-auto={mapInteractive}
 	></div>
 	<div
-		class="map-vignette absolute inset-0 pointer-events-none transition-[background-color,opacity] duration-700"
-		class:map-vignette-active={$mapShellTransitioning}
+		class="absolute inset-0 pointer-events-none transition-[background-color,opacity] duration-700 {$mapShellTransitioning
+			? 'bg-base-300/40'
+			: 'bg-base-100/15'}"
 	></div>
 </div>
