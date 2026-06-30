@@ -18,4 +18,6 @@ export function buildPlayHref(): string {
 	return query ? `/play?${query}` : '/play'
 }
 
+export { transitionToPlay, transitionToHome } from './map_shell'
+
 export type { MessageKey }

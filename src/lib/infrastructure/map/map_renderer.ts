@@ -11,8 +11,13 @@ import {
 	COUNTRIES_SOURCE_ID,
 	COUNTRY_ID_PROPERTY,
 	HIDDEN_BOUNDARY_LAYER_IDS,
-	MAP_DEFAULT_MAX_FIT_ZOOM,
 	MAP_FIT_PADDING,
+	MAP_DEFAULT_MAX_FIT_ZOOM,
+	MAP_WIDE_FIT_PADDING,
+	MAP_WIDE_MAX_ZOOM,
+	MAP_TRANSITION_OUT_MS,
+	MAP_TRANSITION_IN_MS,
+	MAP_TRANSITION_HOLD_MS,
 	MAP_MAX_ZOOM,
 	MAP_MIN_ZOOM,
 	MAP_STYLE_URL,
@@ -23,6 +28,17 @@ import {
 
 const WRONG_FLASH_SEQUENCE: readonly EntityVisualState[] = ['wrong', 'selected', 'wrong', 'selected']
 const WRONG_FLASH_STEP_MS = 95
+const EASE_IN_CUBIC = (t: number) => t * t * t
+const EASE_OUT_CUBIC = (t: number) => 1 - Math.pow(1 - t, 3)
+
+function prefersReducedMotion(): boolean {
+	if (typeof window === 'undefined') return false
+	return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function motionDuration(ms: number): number {
+	return prefersReducedMotion() ? 0 : ms
+}
 
 export class MapRenderer {
 	private map: Map | null = null
@@ -33,15 +49,13 @@ export class MapRenderer {
 	private flashingId: string | null = null
 	private flashToken = 0
 	private ready = false
+	private interactive = false
 
-	mount(
-		el: HTMLElement,
-		era: BaseMapEra,
-		onSelect: (id: string) => void,
-		onReady?: () => void
-	): void {
+	mountShell(el: HTMLElement, era: BaseMapEra, onReady?: () => void): void {
 		this.era = era
-		this.onSelect = onSelect
+		this.onSelect = null
+		this.snapshot = null
+		this.interactive = false
 
 		this.map = new maplibregl.Map({
 			container: el,
@@ -55,6 +69,7 @@ export class MapRenderer {
 			},
 			minZoom: MAP_MIN_ZOOM,
 			maxZoom: MAP_MAX_ZOOM,
+			interactive: false,
 			attributionControl: { compact: true },
 			renderWorldCopies: true,
 			dragRotate: false,
@@ -62,7 +77,7 @@ export class MapRenderer {
 			touchPitch: false,
 			maxPitch: 0,
 			fadeDuration: 0,
-			reduceMotion: true
+			reduceMotion: false
 		})
 
 		this.map.once('style.load', () => this.hideBasemapOverlays())
@@ -76,12 +91,109 @@ export class MapRenderer {
 			applyBasemapTheme(this.map)
 			this.addCountryLayers(era.getGeoJson())
 			this.bindInteractions()
+			this.initDefaultFeatureStates()
 			this.ready = true
-			this.syncFeatureStates()
 			requestAnimationFrame(() => {
 				this.map?.resize()
 				this.applyDefaultView()
 				requestAnimationFrame(() => onReady?.())
+			})
+		})
+	}
+
+	setInteractive(enabled: boolean, onSelect?: (id: string) => void): void {
+		this.interactive = enabled
+		if (onSelect) this.onSelect = onSelect
+		if (!this.map) return
+
+		const handlers = [
+			this.map.dragPan,
+			this.map.scrollZoom,
+			this.map.doubleClickZoom,
+			this.map.boxZoom,
+			this.map.keyboard,
+			this.map.touchZoomRotate
+		]
+		for (const handler of handlers) {
+			if (enabled) handler.enable()
+			else handler.disable()
+		}
+
+		if (!enabled) {
+			this.clearHover()
+			this.map.getCanvas().style.cursor = ''
+		}
+	}
+
+	activatePlay(onSelect: (id: string) => void, snapshot: GameSnapshot): void {
+		this.setInteractive(true, onSelect)
+		this.updateStyles(snapshot)
+	}
+
+	activatePreview(): void {
+		this.setInteractive(false)
+		this.snapshot = null
+		this.initDefaultFeatureStates()
+	}
+
+	isReady(): boolean {
+		return this.ready
+	}
+
+	resize(): void {
+		this.map?.resize()
+	}
+
+	flyToWideView(duration = MAP_TRANSITION_OUT_MS): Promise<void> {
+		return this.flyToBounds(MAP_WIDE_FIT_PADDING, MAP_WIDE_MAX_ZOOM, duration, EASE_IN_CUBIC)
+	}
+
+	flyToPlayView(duration = MAP_TRANSITION_IN_MS): Promise<void> {
+		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_CUBIC)
+	}
+
+	flyToPreviewView(duration = MAP_TRANSITION_IN_MS): Promise<void> {
+		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_CUBIC)
+	}
+
+	private flyToBounds(
+		padding: number,
+		maxZoom: number,
+		duration: number,
+		easing: (t: number) => number = EASE_OUT_CUBIC
+	): Promise<void> {
+		return new Promise((resolve) => {
+			if (!this.map) {
+				resolve()
+				return
+			}
+
+			const ms = motionDuration(duration)
+			const camera = this.map.cameraForBounds(MAP_WORLD_BOUNDS, { padding, maxZoom })
+
+			if (ms === 0 || !camera) {
+				if (camera) {
+					this.map.jumpTo({ center: camera.center, zoom: camera.zoom, bearing: 0, pitch: 0 })
+				} else {
+					this.map.fitBounds(MAP_WORLD_BOUNDS, { padding, maxZoom, animate: false })
+				}
+				resolve()
+				return
+			}
+
+			const onEnd = () => {
+				this.map?.off('moveend', onEnd)
+				resolve()
+			}
+			this.map.once('moveend', onEnd)
+			this.map.flyTo({
+				center: camera.center,
+				zoom: camera.zoom,
+				bearing: 0,
+				pitch: 0,
+				duration: ms,
+				easing,
+				essential: true
 			})
 		})
 	}
@@ -93,7 +205,7 @@ export class MapRenderer {
 	}
 
 	resetView(): void {
-		this.applyDefaultView()
+		void this.flyToPlayView(500)
 	}
 
 	flashWrong(id: string): void {
@@ -124,6 +236,16 @@ export class MapRenderer {
 		this.map = null
 		this.era = null
 		this.ready = false
+		this.interactive = false
+	}
+
+	private initDefaultFeatureStates(): void {
+		if (!this.map || !this.era) return
+
+		for (const feature of this.era.getGeoJson().features) {
+			const id = this.era.getEntityIdFromFeature(feature)
+			if (id) this.setFeatureVisual(id, 'default')
+		}
 	}
 
 	private applyDefaultView(): void {
@@ -189,6 +311,7 @@ export class MapRenderer {
 		if (!this.map) return
 
 		this.map.on('click', COUNTRIES_FILL_LAYER_ID, (event) => {
+			if (!this.interactive) return
 			const feature = event.features?.[0]
 			if (!feature || !this.era) return
 			const id = this.era.getEntityIdFromFeature(feature)
@@ -197,6 +320,7 @@ export class MapRenderer {
 		})
 
 		this.map.on('mousemove', (event) => {
+			if (!this.interactive) return
 			this.updateHoverAtPoint(event.point)
 		})
 

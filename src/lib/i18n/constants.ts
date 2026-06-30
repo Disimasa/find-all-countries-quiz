@@ -7,6 +7,7 @@ export const messages = {
 	en: {
 		title: 'Find All Countries',
 		subtitle: 'Click countries on the map and name them correctly.',
+		modeHint: 'Click a country, type its name.',
 		start: 'Start Quiz',
 		timer: 'Timed mode (30 min)',
 		lives: 'Lives (3 mistakes)',
@@ -34,6 +35,7 @@ export const messages = {
 	ru: {
 		title: 'Найди все страны',
 		subtitle: 'Нажимай на страны на карте и правильно называй их.',
+		modeHint: 'Нажми на страну и введи название.',
 		start: 'Начать игру',
 		timer: 'На время (30 мин)',
 		lives: 'Жизни (3 ошибки)',

@@ -116,7 +116,7 @@
 >
 	{#if !active}
 		<div
-			class="flex items-center gap-2 rounded-xl border border-base-300 bg-base-100 px-3 py-2.5 text-sm text-base-content/55"
+			class="flex items-center gap-2 rounded-xl border border-base-300 bg-base-100 px-3 py-2 text-sm text-base-content/55"
 		>
 			<IconMapPin class="size-4 shrink-0 text-primary/70" />
 			<span>{inactiveHint}</span>

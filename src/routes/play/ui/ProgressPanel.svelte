@@ -77,7 +77,7 @@
 	class="pointer-events-none absolute inset-0 z-1000 flex items-stretch justify-center p-3 md:justify-end md:p-4 md:pr-5"
 >
 	<div
-		class="pointer-events-auto flex h-full w-full max-w-70 flex-col gap-4 overflow-visible rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md lg:max-w-72"
+		class="pointer-events-auto flex h-full min-h-0 w-full max-w-70 flex-col gap-4 overflow-visible rounded-2xl border border-base-300/80 bg-base-100 p-4 shadow-lg lg:max-w-72"
 	>
 		<div class="relative z-20 shrink-0">
 			<GuessDialog
@@ -98,13 +98,13 @@
 		<div class="min-h-0 flex-1" aria-hidden="true"></div>
 
 		<div class="flex shrink-0 flex-col gap-3">
-			<div class="flex flex-col gap-1.5 rounded-xl border border-base-300/70 bg-base-200/50 px-3.5 py-3">
-				<div class="flex items-baseline justify-between gap-2">
-					<span class="text-sm font-semibold">{progressLabel}</span>
-					<span class="text-sm font-semibold tabular-nums text-emerald-500">{progressPercent}%</span>
+			<div class="flex flex-col gap-1.5 p-1">
+				<div class="flex items-baseline justify-between gap-2 text-xs">
+					<span class="font-semibold text-xs">{progressLabel}</span>
+					<span class="font-semibold tabular-nums text-emerald-500">{progressPercent}%</span>
 				</div>
 				<div
-					class="h-2 overflow-hidden rounded-full bg-base-300/80"
+					class="h-1 overflow-hidden rounded-full bg-base-300/80"
 					role="progressbar"
 					aria-valuenow={progressPercent}
 					aria-valuemin={0}
@@ -117,16 +117,16 @@
 				</div>
 			</div>
 
-			<div class="grid grid-cols-4 gap-1.5">
+			<div class="grid grid-cols-2 gap-2">
 				{#each stats as stat (stat.key)}
 					<div
-						class="flex flex-col items-center gap-0.5 rounded-lg border border-base-300/70 px-1 py-2 text-center {stat.bgClass}"
+						class="flex flex-col items-center gap-1 rounded-xl border border-base-300/70 px-2 py-3 text-center {stat.bgClass}"
 					>
-						<div class="flex size-6 items-center justify-center rounded-full bg-base-100/75">
-							<svelte:component this={stat.icon} class="size-3.5 {stat.iconClass}" />
+						<div class="flex size-8 items-center justify-center rounded-full bg-base-100/75">
+							<svelte:component this={stat.icon} class="size-4.5 {stat.iconClass}" />
 						</div>
-						<span class="text-sm font-bold tabular-nums leading-tight">{stat.value}</span>
-						<span class="text-[9px] font-medium leading-tight text-base-content/50">{stat.label}</span>
+						<span class="text-lg font-bold tabular-nums leading-tight">{stat.value}</span>
+						<span class="text-xs leading-tight text-base-content/70">{stat.label}</span>
 					</div>
 				{/each}
 			</div>

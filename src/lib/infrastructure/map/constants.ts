@@ -13,6 +13,11 @@ export const MAP_MAX_ZOOM = 8
 export const MAP_WORLD_BOUNDS: [number, number, number, number] = [-165, -48, 165, 72]
 export const MAP_FIT_PADDING = 40
 export const MAP_DEFAULT_MAX_FIT_ZOOM = 1.65
+export const MAP_WIDE_FIT_PADDING = 220
+export const MAP_WIDE_MAX_ZOOM = 0.35
+export const MAP_TRANSITION_OUT_MS = 1100
+export const MAP_TRANSITION_IN_MS = 2400
+export const MAP_TRANSITION_HOLD_MS = 280
 
 /** Default MapLibre wheel rate is 1/450 — higher value zooms faster. */
 export const MAP_WHEEL_ZOOM_RATE = 1 / 180

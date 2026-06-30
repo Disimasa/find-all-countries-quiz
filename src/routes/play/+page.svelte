@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte'
-	import { goto } from '$app/navigation'
+	import { onDestroy, onMount } from 'svelte'
 	import { page } from '$app/stores'
-	import GameMap from './ui/GameMap.svelte'
 	import ProgressPanel from './ui/ProgressPanel.svelte'
 	import {
 		autocompleteResults,
@@ -14,24 +12,39 @@
 		parseConfig,
 		resetMapView,
 		selectCountry,
-		startGame,
 		submitGuess,
 		updateAutocomplete
 	} from './controller'
 	import { locale, t } from '@i18n'
+	import {
+		enterPlayDirect,
+		flashWrongOnMap,
+		mapShellReady,
+		mapShellTransitioning,
+		setMapSelectHandler,
+		transitionToHome,
+		updateMapStyles
+	} from '../map_shell'
 
 	let guessQuery = ''
 	let wrongPulse = 0
-	let gameMap: GameMap
 
 	onMount(() => {
-		const config = parseConfig($page.url.search)
-		void startGame(config)
+		setMapSelectHandler(onSelect)
+
+		if (!$mapShellTransitioning && !getSession()) {
+			const config = parseConfig($page.url.search)
+			void enterPlayDirect(config)
+		}
 	})
 
 	$: if (session) session.setLocale($locale)
+	$: updateMapStyles($gameSnapshot)
 
-	onDestroy(() => destroyGame())
+	onDestroy(() => {
+		setMapSelectHandler(null)
+		if (!$mapShellTransitioning) destroyGame()
+	})
 
 	function onSelect(id: string) {
 		selectCountry(id)
@@ -45,7 +58,7 @@
 	}
 
 	function onWrongAnswer(countryId: string) {
-		gameMap?.flashWrong(countryId)
+		flashWrongOnMap(countryId)
 		wrongPulse += 1
 	}
 
@@ -60,19 +73,37 @@
 		clearSelection()
 	}
 
+	function onEnd() {
+		void transitionToHome()
+	}
+
 	$: formattedTime = formatTime($gameSnapshot.timeRemaining)
 	$: session = ($gameSnapshot.status, getSession())
+	$: mapLoading = $gameSnapshot.status === 'loading' || !$mapShellReady
+	$: panelRevealed = !$mapShellTransitioning && !mapLoading
 </script>
 
-<div class="relative h-screen">
-	<GameMap
-		bind:this={gameMap}
-		snapshot={$gameSnapshot}
-		loadingLabel={$t('loading')}
-		on:select={(e) => onSelect(e.detail)}
-	/>
+<div class="pointer-events-none relative h-full overflow-hidden">
+	{#if mapLoading}
+		<div
+			class="pointer-events-none absolute inset-0 z-5 flex items-center justify-center bg-base-100/40 text-base-content backdrop-blur-[1px]"
+		>
+			{$t('loading')}
+		</div>
+	{/if}
 
-	<ProgressPanel
+	<div
+		class="absolute inset-0 overflow-hidden"
+		class:pointer-events-none={!panelRevealed}
+		class:opacity-0={!panelRevealed}
+		class:scale-[0.98]={!panelRevealed}
+		class:opacity-100={panelRevealed}
+		class:scale-100={panelRevealed}
+		class:transition-[opacity,transform]={panelRevealed}
+		class:duration-1000={panelRevealed}
+		class:ease-out={panelRevealed}
+	>
+		<ProgressPanel
 		snapshot={$gameSnapshot}
 		correctLabel={$t('correct')}
 		remainingLabel={$t('remaining')}
@@ -88,9 +119,10 @@
 		autocompleteResults={$autocompleteResults}
 		{wrongPulse}
 		on:reset={resetMapView}
-		on:end={() => goto('/')}
+		on:end={onEnd}
 		on:guessInput={(e) => onGuessInput(e.detail)}
 		on:guessPick={(e) => onGuessPick(e.detail)}
 		on:guessClose={onGuessClose}
-	/>
+		/>
+	</div>
 </div>

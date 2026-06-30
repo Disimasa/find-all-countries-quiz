@@ -9,7 +9,7 @@
 
 <button
 	type="button"
-	class="rounded border border-gray-300 px-3 py-1 text-sm hover:bg-gray-50"
+	class="btn btn-sm btn-outline rounded-lg border-primary/45 px-2.5 text-primary hover:border-primary hover:bg-primary/10 hover:text-primary"
 	on:click={() => dispatch('change')}
 >
 	{currentLocale === 'en' ? 'RU' : 'EN'}

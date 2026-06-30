@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
-	import StartScreen from './ui/StartScreen.svelte'
-	import { buildPlayHref, livesEnabled, timerEnabled, toggleLocale } from './controller'
+	import { buildPlayHref, livesEnabled, timerEnabled, toggleLocale, transitionToPlay } from './controller'
 	import { locale, t } from '@i18n'
+	import StartScreen from './ui/StartScreen.svelte'
 
 	let timerOn = true
 	let livesOn = true
@@ -11,15 +10,16 @@
 	$: livesOn = $livesEnabled
 
 	function handleStart() {
-		goto(buildPlayHref())
+		void transitionToPlay(buildPlayHref())
 	}
 </script>
 
 <StartScreen
 	title={$t('title')}
-	subtitle={$t('subtitle')}
+	modeHint={$t('modeHint')}
 	timerLabel={$t('timer')}
 	livesLabel={$t('lives')}
+	languageLabel={$t('language')}
 	startLabel={$t('start')}
 	disclaimer={$t('disclaimer')}
 	{timerOn}
