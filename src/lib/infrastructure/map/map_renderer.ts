@@ -17,7 +17,6 @@ import {
 	MAP_WIDE_MAX_ZOOM,
 	MAP_TRANSITION_OUT_MS,
 	MAP_TRANSITION_IN_MS,
-	MAP_TRANSITION_HOLD_MS,
 	MAP_MAX_ZOOM,
 	MAP_MIN_ZOOM,
 	MAP_STYLE_URL,
@@ -28,7 +27,8 @@ import {
 
 const WRONG_FLASH_SEQUENCE: readonly EntityVisualState[] = ['wrong', 'selected', 'wrong', 'selected']
 const WRONG_FLASH_STEP_MS = 95
-const EASE_IN_CUBIC = (t: number) => t * t * t
+const EASE_IN_OUT_CUBIC = (t: number) =>
+	t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
 const EASE_OUT_CUBIC = (t: number) => 1 - Math.pow(1 - t, 3)
 
 function prefersReducedMotion(): boolean {
@@ -145,7 +145,7 @@ export class MapRenderer {
 	}
 
 	flyToWideView(duration = MAP_TRANSITION_OUT_MS): Promise<void> {
-		return this.flyToBounds(MAP_WIDE_FIT_PADDING, MAP_WIDE_MAX_ZOOM, duration, EASE_IN_CUBIC)
+		return this.flyToBounds(MAP_WIDE_FIT_PADDING, MAP_WIDE_MAX_ZOOM, duration, EASE_IN_OUT_CUBIC)
 	}
 
 	flyToPlayView(duration = MAP_TRANSITION_IN_MS): Promise<void> {

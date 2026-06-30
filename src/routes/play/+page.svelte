@@ -96,11 +96,11 @@
 		class="absolute inset-0 overflow-hidden"
 		class:pointer-events-none={!panelRevealed}
 		class:opacity-0={!panelRevealed}
-		class:scale-[0.98]={!panelRevealed}
+		class:translate-x-6={!panelRevealed}
 		class:opacity-100={panelRevealed}
-		class:scale-100={panelRevealed}
+		class:translate-x-0={panelRevealed}
 		class:transition-[opacity,transform]={panelRevealed}
-		class:duration-1000={panelRevealed}
+		class:duration-600={panelRevealed}
 		class:ease-out={panelRevealed}
 	>
 		<ProgressPanel

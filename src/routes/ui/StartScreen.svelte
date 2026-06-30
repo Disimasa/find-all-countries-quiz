@@ -28,11 +28,17 @@
 	class="pointer-events-none flex min-h-screen items-center justify-center p-4 md:items-start md:justify-end md:p-6 md:pt-10"
 >
 	<div
-		class="pointer-events-auto flex w-full max-w-70 flex-col gap-3 transition-all duration-700 ease-in lg:max-w-72"
+		class="pointer-events-auto flex w-full max-w-70 flex-col gap-3 lg:max-w-72"
 		class:opacity-0={$mapShellTransitioning}
 		class:translate-y-3={$mapShellTransitioning}
 		class:scale-[0.97]={$mapShellTransitioning}
 		class:pointer-events-none={$mapShellTransitioning}
+		class:opacity-100={!$mapShellTransitioning}
+		class:translate-y-0={!$mapShellTransitioning}
+		class:scale-100={!$mapShellTransitioning}
+		class:transition-[opacity,transform]={!$mapShellTransitioning}
+		class:duration-600={!$mapShellTransitioning}
+		class:ease-out={!$mapShellTransitioning}
 	>
 		<section
 			class="rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md"

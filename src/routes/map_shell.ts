@@ -3,7 +3,7 @@ import { goto } from '$app/navigation'
 import { MapEraRegistry, MODERN_ERA_ID } from '@domain/maps'
 import type { GameConfig, GameSnapshot } from '@domain/entities'
 import { GeoJsonLoader } from '@infrastructure/data/geo_json_loader'
-import { MapRenderer } from '@infrastructure/map'
+import { MapRenderer, MAP_TRANSITION_IN_MS, MAP_TRANSITION_UI_REVEAL_AT } from '@infrastructure/map'
 import {
 	destroyGame,
 	gameSnapshot,
@@ -12,18 +12,30 @@ import {
 	startGame
 } from './play/controller'
 import { parseConfig } from './play/parse_config.ts'
-import { MAP_TRANSITION_HOLD_MS } from '@infrastructure/map'
 
 export const mapShellReady = writable(false)
 export const mapShellTransitioning = writable(false)
 
-function motionHoldMs(): number {
-	if (typeof window === 'undefined') return 0
-	return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : MAP_TRANSITION_HOLD_MS
+function delay(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-function pause(ms: number): Promise<void> {
-	return new Promise((resolve) => window.setTimeout(resolve, ms))
+async function finishZoomWithUiReveal(zoomIn: Promise<void>): Promise<void> {
+	const reduced =
+		typeof window !== 'undefined' &&
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+	if (reduced) {
+		await zoomIn
+		mapShellTransitioning.set(false)
+		return
+	}
+
+	const revealAfterMs = Math.round(MAP_TRANSITION_IN_MS * MAP_TRANSITION_UI_REVEAL_AT)
+	await Promise.all([
+		zoomIn,
+		delay(revealAfterMs).then(() => mapShellTransitioning.set(false))
+	])
 }
 
 let renderer: MapRenderer | null = null
@@ -108,12 +120,11 @@ export async function transitionToPlay(href: string): Promise<void> {
 
 	try {
 		await map.flyToWideView()
-		await pause(motionHoldMs())
 		await goto(href)
 		const config = parseConfig(new URL(href, 'http://local').search)
 		await startGame(config)
 		if (selectHandler) map.activatePlay(selectHandler, get(gameSnapshot))
-		await map.flyToPlayView()
+		await finishZoomWithUiReveal(map.flyToPlayView())
 	} finally {
 		mapShellTransitioning.set(false)
 	}
@@ -128,11 +139,10 @@ export async function transitionToHome(): Promise<void> {
 	try {
 		setMapSelectHandler(null)
 		await map.flyToWideView()
-		await pause(motionHoldMs())
 		destroyGame()
 		await goto('/')
 		map.activatePreview()
-		await map.flyToPreviewView()
+		await finishZoomWithUiReveal(map.flyToPreviewView())
 	} finally {
 		mapShellTransitioning.set(false)
 	}
