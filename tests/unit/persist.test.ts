@@ -58,6 +58,33 @@ describe('persist', () => {
 		expect(config.maxLives).toBe(2)
 	})
 
+	it('maps timerMinutes to timerSeconds for custom durations', () => {
+		expect(
+			buildGameConfig({
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 60,
+				maxLives: 5
+			})
+		).toEqual({
+			timerEnabled: true,
+			timerSeconds: 3600,
+			livesEnabled: true,
+			maxLives: 5
+		})
+	})
+
+	it('preserves maxLives from settings', () => {
+		const config = buildGameConfig({
+			timerEnabled: true,
+			livesEnabled: true,
+			timerMinutes: 10,
+			maxLives: 1
+		})
+		expect(config.maxLives).toBe(1)
+		expect(config.timerSeconds).toBe(600)
+	})
+
 	it('persists and loads in-progress game', () => {
 		saveGame({
 			eraId: 'modern',

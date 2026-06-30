@@ -34,7 +34,10 @@ export const messages = {
 		disclaimer:
 			'Some regions are territories or disputed areas. Borders shown are for quiz purposes only.',
 		lobbyTeaserTyping: 'What country is this?',
-		continueGame: 'Continue ({n}/{total})'
+		continueGame: 'Continue ({n}/{total})',
+		errorTitle: 'Something went wrong',
+		errorHint: 'The page failed to load. You can go back and try again.',
+		errorHome: 'Back to home'
 	},
 	ru: {
 		title: 'Найди все страны',
@@ -66,6 +69,9 @@ export const messages = {
 		disclaimer:
 			'Некоторые регионы — территории или спорные зоны. Границы показаны только для квиза.',
 		lobbyTeaserTyping: 'Что это за страна?',
-		continueGame: 'Продолжить ({n}/{total})'
+		continueGame: 'Продолжить ({n}/{total})',
+		errorTitle: 'Что-то пошло не так',
+		errorHint: 'Страница не загрузилась. Вернитесь на главную и попробуйте снова.',
+		errorHome: 'На главную'
 	}
 } as const satisfies Record<Locale, Record<string, string>>
