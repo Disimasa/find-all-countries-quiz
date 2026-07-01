@@ -13,26 +13,50 @@
 	export let dotsText: string
 	export let showCursor: boolean
 	export let pinAnimEl: HTMLDivElement | undefined = undefined
+
+	function blockMapPointer(event: Event) {
+		event.stopPropagation()
+	}
+
+	function handleStartClick(event: MouseEvent) {
+		event.stopPropagation()
+		event.preventDefault()
+		$lobbyPinStartCta?.onStart()
+	}
+
+	function handleStartKeydown(event: KeyboardEvent) {
+		if (event.key !== 'Enter' && event.key !== ' ') return
+		event.preventDefault()
+		$lobbyPinStartCta?.onStart()
+	}
+
+	$: startClickable = mode === 'start' && $lobbyPinStartCta
 </script>
 
 <div class="host" class:host--interactive={mode === 'start'}>
 	<div class="body">
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		<div
 			bind:this={pinAnimEl}
 			class="pin-anim"
 			class:pin-anim--start={mode === 'start'}
+			class:pin-anim--clickable={startClickable}
 			class:pin-anim--typing={mode === 'typing'}
 			class:pin-anim--entering={phase === 'entering'}
 			class:pin-anim--leaving={phase === 'leaving'}
 			class:pin-anim--visible={phase === 'visible'}
+			role={startClickable ? 'button' : undefined}
+			tabindex={startClickable ? 0 : undefined}
+			aria-label={startClickable ? $lobbyPinStartCta?.label : undefined}
+			on:pointerdown={startClickable ? blockMapPointer : undefined}
+			on:mousedown={startClickable ? blockMapPointer : undefined}
+			on:click={startClickable ? handleStartClick : undefined}
+			on:keydown={startClickable ? handleStartKeydown : undefined}
 		>
 			{#if mode === 'typing'}
 				<LobbyPinTypingBubble {typedText} {showCursor} />
 			{:else if mode === 'start' && $lobbyPinStartCta}
-				<LobbyPinStartBubble
-					label={$lobbyPinStartCta.label}
-					onStart={$lobbyPinStartCta.onStart}
-				/>
+				<LobbyPinStartBubble label={$lobbyPinStartCta.label} />
 			{/if}
 
 			<div class="pin-core">
@@ -73,6 +97,14 @@
 	.pin-anim--typing {
 		width: max-content;
 		min-width: 38px;
+	}
+
+	.pin-anim--clickable {
+		cursor: pointer;
+	}
+
+	.pin-anim--clickable:hover :global(.start-line) {
+		opacity: 0.82;
 	}
 
 	.pin-anim--start.pin-anim--entering {

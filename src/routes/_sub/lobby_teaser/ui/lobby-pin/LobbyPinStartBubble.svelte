@@ -2,24 +2,13 @@
 	import IconPlay from '~icons/lucide/play'
 
 	export let label: string
-	export let onStart: () => void
-	function blockMapPointer(event: PointerEvent) {
-		event.stopPropagation()
-	}
-
-	function handleStart(event: MouseEvent) {
-		event.stopPropagation()
-		event.preventDefault()
-		onStart()
-	}
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="start-bubble" on:pointerdown={blockMapPointer} on:mousedown={blockMapPointer}>
-	<button type="button" class="start-line" on:pointerdown={blockMapPointer} on:click={handleStart}>
+<div class="start-bubble">
+	<div class="start-line" aria-hidden="true">
 		<IconPlay />
 		<span class="start-label">{label}</span>
-	</button>
+	</div>
 	<span class="start-tail" aria-hidden="true"></span>
 </div>
 
@@ -34,29 +23,20 @@
 		background: var(--color-base-100);
 		box-shadow: 0 0 0 2px var(--color-primary);
 		transform: translateX(-50%);
-		pointer-events: auto;
+		pointer-events: none;
 	}
 
 	.start-line {
 		display: inline-flex;
 		align-items: center;
 		gap: 5px;
-		border: none;
-		background: transparent;
-		padding: 0;
-		margin: 0;
 		min-height: 11px;
 		color: var(--color-primary);
 		font-size: 11px;
 		font-weight: 700;
 		line-height: 1;
 		white-space: nowrap;
-		cursor: pointer;
 		transition: opacity 0.15s ease;
-	}
-
-	.start-line:hover {
-		opacity: 0.82;
 	}
 
 	.start-line :global(svg) {
