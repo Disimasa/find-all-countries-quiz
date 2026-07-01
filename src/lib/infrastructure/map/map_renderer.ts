@@ -1,11 +1,12 @@
 import maplibregl, { type GeoJSONSource, type Map } from 'maplibre-gl'
 import type { FeatureCollection } from 'geojson'
 import type { BaseMapEra } from '@domain/maps'
-import type { EntityVisualState, GameSnapshot } from '@domain/entities'
+import type { EntityVisualState, GameSnapshot, Locale } from '@domain/entities'
 import { buildCountryBorderPaint, buildCountryPaint, readMapTheme } from '@theme'
 import type { MapHost } from './map_host.ts'
 import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './hover_state.ts'
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
+import { buildCountryLabelPoints } from './country_labels.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import { lobbyCountryVisual, lobbyHoverableCountryId } from './lobby_feature_state.ts'
 import { isClickOnMapMarker } from './marker_click_guard.ts'
@@ -13,6 +14,8 @@ import {
 	COUNTRIES_FILL_LAYER_ID,
 	COUNTRIES_LINE_LAYER_ID,
 	COUNTRIES_SOURCE_ID,
+	COUNTRY_LABELS_LAYER_ID,
+	COUNTRY_LABELS_SOURCE_ID,
 	COUNTRY_ID_PROPERTY,
 	HIDDEN_BOUNDARY_LAYER_IDS,
 	MAP_COUNTRY_FOCUS_DURATION_MS,
@@ -65,6 +68,7 @@ export class MapRenderer implements MapHost {
 	private ready = false
 	private interactive = false
 	private lobbyMode = false
+	private exploreMode = false
 	private lobbySelectedId: string | null = null
 	private lobbyHintId: string | null = null
 	private onLobbyNavigate: (() => void) | null = null
@@ -132,6 +136,7 @@ export class MapRenderer implements MapHost {
 			this.hideBasemapOverlays()
 			applyBasemapTheme(this.map)
 			this.addCountryLayers(era.getGeoJson())
+			this.addCountryLabelLayer('en')
 			this.bindInteractions()
 			this.initDefaultFeatureStates()
 			this.ready = true
@@ -168,6 +173,8 @@ export class MapRenderer implements MapHost {
 	}
 
 	activatePlay(onSelect: (id: string) => void, snapshot: GameSnapshot): void {
+		this.exploreMode = false
+		this.setExploreLabelsVisible(false)
 		this.lobbyMode = false
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
@@ -186,6 +193,8 @@ export class MapRenderer implements MapHost {
 	}
 
 	activateLobby(onCountryClick: (id: string) => void, onNavigate?: () => void): void {
+		this.exploreMode = false
+		this.setExploreLabelsVisible(false)
 		this.lobbyMode = true
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
@@ -194,6 +203,30 @@ export class MapRenderer implements MapHost {
 		this.setInteractive(true, onCountryClick)
 		this.syncLobbyFeatureStates()
 		this.bindLobbyNavigation()
+	}
+
+	activateExplore(locale: Locale): void {
+		this.exploreMode = true
+		this.lobbyMode = false
+		this.lobbySelectedId = null
+		this.lobbyHintId = null
+		this.onLobbyNavigate = null
+		this.unbindLobbyNavigation()
+		this.snapshot = null
+		this.setInteractive(true, () => {})
+		this.syncExploreFeatureStates()
+		this.updateExploreLabels(locale)
+		this.setExploreLabelsVisible(true)
+		void this.flyToPreviewView()
+	}
+
+	updateExploreLabels(locale: Locale): void {
+		if (!this.map || !this.era) return
+
+		const source = this.map.getSource(COUNTRY_LABELS_SOURCE_ID) as GeoJSONSource | undefined
+		if (!source) return
+
+		source.setData(buildCountryLabelPoints(this.era, locale))
 	}
 
 	isReady(): boolean {
@@ -339,6 +372,7 @@ export class MapRenderer implements MapHost {
 		this.ready = false
 		this.interactive = false
 		this.lobbyMode = false
+		this.exploreMode = false
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
 		this.onLobbyNavigate = null
@@ -443,11 +477,71 @@ export class MapRenderer implements MapHost {
 		})
 	}
 
+	private addCountryLabelLayer(locale: Locale): void {
+		if (!this.map || !this.era) return
+
+		this.map.addSource(COUNTRY_LABELS_SOURCE_ID, {
+			type: 'geojson',
+			data: buildCountryLabelPoints(this.era, locale)
+		})
+
+		this.map.addLayer({
+			id: COUNTRY_LABELS_LAYER_ID,
+			type: 'symbol',
+			source: COUNTRY_LABELS_SOURCE_ID,
+			layout: {
+				visibility: 'none',
+				'text-field': ['get', 'name'],
+				'text-font': this.getBasemapTextFont(),
+				'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9, 4, 11, 6, 13],
+				'text-anchor': 'center',
+				'text-allow-overlap': false,
+				'text-optional': true
+			},
+			paint: {
+				'text-color': '#3f3f46',
+				'text-halo-color': '#fafafa',
+				'text-halo-width': 1.25
+			}
+		})
+	}
+
+	private getBasemapTextFont(): string[] {
+		if (!this.map) return ['Noto Sans Regular']
+
+		for (const layer of this.map.getStyle().layers ?? []) {
+			if (layer.type !== 'symbol') continue
+			const font = layer.layout?.['text-font']
+			if (Array.isArray(font) && font.length > 0) return font as string[]
+		}
+
+		return ['Noto Sans Regular']
+	}
+
+	private setExploreLabelsVisible(visible: boolean): void {
+		if (!this.map?.getLayer(COUNTRY_LABELS_LAYER_ID)) return
+		this.map.setLayoutProperty(
+			COUNTRY_LABELS_LAYER_ID,
+			'visibility',
+			visible ? 'visible' : 'none'
+		)
+	}
+
+	private syncExploreFeatureStates(): void {
+		if (!this.map || !this.era) return
+
+		for (const feature of this.era.getGeoJson().features) {
+			const id = this.era.getEntityIdFromFeature(feature)
+			if (id) this.setFeatureVisual(id, 'default')
+		}
+	}
+
 	private bindInteractions(): void {
 		if (!this.map) return
 
 		this.map.on('click', COUNTRIES_FILL_LAYER_ID, (event) => {
 			if (!this.interactive) return
+			if (this.exploreMode) return
 			if (isClickOnMapMarker(event.originalEvent.target)) return
 			const feature = event.features?.[0]
 			if (!feature || !this.era) return
@@ -479,6 +573,11 @@ export class MapRenderer implements MapHost {
 		})
 		const feature = features[0]
 		const id = feature ? this.era.getEntityIdFromFeature(feature) : null
+
+		if (this.exploreMode) {
+			this.updateExploreHoverAtPoint(id)
+			return
+		}
 
 		if (this.lobbyMode) {
 			this.updateLobbyHoverAtPoint(id)
@@ -534,6 +633,26 @@ export class MapRenderer implements MapHost {
 		this.map.getCanvas().style.cursor = id ? 'pointer' : ''
 	}
 
+	private updateExploreHoverAtPoint(id: string | null): void {
+		if (!this.map) return
+
+		if (id === this.hoveredId) {
+			this.map.getCanvas().style.cursor = id ? 'pointer' : ''
+			return
+		}
+
+		this.clearHover()
+
+		if (id) {
+			this.hoveredId = id
+			this.setFeatureVisual(id, 'hover')
+			this.map.getCanvas().style.cursor = 'pointer'
+			return
+		}
+
+		this.map.getCanvas().style.cursor = ''
+	}
+
 	private syncFeatureStates(): void {
 		if (!this.map || !this.era || !this.snapshot) return
 
@@ -553,6 +672,11 @@ export class MapRenderer implements MapHost {
 		this.hoveredId = null
 		if (this.lobbyMode) {
 			this.syncLobbyFeatureStates()
+			return
+		}
+
+		if (this.exploreMode) {
+			this.setFeatureVisual(id, 'default')
 			return
 		}
 

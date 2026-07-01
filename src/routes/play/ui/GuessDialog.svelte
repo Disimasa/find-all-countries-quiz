@@ -127,6 +127,7 @@
 				<input
 					bind:this={inputEl}
 					type="text"
+					enterkeyhint="go"
 					role="combobox"
 					aria-expanded={results.length > 0}
 					aria-controls={listId}
@@ -151,7 +152,7 @@
 			<ul
 				id={listId}
 				role="listbox"
-				class="absolute inset-x-0 top-[calc(100%+0.375rem)] z-40 flex max-h-56 flex-col gap-0.5 overflow-y-auto rounded-xl border border-base-300 bg-base-100 p-1 shadow-lg"
+				class="absolute inset-x-0 top-[calc(100%+0.375rem)] z-40 flex max-h-[min(11rem,38dvh)] flex-col gap-0.5 overflow-y-auto rounded-xl border border-base-300 bg-base-100 p-1 shadow-lg md:max-h-56"
 				class:hidden={results.length === 0}
 			>
 				{#each results as entity, index (entity.id)}

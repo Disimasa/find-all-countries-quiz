@@ -2,6 +2,7 @@
 	import { onDestroy, onMount } from 'svelte'
 	import { page } from '$app/stores'
 	import {
+		activateExploreMode,
 		activateLobbyMode,
 		initMapShell,
 		mapShellReady,
@@ -9,16 +10,23 @@
 		runLobbyTeaserWhenReady,
 		stopLobbyMapOverlays
 	} from '../map_shell'
+	import { locale } from '@i18n'
 
 	let mapEl: HTMLDivElement
 
 	$: mapPointerEvents =
-		($page.url.pathname === '/' || $page.url.pathname === '/play') && !$mapShellTransitioning
+		($page.url.pathname === '/' ||
+			$page.url.pathname === '/play' ||
+			$page.url.pathname === '/explore') &&
+		!$mapShellTransitioning
 	$: lobbyMapOn = $page.url.pathname === '/' && $mapShellReady && !$mapShellTransitioning
+	$: exploreMapOn = $page.url.pathname === '/explore' && $mapShellReady && !$mapShellTransitioning
 
 	$: if (lobbyMapOn) {
 		void activateLobbyMode()
 		void runLobbyTeaserWhenReady()
+	} else if (exploreMapOn) {
+		void activateExploreMode($locale)
 	} else {
 		stopLobbyMapOverlays()
 	}

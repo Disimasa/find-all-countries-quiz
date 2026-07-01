@@ -81,10 +81,10 @@
 </script>
 
 <aside
-	class="pointer-events-none absolute inset-0 z-1000 flex items-stretch justify-center p-3 md:justify-end md:p-4 md:pr-5"
+	class="pointer-events-none absolute inset-0 z-1000 flex items-start justify-center p-3 pt-[max(0.75rem,env(safe-area-inset-top))] md:items-stretch md:justify-end md:p-4 md:pr-5 md:pt-4"
 >
 	<div
-		class="pointer-events-auto flex h-full min-h-0 w-full max-w-70 flex-col gap-4 overflow-visible rounded-2xl border border-base-300/80 bg-base-100 p-4 shadow-lg lg:max-w-72"
+		class="pointer-events-auto flex w-full max-w-70 flex-col gap-2 self-start rounded-2xl border border-base-300/80 bg-base-100 p-3 shadow-lg md:h-full md:min-h-0 md:gap-4 md:overflow-visible md:p-4 lg:max-w-72"
 	>
 		<div class="relative z-20 shrink-0">
 			<GuessDialog
@@ -103,6 +103,7 @@
 				<button
 					type="button"
 					class="mt-1.5 flex w-full items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-base-content/55 transition-colors hover:bg-base-200/80 hover:text-base-content disabled:pointer-events-none disabled:opacity-35"
+					class:max-md:hidden={!!snapshot.selectedId}
 					title={$t('randomCountryHint')}
 					disabled={!canPickRandomCountry}
 					on:click={() => dispatch('randomCountry')}
@@ -110,7 +111,7 @@
 					<IconShuffle class="size-3 shrink-0" />
 					<span>{$t('randomCountry')}</span>
 					<kbd
-						class="rounded border border-base-300/80 bg-base-200/70 px-1 py-px font-sans text-[9px] leading-none text-base-content/45"
+						class="hidden rounded border border-base-300/80 bg-base-200/70 px-1 py-px font-sans text-[9px] leading-none text-base-content/45 md:inline"
 					>
 						F2
 					</kbd>
@@ -118,9 +119,36 @@
 			{/if}
 		</div>
 
-		<div class="min-h-0 flex-1" aria-hidden="true"></div>
+		<!-- Mobile: compact stats + exit (always visible while guessing) -->
+		<div class="flex shrink-0 items-stretch gap-1 md:hidden">
+			<div class="grid min-w-0 flex-1 grid-cols-4 gap-1">
+				{#each stats as stat (stat.key)}
+					<div
+						class="flex flex-col items-center justify-center gap-px rounded-md border border-base-300/70 px-0.5 py-1 {stat.bgClass}"
+						title="{stat.label}: {stat.value}"
+					>
+						<svelte:component this={stat.icon} class="size-3 shrink-0 {stat.iconClass}" />
+						<span class="max-w-full truncate text-[10px] font-bold tabular-nums leading-none">
+							{stat.value}
+						</span>
+					</div>
+				{/each}
+			</div>
+			<button
+				type="button"
+				class="flex w-9 shrink-0 flex-col items-center justify-center rounded-md border border-base-300/70 bg-base-100 text-error hover:bg-error/10"
+				title={$t('endQuiz')}
+				aria-label={$t('endQuiz')}
+				on:click={() => dispatch('end')}
+			>
+				<IconLogOut class="size-3.5" />
+			</button>
+		</div>
 
-		<div class="flex shrink-0 flex-col gap-3">
+		<div class="hidden min-h-0 flex-1 md:block" aria-hidden="true"></div>
+
+		<!-- Desktop: progress + stat cards -->
+		<div class="hidden shrink-0 flex-col gap-3 md:flex">
 			<div class="flex flex-col gap-1.5 p-1">
 				<div class="flex items-baseline justify-between gap-2 text-xs">
 					<span class="font-semibold text-xs">{$t('progress')}</span>
@@ -155,7 +183,7 @@
 			</div>
 		</div>
 
-		<div class="mt-auto flex shrink-0 gap-2 border-t border-base-300/70 pt-3">
+		<div class="mt-auto hidden shrink-0 gap-2 border-t border-base-300/70 pt-3 md:flex">
 			<button
 				type="button"
 				class="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-medium text-base-content/65 hover:bg-base-200/80 hover:text-base-content"

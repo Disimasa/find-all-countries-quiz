@@ -1,7 +1,7 @@
 import { get, writable } from 'svelte/store'
 import { goto } from '$app/navigation'
 import { MapEraRegistry, MODERN_ERA_ID } from '@domain/maps'
-import type { GameConfig, GameSnapshot } from '@domain/entities'
+import type { GameConfig, GameSnapshot, Locale } from '@domain/entities'
 import { GeoJsonLoader } from '@infrastructure/data/geo_json_loader'
 import { MapRenderer, MAP_TRANSITION_IN_MS, MAP_TRANSITION_UI_REVEAL_AT } from '@infrastructure/map'
 import { getLocale, messages } from '@i18n'
@@ -53,6 +53,7 @@ async function finishZoomWithUiReveal(zoomIn: Promise<void>): Promise<void> {
 let renderer: MapRenderer | null = null
 let selectHandler: ((id: string) => void) | null = null
 let lobbyModeActive = false
+let exploreModeActive = false
 let unsubReset: (() => void) | null = null
 let initPromise: Promise<void> | null = null
 let mountWaiters: Array<() => void> = []
@@ -113,6 +114,7 @@ export function setMapSelectHandler(handler: ((id: string) => void) | null): voi
 
 	if (handler) {
 		lobbyModeActive = false
+		exploreModeActive = false
 		stopLobbyTeaser(renderer)
 		const snapshot = get(gameSnapshot)
 		renderer.activatePlay(handler, snapshot)
@@ -133,11 +135,24 @@ function onLobbyCountrySelected(countryId: string): void {
 
 export async function activateLobbyMode(): Promise<void> {
 	if (lobbyModeActive) return
+	exploreModeActive = false
 	const map = await ensureReady()
 	lobbyModeActive = true
 	map.activateLobby(onLobbyCountrySelected, () => {
 		if (renderer) pauseLobbyTeaser(renderer)
 	})
+}
+
+export async function activateExploreMode(locale: Locale): Promise<void> {
+	const map = await ensureReady()
+	if (exploreModeActive) {
+		map.updateExploreLabels(locale)
+		return
+	}
+	stopLobbyTeaser(map)
+	lobbyModeActive = false
+	exploreModeActive = true
+	map.activateExplore(locale)
 }
 
 export function updateMapStyles(snapshot: GameSnapshot): void {
@@ -162,6 +177,7 @@ export async function transitionToPlay(
 	mapShellTransitioning.set(true)
 	stopLobbyTeaser(map)
 	lobbyModeActive = false
+	exploreModeActive = false
 
 	try {
 		await map.flyToWideView()

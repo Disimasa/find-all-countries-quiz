@@ -42,7 +42,8 @@ export const messages = {
 		closeLabel: 'Close',
 		errorTitle: 'Something went wrong',
 		errorHint: 'The page failed to load. You can go back and try again.',
-		errorHome: 'Back to home'
+		errorHome: 'Back to home',
+		exploreTitle: 'Explore map'
 	},
 	ru: {
 		title: 'Найди все страны',
@@ -82,6 +83,7 @@ export const messages = {
 		closeLabel: 'Закрыть',
 		errorTitle: 'Что-то пошло не так',
 		errorHint: 'Страница не загрузилась. Вернитесь на главную и попробуйте снова.',
-		errorHome: 'На главную'
+		errorHome: 'На главную',
+		exploreTitle: 'Карта для изучения'
 	}
 } as const satisfies Record<Locale, Record<string, string>>
