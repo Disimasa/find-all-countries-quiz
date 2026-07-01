@@ -200,8 +200,8 @@ export async function transitionToHome(): Promise<void> {
 
 	try {
 		setMapSelectHandler(null)
-		await map.flyToWideView()
 		destroyGame()
+		await map.flyToWideView()
 		await goto('/')
 		lobbyModeActive = false
 		await activateLobbyMode()

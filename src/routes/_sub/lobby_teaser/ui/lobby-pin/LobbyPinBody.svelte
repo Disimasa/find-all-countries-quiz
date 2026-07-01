@@ -15,7 +15,7 @@
 	export let pinAnimEl: HTMLDivElement | undefined = undefined
 </script>
 
-<div class="host">
+<div class="host" class:host--interactive={mode === 'start'}>
 	<div class="body">
 		<div
 			bind:this={pinAnimEl}
@@ -47,6 +47,10 @@
 	.host {
 		pointer-events: none;
 		line-height: 0;
+	}
+
+	.host--interactive {
+		pointer-events: auto;
 	}
 
 	.body {

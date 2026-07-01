@@ -8,6 +8,7 @@ import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './h
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import { lobbyCountryVisual, lobbyHoverableCountryId } from './lobby_feature_state.ts'
+import { isClickOnMapMarker } from './marker_click_guard.ts'
 import {
 	COUNTRIES_FILL_LAYER_ID,
 	COUNTRIES_LINE_LAYER_ID,
@@ -297,6 +298,7 @@ export class MapRenderer implements MapHost {
 	}
 
 	updateStyles(snapshot: GameSnapshot): void {
+		if (this.lobbyMode) return
 		this.snapshot = snapshot
 		if (!this.ready) return
 		this.syncFeatureStates()
@@ -446,6 +448,7 @@ export class MapRenderer implements MapHost {
 
 		this.map.on('click', COUNTRIES_FILL_LAYER_ID, (event) => {
 			if (!this.interactive) return
+			if (isClickOnMapMarker(event.originalEvent.target)) return
 			const feature = event.features?.[0]
 			if (!feature || !this.era) return
 			const id = this.era.getEntityIdFromFeature(feature)

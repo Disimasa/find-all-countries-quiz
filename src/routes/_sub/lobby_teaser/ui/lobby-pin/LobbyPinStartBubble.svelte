@@ -3,10 +3,20 @@
 
 	export let label: string
 	export let onStart: () => void
+	function blockMapPointer(event: PointerEvent) {
+		event.stopPropagation()
+	}
+
+	function handleStart(event: MouseEvent) {
+		event.stopPropagation()
+		event.preventDefault()
+		onStart()
+	}
 </script>
 
-<div class="start-bubble">
-	<button type="button" class="start-line" on:click={onStart}>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="start-bubble" on:pointerdown={blockMapPointer} on:mousedown={blockMapPointer}>
+	<button type="button" class="start-line" on:pointerdown={blockMapPointer} on:click={handleStart}>
 		<IconPlay />
 		<span class="start-label">{label}</span>
 	</button>
