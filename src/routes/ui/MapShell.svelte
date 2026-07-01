@@ -2,22 +2,25 @@
 	import { onDestroy, onMount } from 'svelte'
 	import { page } from '$app/stores'
 	import {
+		activateLobbyMode,
 		initMapShell,
 		mapShellReady,
 		mapShellTransitioning,
 		runLobbyTeaserWhenReady,
-		stopLobbyTeaser
+		stopLobbyMapOverlays
 	} from '../map_shell'
 
 	let mapEl: HTMLDivElement
 
-	$: mapInteractive = $page.url.pathname === '/play' && !$mapShellTransitioning
-	$: lobbyTeaserOn = $page.url.pathname === '/' && $mapShellReady && !$mapShellTransitioning
+	$: mapPointerEvents =
+		($page.url.pathname === '/' || $page.url.pathname === '/play') && !$mapShellTransitioning
+	$: lobbyMapOn = $page.url.pathname === '/' && $mapShellReady && !$mapShellTransitioning
 
-	$: if (lobbyTeaserOn) {
+	$: if (lobbyMapOn) {
+		void activateLobbyMode()
 		void runLobbyTeaserWhenReady()
 	} else {
-		stopLobbyTeaser()
+		stopLobbyMapOverlays()
 	}
 
 	onMount(() => {
@@ -25,7 +28,7 @@
 	})
 
 	onDestroy(() => {
-		stopLobbyTeaser()
+		stopLobbyMapOverlays()
 		mapShellReady.set(false)
 	})
 </script>
@@ -35,7 +38,7 @@
 		bind:this={mapEl}
 		class="h-full w-full [&_.maplibregl-canvas]:outline-none [&_.maplibregl-map]:size-full [&_.maplibregl-map]:font-[inherit] [&_.maplibregl-marker]:z-[2]"
 		class:[&_.maplibregl-canvas]:invisible={!$mapShellReady}
-		class:pointer-events-auto={mapInteractive}
+		class:pointer-events-auto={mapPointerEvents}
 	></div>
 	<div
 		class="absolute inset-0 z-[1] pointer-events-none transition-[background-color,opacity] duration-700 {$mapShellTransitioning

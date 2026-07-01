@@ -3,15 +3,11 @@ import type { FeatureCollection } from 'geojson'
 import type { BaseMapEra } from '@domain/maps'
 import type { EntityVisualState, GameSnapshot } from '@domain/entities'
 import { buildCountryBorderPaint, buildCountryPaint, readMapTheme } from '@theme'
-import {
-	clearLobbyMapHint,
-	showLobbyMapHint,
-	type LobbyMapHost,
-	type LobbyPinMode
-} from '@lobby-teaser'
+import type { MapHost } from './map_host.ts'
 import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './hover_state.ts'
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
+import { lobbyCountryVisual, lobbyHoverableCountryId } from './lobby_feature_state.ts'
 import {
 	COUNTRIES_FILL_LAYER_ID,
 	COUNTRIES_LINE_LAYER_ID,
@@ -57,7 +53,7 @@ function motionDuration(ms: number): number {
 	return prefersReducedMotion() ? 0 : ms
 }
 
-export class MapRenderer implements LobbyMapHost {
+export class MapRenderer implements MapHost {
 	private map: Map | null = null
 	private era: BaseMapEra | null = null
 	private onSelect: ((id: string) => void) | null = null
@@ -67,6 +63,10 @@ export class MapRenderer implements LobbyMapHost {
 	private flashToken = 0
 	private ready = false
 	private interactive = false
+	private lobbyMode = false
+	private lobbySelectedId: string | null = null
+	private lobbyHintId: string | null = null
+	private onLobbyNavigate: (() => void) | null = null
 
 	getMap(): Map | null {
 		return this.map
@@ -78,6 +78,18 @@ export class MapRenderer implements LobbyMapHost {
 
 	setCountryVisual(id: string, visual: EntityVisualState): void {
 		this.setFeatureVisual(id, visual)
+	}
+
+	setLobbyPick(id: string | null): void {
+		this.lobbySelectedId = id
+		if (!this.lobbyMode) return
+		this.syncLobbyFeatureStates()
+	}
+
+	setLobbyHint(id: string | null): void {
+		this.lobbyHintId = id
+		if (!this.lobbyMode) return
+		this.syncLobbyFeatureStates()
 	}
 
 	mountShell(el: HTMLElement, era: BaseMapEra, onReady?: () => void): void {
@@ -155,24 +167,32 @@ export class MapRenderer implements LobbyMapHost {
 	}
 
 	activatePlay(onSelect: (id: string) => void, snapshot: GameSnapshot): void {
-		this.clearLobbyHint()
+		this.lobbyMode = false
+		this.lobbySelectedId = null
+		this.lobbyHintId = null
+		this.onLobbyNavigate = null
+		this.unbindLobbyNavigation()
 		this.setInteractive(true, onSelect)
 		this.updateStyles(snapshot)
 	}
 
+	setLobbySelection(id: string | null): void {
+		this.setLobbyPick(id)
+	}
+
 	activatePreview(): void {
-		this.setInteractive(false)
+		this.activateLobby(() => {})
+	}
+
+	activateLobby(onCountryClick: (id: string) => void, onNavigate?: () => void): void {
+		this.lobbyMode = true
+		this.lobbySelectedId = null
+		this.lobbyHintId = null
+		this.onLobbyNavigate = onNavigate ?? null
 		this.snapshot = null
-		this.clearLobbyHint()
-		this.initDefaultFeatureStates()
-	}
-
-	showLobbyHint(countryId: string, mode: LobbyPinMode = 'question'): void {
-		showLobbyMapHint(this, countryId, mode)
-	}
-
-	clearLobbyHint(): void {
-		clearLobbyMapHint(this)
+		this.setInteractive(true, onCountryClick)
+		this.syncLobbyFeatureStates()
+		this.bindLobbyNavigation()
 	}
 
 	isReady(): boolean {
@@ -310,12 +330,47 @@ export class MapRenderer implements LobbyMapHost {
 	destroy(): void {
 		this.flashToken++
 		this.flashingId = null
-		this.clearLobbyHint()
+		this.unbindLobbyNavigation()
 		this.map?.remove()
 		this.map = null
 		this.era = null
 		this.ready = false
 		this.interactive = false
+		this.lobbyMode = false
+		this.lobbySelectedId = null
+		this.lobbyHintId = null
+		this.onLobbyNavigate = null
+	}
+
+	private onLobbyDragStart = (): void => {
+		this.onLobbyNavigate?.()
+	}
+
+	private onLobbyZoomStart = (): void => {
+		this.onLobbyNavigate?.()
+	}
+
+	private bindLobbyNavigation(): void {
+		if (!this.map) return
+		this.map.on('dragstart', this.onLobbyDragStart)
+		this.map.on('zoomstart', this.onLobbyZoomStart)
+	}
+
+	private unbindLobbyNavigation(): void {
+		if (!this.map) return
+		this.map.off('dragstart', this.onLobbyDragStart)
+		this.map.off('zoomstart', this.onLobbyZoomStart)
+	}
+
+	private syncLobbyFeatureStates(): void {
+		if (!this.map || !this.era || !this.lobbyMode) return
+
+		for (const feature of this.era.getGeoJson().features) {
+			const id = this.era.getEntityIdFromFeature(feature)
+			if (!id) continue
+			const visual = lobbyCountryVisual(id, this.lobbySelectedId, this.lobbyHintId)
+			this.setFeatureVisual(id, visual)
+		}
 	}
 
 	private initDefaultFeatureStates(): void {
@@ -394,7 +449,8 @@ export class MapRenderer implements LobbyMapHost {
 			const feature = event.features?.[0]
 			if (!feature || !this.era) return
 			const id = this.era.getEntityIdFromFeature(feature)
-			if (!id || this.snapshot?.guessedIds.has(id)) return
+			if (!id) return
+			if (!this.lobbyMode && this.snapshot?.guessedIds.has(id)) return
 			this.onSelect?.(id)
 		})
 
@@ -420,6 +476,12 @@ export class MapRenderer implements LobbyMapHost {
 		})
 		const feature = features[0]
 		const id = feature ? this.era.getEntityIdFromFeature(feature) : null
+
+		if (this.lobbyMode) {
+			this.updateLobbyHoverAtPoint(id)
+			return
+		}
+
 		const hoverableId = resolveHoverableCountryId(
 			id,
 			this.snapshot?.guessedIds ?? new Set(),
@@ -443,6 +505,32 @@ export class MapRenderer implements LobbyMapHost {
 		this.map.getCanvas().style.cursor = ''
 	}
 
+	private updateLobbyHoverAtPoint(id: string | null): void {
+		if (!this.map) return
+
+		const hoverableId = lobbyHoverableCountryId(
+			id,
+			this.lobbySelectedId,
+			this.lobbyHintId
+		)
+
+		if (hoverableId === this.hoveredId) {
+			this.map.getCanvas().style.cursor = id ? 'pointer' : ''
+			return
+		}
+
+		this.clearHover()
+
+		if (hoverableId) {
+			this.hoveredId = hoverableId
+			this.setFeatureVisual(hoverableId, 'hover')
+			this.map.getCanvas().style.cursor = 'pointer'
+			return
+		}
+
+		this.map.getCanvas().style.cursor = id ? 'pointer' : ''
+	}
+
 	private syncFeatureStates(): void {
 		if (!this.map || !this.era || !this.snapshot) return
 
@@ -460,6 +548,11 @@ export class MapRenderer implements LobbyMapHost {
 		if (!this.hoveredId) return
 		const id = this.hoveredId
 		this.hoveredId = null
+		if (this.lobbyMode) {
+			this.syncLobbyFeatureStates()
+			return
+		}
+
 		this.setFeatureVisual(id, this.baseVisualFor(id))
 	}
 

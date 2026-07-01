@@ -1,6 +1,6 @@
 export type Locale = 'en' | 'ru'
 
-export type GameStatus = 'idle' | 'loading' | 'playing' | 'won' | 'lost'
+export type GameStatus = 'idle' | 'loading' | 'playing' | 'won' | 'lost' | 'error'
 
 export type EntityVisualState = 'default' | 'hover' | 'selected' | 'guessed' | 'wrong'
 
@@ -45,17 +45,21 @@ export interface ModePrompt {
 	readonly selectedId: string
 }
 
+export interface GameStats {
+	readonly lives: number
+	readonly maxLives: number
+	readonly livesEnabled: boolean
+	readonly wrongCount: number
+	readonly timeRemaining: number | null
+}
+
 export interface GameSnapshot {
 	readonly status: GameStatus
 	readonly guessedIds: ReadonlySet<string>
 	readonly selectedId: string | null
 	readonly prompt: ModePrompt | null
 	readonly progress: { correct: number; total: number }
-	readonly lives: number
-	readonly maxLives: number
-	readonly livesEnabled: boolean
-	readonly wrongCount: number
-	readonly timeRemaining: number | null
+	readonly stats: GameStats
 	readonly locale: Locale
 }
 

@@ -12,7 +12,7 @@ describe('ScoringService', () => {
 
 	it('resolves alias to entity id', () => {
 		const aliases = new Map([['US', ['United States', 'USA']]])
-		expect(scoring.resolveEntityId('usa', aliases, 'en')).toBe('US')
+		expect(scoring.resolveEntityId('usa', aliases)).toBe('US')
 	})
 })
 

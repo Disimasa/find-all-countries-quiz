@@ -3,6 +3,8 @@ export const TYPING_CURSOR_PAUSE_MS = 420
 export const DOTS_STEP_MS = 450
 export const BUBBLE_EXIT_MS = 300
 export const BUBBLE_ENTER_MS = 480
+export const BUBBLE_EXIT_START_MS = 160
+export const BUBBLE_ENTER_START_MS = 260
 
 export const DOTS_FRAMES = ['.', '..', '...'] as const
 
@@ -22,14 +24,14 @@ export function delay(ms: number): Promise<void> {
 export function waitPinAnimation(
 	el: HTMLElement,
 	type: 'enter' | 'exit',
-	reducedMotion = prefersReducedMotion()
+	reducedMotion = prefersReducedMotion(),
+	animationName = type === 'enter' ? 'bubble-in' : 'bubble-out'
 ): Promise<void> {
 	if (reducedMotion) return Promise.resolve()
 
-	const name = type === 'enter' ? 'bubble-in' : 'bubble-out'
 	return new Promise((resolve) => {
 		const onEnd = (event: AnimationEvent) => {
-			if (event.animationName !== name) return
+			if (event.animationName !== animationName) return
 			el.removeEventListener('animationend', onEnd)
 			resolve()
 		}

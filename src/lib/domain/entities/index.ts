@@ -10,6 +10,7 @@ export type {
 	AnswerResult,
 	ModePrompt,
 	GameSnapshot,
+	GameStats,
 	MapEraDescriptor,
 	GameModeDescriptor,
 	SessionListener,

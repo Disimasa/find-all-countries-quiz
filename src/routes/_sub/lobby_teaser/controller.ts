@@ -1,20 +1,35 @@
 import { mount, unmount } from 'svelte'
 import maplibregl, { type Map, type Marker } from 'maplibre-gl'
 import { filterTeaserCountryIds, featureCentroid } from '@infrastructure/map/country_centroid'
+import type { MapHost } from '@infrastructure/map'
 import { getSharedMapEra } from '../../map_era.ts'
 import {
 	LOBBY_PIN_MODES,
+	LOBBY_PIN_START_MODE,
 	LOBBY_TEASER_EXCLUDED_COUNTRY_IDS,
 	LOBBY_TEASER_INTERVAL_MS,
 	LOBBY_TEASER_MAX_CENTROID_LAT,
 	LOBBY_TEASER_MIN_BBOX_SPAN
 } from './constants.ts'
+import { lobbyPinStartCta } from './lobby_pin_start.ts'
 import type {
-	LobbyMapHost,
 	LobbyMarkerPlacementAction,
-	LobbyPinMode
+	LobbyPinMode,
+	LobbyTeaserPinMode
 } from './types.ts'
 import LobbyMapPin from './ui/LobbyMapPin.svelte'
+import type { PinReplayOptions } from './ui/lobby-pin/lobby_pin_controller.ts'
+import {
+	BUBBLE_ENTER_START_MS,
+	BUBBLE_EXIT_START_MS
+} from './ui/lobby-pin/constants.ts'
+
+const PICK_PIN_REPLAY: PinReplayOptions = {
+	enterMs: BUBBLE_ENTER_START_MS,
+	exitMs: BUBBLE_EXIT_START_MS,
+	enterAnimation: 'bubble-in-start',
+	exitAnimation: 'bubble-out-start'
+}
 
 export function pickRandomExcludingRecent<T>(
 	items: readonly T[],
@@ -41,7 +56,15 @@ export function pickNextTeaserCountryId(
 	return pickRandomExcludingRecent(countryIds, recentIds, 2)
 }
 
-export function pickNextTeaserMode(recentModes: readonly LobbyPinMode[]) {
+export function pickTeaserCountryPool(
+	countryIds: readonly string[],
+	pickedCountryId: string | null
+): string[] {
+	if (!pickedCountryId) return [...countryIds]
+	return countryIds.filter((id) => id !== pickedCountryId)
+}
+
+export function pickNextTeaserMode(recentModes: readonly LobbyTeaserPinMode[]) {
 	return pickRandomExcludingRecent(LOBBY_PIN_MODES, recentModes, LOBBY_PIN_MODES.length - 1)
 }
 
@@ -62,50 +85,135 @@ export function planLobbyMarkerPlacement(isFirstMount: boolean): LobbyMarkerPlac
 
 type LobbyMarker = {
 	root: HTMLDivElement
-	setMode: (mode: LobbyPinMode) => void
 	replayPop: (
 		mode: LobbyPinMode,
-		afterExit?: () => void | Promise<void>
+		afterExit?: () => void | Promise<void>,
+		replayOptions?: PinReplayOptions
 	) => Promise<void>
 	destroy: () => void
 }
 
+type MarkerSlot = {
+	lobby: LobbyMarker | null
+	map: Marker | null
+}
+
 function createLobbyMarker(): LobbyMarker {
 	const root = document.createElement('div')
-	let replayPop = async (_mode: LobbyPinMode, _afterExit?: () => void | Promise<void>) => {}
-	let setMode = (_mode: LobbyPinMode) => {}
+	let replayPop = async (
+		_mode: LobbyPinMode,
+		_afterExit?: () => void | Promise<void>,
+		_replayOptions?: PinReplayOptions
+	) => {}
 
 	const instance = mount(LobbyMapPin, {
 		target: root,
 		props: {
 			registerReplay(
-				fn: (mode: LobbyPinMode, afterExit?: () => void | Promise<void>) => Promise<void>
+				fn: (
+					mode: LobbyPinMode,
+					afterExit?: () => void | Promise<void>,
+					replayOptions?: PinReplayOptions
+				) => Promise<void>
 			) {
 				replayPop = fn
-			},
-			registerSetMode(fn: (mode: LobbyPinMode) => void) {
-				setMode = fn
 			}
 		}
 	})
 
 	return {
 		root,
-		setMode: (mode) => setMode(mode),
-		replayPop: (mode, afterExit) => replayPop(mode, afterExit),
+		replayPop: (mode, afterExit, replayOptions) => replayPop(mode, afterExit, replayOptions),
 		destroy: () => unmount(instance)
 	}
 }
 
+function ensurePickMarkerReady(): void {
+	if (pickSlot.lobby) return
+
+	pickSlot.lobby = createLobbyMarker()
+	pickSlot.map = new maplibregl.Marker({
+		element: pickSlot.lobby.root,
+		anchor: 'bottom',
+		offset: [0, 1]
+	})
+}
+
+const hintSlot: MarkerSlot = { lobby: null, map: null }
+const pickSlot: MarkerSlot = { lobby: null, map: null }
+
 let hintCountryId: string | null = null
-let hintPinMode: LobbyPinMode = 'question'
-let hintLobbyMarker: LobbyMarker | null = null
-let hintMapMarker: Marker | null = null
+let pickedCountryId: string | null = null
+let hintSlotGeneration = 0
+let pickSlotGeneration = 0
+let lobbyTeaserEpoch = 0
+
+function removeMapMarkers(map: Map | null | undefined): void {
+	if (!map) return
+	for (const el of map.getContainer().querySelectorAll('.maplibregl-marker')) {
+		el.remove()
+	}
+}
+
+function clearMarkerSlot(slot: MarkerSlot, map?: Map | null): void {
+	const marker = slot.map
+	const root = slot.lobby?.root
+	marker?.remove()
+	if (root?.isConnected) {
+		const wrapper = root.closest('.maplibregl-marker')
+		wrapper?.remove()
+		root.remove()
+	}
+	removeMapMarkers(map)
+	slot.map = null
+	slot.lobby?.destroy()
+	slot.lobby = null
+}
+
+function isSlotPlacementActive(slot: MarkerSlot, generation: number): boolean {
+	return slot === pickSlot
+		? generation === pickSlotGeneration
+		: generation === hintSlotGeneration
+}
 
 export function showLobbyMapHint(
-	host: LobbyMapHost,
+	host: MapHost,
 	nextCountryId: string,
-	mode: LobbyPinMode = 'question'
+	mode: LobbyTeaserPinMode = 'question'
+): void {
+	if (!host.isReady()) return
+	if (nextCountryId === pickedCountryId) return
+
+	const era = host.getEra()
+	const map = host.getMap()
+	if (!era || !map) return
+
+	hintCountryId = nextCountryId
+	void placeMarker(hintSlot, host, map, nextCountryId, mode, () => {
+		host.setLobbyHint(nextCountryId)
+	})
+}
+
+export function clearLobbyMapHint(host: MapHost): void {
+	hintSlotGeneration++
+	hintCountryId = null
+	host.setLobbyHint(null)
+	clearMarkerSlot(hintSlot, host.getMap())
+}
+
+function clearLobbyPick(host: MapHost | null): void {
+	pickSlotGeneration++
+	pickedCountryId = null
+	host?.setLobbyPick(null)
+	clearMarkerSlot(pickSlot, host?.getMap())
+	lobbyPinStartCta.set(null)
+}
+
+export function showLobbyCountryPick(
+	host: MapHost,
+	countryId: string,
+	startLabel: string,
+	onStart: () => void
 ): void {
 	if (!host.isReady()) return
 
@@ -113,34 +221,38 @@ export function showLobbyMapHint(
 	const map = host.getMap()
 	if (!era || !map) return
 
-	if (hintCountryId && hintCountryId !== nextCountryId) {
-		host.setCountryVisual(hintCountryId, 'default')
-	}
+	pickedCountryId = countryId
+	lobbyPinStartCta.set({ label: startLabel, onStart })
+	host.setLobbyPick(countryId)
+	ensureTeaserTimerRunning()
+	ensurePickMarkerReady()
 
-	hintCountryId = nextCountryId
-	hintPinMode = mode
-	void placeHintMarker(host, map, nextCountryId, () => {
-		host.setCountryVisual(nextCountryId, 'selected')
+	const markerOnMap = Boolean(pickSlot.map?.getElement().parentElement)
+	void placeMarker(pickSlot, host, map, countryId, LOBBY_PIN_START_MODE, undefined, {
+		...PICK_PIN_REPLAY,
+		skipExit: markerOnMap
 	})
 }
 
-export function clearLobbyMapHint(host: LobbyMapHost): void {
-	if (hintCountryId) {
-		host.setCountryVisual(hintCountryId, 'default')
-		hintCountryId = null
-	}
-
-	hintMapMarker?.remove()
-	hintMapMarker = null
-	hintLobbyMarker?.destroy()
-	hintLobbyMarker = null
+function pauseLobbyTeaserCycle(): void {
+	if (timerId) clearInterval(timerId)
+	timerId = null
+	if (mapRef) clearLobbyMapHint(mapRef)
 }
 
-async function placeHintMarker(
-	host: LobbyMapHost,
+export function pauseLobbyTeaser(host: MapHost): void {
+	if (pickedCountryId) return
+	pauseLobbyTeaserCycle()
+}
+
+async function placeMarker(
+	slot: MarkerSlot,
+	host: MapHost,
 	map: Map,
 	targetCountryId: string,
-	onReveal?: () => void
+	mode: LobbyPinMode,
+	onReveal?: () => void,
+	replayOptions?: PinReplayOptions
 ): Promise<void> {
 	const era = host.getEra()
 	if (!era) return
@@ -151,53 +263,67 @@ async function placeHintMarker(
 	const center = feature ? featureCentroid(feature) : null
 	if (!center) return
 
-	if (!hintLobbyMarker) {
-		hintLobbyMarker = createLobbyMarker()
-		hintMapMarker = new maplibregl.Marker({
-			element: hintLobbyMarker.root,
+	if (!slot.lobby) {
+		slot.lobby = createLobbyMarker()
+		slot.map = new maplibregl.Marker({
+			element: slot.lobby.root,
 			anchor: 'bottom',
 			offset: [0, 1]
 		})
 	}
 
-	const marker = hintMapMarker!
+	const placementGeneration =
+		slot === pickSlot ? pickSlotGeneration : hintSlotGeneration
+	const marker = slot.map!
 	const isFirstMount = !marker.getElement().parentElement
 	const plan = planLobbyMarkerPlacement(isFirstMount)
-
-	if (isFirstMount) {
-		hintLobbyMarker.setMode(hintPinMode)
-	}
+	const isActive = () => isSlotPlacementActive(slot, placementGeneration)
 
 	for (const action of plan) {
 		if (action.phase !== 'before-replay') continue
+		if (!isActive()) return
 		if (action.type === 'set-lng-lat') marker.setLngLat(center)
 		if (action.type === 'add-to-map') marker.addTo(map)
 	}
 
-	await hintLobbyMarker.replayPop(hintPinMode, async () => {
-		for (const action of plan) {
-			if (action.phase !== 'after-exit') continue
-			if (action.type === 'set-lng-lat') marker.setLngLat(center)
-			if (action.type === 'reveal') onReveal?.()
-		}
-	})
+	if (!isActive()) return
+
+	await slot.lobby.replayPop(
+		mode,
+		async () => {
+			if (!isActive()) return
+			for (const action of plan) {
+				if (action.phase !== 'after-exit') continue
+				if (action.type === 'set-lng-lat') marker.setLngLat(center)
+				if (action.type === 'reveal') onReveal?.()
+			}
+		},
+		replayOptions
+	)
+
+	if (!isActive()) {
+		marker.remove()
+	}
 }
 
 let timerId: ReturnType<typeof setInterval> | null = null
 let countryIds: string[] = []
 let recentIds: string[] = []
-let recentModes: LobbyPinMode[] = []
+let recentModes: LobbyTeaserPinMode[] = []
 let running = false
-let mapRef: LobbyMapHost | null = null
+let mapRef: MapHost | null = null
 
 function pickNextId(): string | null {
-	const result = pickNextTeaserCountryId(countryIds, recentIds)
+	const pool = pickTeaserCountryPool(countryIds, pickedCountryId)
+	if (pool.length === 0) return null
+
+	const result = pickNextTeaserCountryId(pool, recentIds)
 	if (!result) return null
 	recentIds = result.nextRecent
 	return result.pick
 }
 
-function pickNextMode(): LobbyPinMode {
+function pickNextMode(): LobbyTeaserPinMode {
 	const result = pickNextTeaserMode(recentModes)
 	if (!result) return LOBBY_PIN_MODES[0]
 	recentModes = result.nextRecent
@@ -210,11 +336,21 @@ function showNext(): void {
 	showLobbyMapHint(mapRef, id, pickNextMode())
 }
 
-export function startLobbyTeaser(map: LobbyMapHost): void {
-	if (running) return
+function ensureTeaserTimerRunning(): void {
+	if (!mapRef || !running || timerId) return
+	timerId = setInterval(showNext, LOBBY_TEASER_INTERVAL_MS)
+}
 
+export function startLobbyTeaser(map: MapHost): void {
 	const era = getSharedMapEra()
 	if (!era) return
+
+	const epoch = lobbyTeaserEpoch
+
+	if (running) {
+		ensureTeaserTimerRunning()
+		return
+	}
 
 	countryIds = filterTeaserCountryIds(
 		era.getGeoJson(),
@@ -226,19 +362,35 @@ export function startLobbyTeaser(map: LobbyMapHost): void {
 		}
 	)
 	if (countryIds.length === 0) return
+	if (epoch !== lobbyTeaserEpoch) return
 
 	mapRef = map
 	running = true
 	recentIds = []
 	recentModes = []
+	ensurePickMarkerReady()
 	showNext()
-	timerId = setInterval(showNext, LOBBY_TEASER_INTERVAL_MS)
+	ensureTeaserTimerRunning()
 }
 
-export function stopLobbyTeaser(): void {
+export function stopLobbyTeaser(host?: MapHost): void {
+	lobbyTeaserEpoch++
 	if (timerId) clearInterval(timerId)
 	timerId = null
-	if (mapRef) clearLobbyMapHint(mapRef)
+
+	const mapHost = host ?? mapRef
+	const map = mapHost?.getMap() ?? null
+	hintSlotGeneration++
+	pickSlotGeneration++
+	hintCountryId = null
+	pickedCountryId = null
+	mapHost?.setLobbyHint(null)
+	mapHost?.setLobbyPick(null)
+	clearMarkerSlot(hintSlot, map)
+	clearMarkerSlot(pickSlot, map)
+	removeMapMarkers(map)
+	lobbyPinStartCta.set(null)
+
 	mapRef = null
 	running = false
 	recentIds = []
@@ -247,4 +399,8 @@ export function stopLobbyTeaser(): void {
 
 export function isLobbyTeaserRunning(): boolean {
 	return running
+}
+
+export function getLobbyTeaserEpoch(): number {
+	return lobbyTeaserEpoch
 }

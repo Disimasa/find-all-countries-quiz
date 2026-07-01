@@ -6,18 +6,22 @@ export {
 	LOBBY_TEASER_EXCLUDED_COUNTRY_IDS
 } from './constants.ts'
 export type {
-	LobbyMapHost,
 	LobbyMarkerPlacementAction,
 	LobbyMarkerPlacementPhase,
 	LobbyPinMode
 } from './types.ts'
+export type { MapHost as LobbyMapHost } from '@infrastructure/map'
 export {
 	startLobbyTeaser,
 	stopLobbyTeaser,
 	isLobbyTeaserRunning,
+	getLobbyTeaserEpoch,
+	pauseLobbyTeaser,
+	showLobbyCountryPick,
 	pickRandomExcludingRecent,
 	pickNextTeaserCountryId,
 	pickNextTeaserMode,
+	pickTeaserCountryPool,
 	planLobbyMarkerPlacement,
 	showLobbyMapHint,
 	clearLobbyMapHint

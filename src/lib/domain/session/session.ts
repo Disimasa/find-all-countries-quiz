@@ -19,11 +19,13 @@ const EMPTY_SNAPSHOT: GameSnapshot = {
 	selectedId: null,
 	prompt: null,
 	progress: { correct: 0, total: 0 },
-	lives: 3,
-	maxLives: 3,
-	livesEnabled: true,
-	wrongCount: 0,
-	timeRemaining: null,
+	stats: {
+		lives: 3,
+		maxLives: 3,
+		livesEnabled: true,
+		wrongCount: 0,
+		timeRemaining: null
+	},
 	locale: 'en'
 }
 
@@ -91,7 +93,7 @@ export class GameSession {
 			this.timer.start(() => this.onTimerTick())
 			this.emit()
 		} catch {
-			this.stateMachine.transition({ type: 'lost' })
+			this.stateMachine.transition({ type: 'loadFailed' })
 			this.emit()
 		}
 	}
@@ -136,7 +138,7 @@ export class GameSession {
 		if (!this.selectedId || this.stateMachine.getStatus() !== 'playing') return null
 
 		const aliases = this.getAliasMap()
-		const submittedId = this.scoring.resolveEntityId(answerText, aliases, this.locale)
+		const submittedId = this.scoring.resolveEntityId(answerText, aliases)
 		if (!submittedId) return null
 
 		return this.applyAnswer(submittedId)
@@ -181,11 +183,13 @@ export class GameSession {
 					? this.mode.getPrompt({ selectedId: this.selectedId, locale: this.locale })
 					: null,
 			progress: { correct: this.guessedIds.size, total },
-			lives: this.lives.getRemaining(),
-			maxLives: this.config.maxLives,
-			livesEnabled: this.config.livesEnabled,
-			wrongCount: this.wrongCount,
-			timeRemaining: this.timer.getRemaining(),
+			stats: {
+				lives: this.lives.getRemaining(),
+				maxLives: this.config.maxLives,
+				livesEnabled: this.config.livesEnabled,
+				wrongCount: this.wrongCount,
+				timeRemaining: this.timer.getRemaining()
+			},
 			locale: this.locale
 		}
 	}

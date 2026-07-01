@@ -37,8 +37,8 @@ describe('GameSession', () => {
 		expect(snapshot.status).toBe('playing')
 		expect(snapshot.progress.total).toBe(3)
 		expect(snapshot.progress.correct).toBe(0)
-		expect(snapshot.lives).toBe(3)
-		expect(snapshot.livesEnabled).toBe(true)
+		expect(snapshot.stats.lives).toBe(3)
+		expect(snapshot.stats.livesEnabled).toBe(true)
 	})
 
 	it('restores guessed ids, lives and timer on start', async () => {
@@ -51,8 +51,8 @@ describe('GameSession', () => {
 
 		const snapshot = session.getSnapshot()
 		expect(snapshot.guessedIds).toEqual(new Set(['DE']))
-		expect(snapshot.lives).toBe(2)
-		expect(snapshot.timeRemaining).toBe(90)
+		expect(snapshot.stats.lives).toBe(2)
+		expect(snapshot.stats.timeRemaining).toBe(90)
 		expect(snapshot.progress.correct).toBe(1)
 	})
 
@@ -97,7 +97,7 @@ describe('GameSession', () => {
 		const result = session.submitAnswer('France')
 		expect(result?.correct).toBe(false)
 		expect(result?.livesRemaining).toBe(2)
-		expect(session.getSnapshot().lives).toBe(2)
+		expect(session.getSnapshot().stats.lives).toBe(2)
 		expect(session.getSnapshot().selectedId).toBe('DE')
 	})
 
@@ -139,9 +139,9 @@ describe('GameSession', () => {
 		session.submitAnswer('France')
 		const snapshot = session.getSnapshot()
 		expect(snapshot.status).toBe('playing')
-		expect(snapshot.livesEnabled).toBe(false)
-		expect(snapshot.lives).toBe(3)
-		expect(snapshot.wrongCount).toBe(1)
+		expect(snapshot.stats.livesEnabled).toBe(false)
+		expect(snapshot.stats.lives).toBe(3)
+		expect(snapshot.stats.wrongCount).toBe(1)
 	})
 
 	it('increments wrong count on each mistake when lives are enabled', async () => {
@@ -150,9 +150,9 @@ describe('GameSession', () => {
 		session.selectEntity('DE')
 
 		session.submitAnswer('France')
-		expect(session.getSnapshot().wrongCount).toBe(1)
-		expect(session.getSnapshot().lives).toBe(2)
-		expect(session.getSnapshot().maxLives).toBe(3)
+		expect(session.getSnapshot().stats.wrongCount).toBe(1)
+		expect(session.getSnapshot().stats.lives).toBe(2)
+		expect(session.getSnapshot().stats.maxLives).toBe(3)
 	})
 
 	it('expires timer and transitions to lost', async () => {
@@ -161,7 +161,7 @@ describe('GameSession', () => {
 
 		vi.advanceTimersByTime(2000)
 		expect(session.getSnapshot().status).toBe('lost')
-		expect(session.getSnapshot().timeRemaining).toBe(0)
+		expect(session.getSnapshot().stats.timeRemaining).toBe(0)
 	})
 
 	it('picks a random unguessed entity', async () => {

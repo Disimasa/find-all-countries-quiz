@@ -3,6 +3,7 @@
 	import { locale } from '@i18n'
 	import { messages } from '@i18n/constants'
 	import type { LobbyPinMode } from '../types.ts'
+	import type { PinReplayOptions } from './lobby-pin/lobby_pin_controller.ts'
 	import LobbyPinBody from './lobby-pin/LobbyPinBody.svelte'
 	import { createLobbyPinController } from './lobby-pin/lobby_pin_controller.ts'
 	import type { PinPhase } from './lobby-pin/constants.ts'
@@ -11,23 +12,22 @@
 		| ((
 				fn: (
 					mode: LobbyPinMode,
-					afterExit?: () => void | Promise<void>
+					afterExit?: () => void | Promise<void>,
+					replayOptions?: PinReplayOptions
 				) => Promise<void>
 		  ) => void)
 		| undefined = undefined
-	export let registerSetMode: ((fn: (mode: LobbyPinMode) => void) => void) | undefined = undefined
-
 	let mode: LobbyPinMode = 'question'
 	let phase: PinPhase = 'idle'
 	let typedText = ''
 	let dotsText = '.'
-	let bodyEl: HTMLDivElement | undefined
+	let pinAnimEl: HTMLDivElement | undefined
 
 	$: typingFullText = messages[$locale].lobbyTeaserTyping
 	$: showCursor = mode === 'typing' && phase !== 'leaving'
 
 	const controller = createLobbyPinController({
-		getBodyEl: () => bodyEl,
+		getAnimEl: () => pinAnimEl,
 		onTick: tick,
 		getTypingText: () => typingFullText,
 		onPatch(patch) {
@@ -39,11 +39,10 @@
 	})
 
 	registerReplay?.(controller.replay)
-	registerSetMode?.(controller.setModeImmediate)
 
 	onDestroy(() => {
 		controller.destroy()
 	})
 </script>
 
-<LobbyPinBody bind:bodyEl {mode} {phase} {typedText} {dotsText} {showCursor} />
+<LobbyPinBody bind:pinAnimEl {mode} {phase} {typedText} {dotsText} {showCursor} />

@@ -47,6 +47,21 @@ describe('lobby_pin_transition', () => {
 		expect(exit).not.toHaveBeenCalled()
 	})
 
+	it('skips exit when skipExit is set', async () => {
+		const exit = vi.fn()
+		const afterExit = vi.fn()
+		const enter = vi.fn()
+
+		const result = await runPinTransitionWithLog('visible', true, {
+			exit,
+			afterExit,
+			enter
+		}, { skipExit: true })
+
+		expect(result.log).toEqual(['after-exit', 'enter'])
+		expect(exit).not.toHaveBeenCalled()
+	})
+
 	it('awaits async afterExit before enter', async () => {
 		const log: string[] = []
 

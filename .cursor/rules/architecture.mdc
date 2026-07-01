@@ -17,51 +17,65 @@ alwaysApply: false
 ## Слои в lib/
 
 ```
-lib/domain/          — классы, сущности, сервисы
-lib/infrastructure/  — Leaflet, fetch, JSON
-lib/i18n/            — локализация UI-строк
+lib/domain/          — классы, сущности, сервисы (без Svelte, без MapLibre)
+lib/infrastructure/  — MapLibre, fetch, JSON; интерфейс MapHost для оверлеев
+lib/i18n/            — локализация UI-строк (компоненты берут `t` напрямую)
+lib/persist/         — localStorage
 lib/shared/          — только то, что реально общее для 2+ routes
 ```
 
+**Правило зависимостей:** `domain` ← `infrastructure` ← `routes`. Infrastructure **не** импортирует `routes/`.
+
 ## Модули routes
 
-Стартовый экран — на корне `routes/` (без папки `lobby/`).
+Стартовый экран — на корне `routes/`.
 Игра — `routes/play/`.
+Общий lifecycle сессии — `routes/game/session_bridge.ts` (stores, start/destroy, persist).
 
 ```
 routes/
-  +layout.svelte
-  +page.svelte              # старт, импорт ./controller, ./ui
-  controller.ts             # store, locale, настройки, старт игры
-  ui/
-  types.ts
-  constants.ts
-  index.ts
+  game/
+    session_bridge.ts   # gameSnapshot, startGame, destroyGame — общий для map_shell и play
+    index.ts
+
+  map_shell.ts          # карта, переходы lobby ↔ play (импорт из game/, не из play/)
+  map_era.ts            # shared era singleton
+
+  +page.svelte          # лобби
+  controller.ts         # настройки, buildPlayHref
 
   play/
-    +page.svelte            # импорт ./controller, ./ui
-    controller.ts           # GameSession, store, bind domain → UI
-    ui/                     # GameMap, GuessDialog…
-    types.ts
-    constants.ts
+    +page.svelte
+    controller.ts       # re-export session_bridge + play-хелперы (formatTime…)
+    parse_config.ts
+    hotkeys.ts
+    ui/
     index.ts
+
+  _sub/lobby_teaser/    # teaser на лобби; использует MapHost из infrastructure
 ```
 
-- `controller.ts` — вся TS-логика модуля: stores, domain-инстансы, `openDialog()` для модалок
+- `controller.ts` — TS-логика модуля: stores или re-export bridge, `openDialog()` для модалок
 - Отдельных `stores/` нет
 - Публичный API — `index.ts`
+- UI-компоненты используют `$t('key')` из `@i18n`, без проброса label-пропсов
 
 ## Две оси расширения (domain)
 
-- **MapEra** (`base_map_era.ts`) — что на карте
-- **GameMode** (`base_game_mode.ts`) — как играем
+- **MapEra** (`BaseMapEra`) — что на карте
+- **GameMode** (`BaseGameMode`) — как играем
 
-`GameSession` = Facade. Паттерны: Template Method, Strategy, Registry, State Machine, Observer, Adapter.
+`GameSession` = Facade. Паттерны: Template Method, Strategy, Registry, State Machine, Observer.
+
+`GameSnapshot.stats` — жизни, таймер, ошибки (не размазывать по корню snapshot).
+
+`GameStatus`: `idle` | `loading` | `playing` | `won` | `lost` | `error` (сбой загрузки данных).
 
 ## Язык
 
 Без slug в URL. `localStorage` (+ `navigator.language`, default **`en`**). Опционально `?lang=ru` при старте.
 
-## Leaflet
+## MapLibre
 
-`onMount` only. `leaflet_map_renderer.ts` в `lib/infrastructure/`. Клики → `GameSession` → `controller.ts` → store.
+`onMount` only. `map_renderer.ts` в `lib/infrastructure/map/`. Клики → `GameSession` → `session_bridge` → store.
+Lobby teaser и маркеры работают через `MapHost`, без импорта routes в infrastructure.

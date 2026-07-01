@@ -1,5 +1,3 @@
-import type { Locale } from '@domain/entities'
-
 export class ScoringService {
 	normalize(value: string): string {
 		return value.trim().toLowerCase().normalize('NFD').replace(/\p{M}/gu, '')
@@ -10,11 +8,7 @@ export class ScoringService {
 		return aliases.some((alias) => this.normalize(alias) === normalized)
 	}
 
-	resolveEntityId(
-		input: string,
-		aliasesById: Map<string, string[]>,
-		locale: Locale
-	): string | null {
+	resolveEntityId(input: string, aliasesById: Map<string, string[]>): string | null {
 		const normalized = this.normalize(input)
 		for (const [id, aliases] of aliasesById) {
 			if (aliases.some((alias) => this.normalize(alias) === normalized)) {

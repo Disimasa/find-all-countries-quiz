@@ -7,7 +7,6 @@
 		autocompleteResults,
 		clearSelection,
 		destroyGame,
-		formatTime,
 		gameSnapshot,
 		getSession,
 		parseConfig,
@@ -105,14 +104,15 @@
 		void transitionToHome()
 	}
 
-	$: formattedTime = formatTime($gameSnapshot.timeRemaining)
 	$: canPickRandomCountry =
 		$gameSnapshot.status === 'playing' &&
 		$gameSnapshot.progress.correct < $gameSnapshot.progress.total
 	$: session = ($gameSnapshot.status, getSession())
 	$: mapLoading =
 		($gameSnapshot.status === 'loading' || !$mapShellReady) && !$mapShellTransitioning
-	$: panelRevealed = !$mapShellTransitioning && !mapLoading
+	$: panelRevealed =
+		!$mapShellTransitioning && !mapLoading && $gameSnapshot.status !== 'error'
+	$: loadFailed = $gameSnapshot.status === 'error'
 </script>
 
 <div class="pointer-events-none relative h-full overflow-hidden">
@@ -121,6 +121,21 @@
 			class="pointer-events-none absolute inset-0 z-5 flex items-center justify-center bg-base-100/40 text-base-content backdrop-blur-[1px]"
 		>
 			{$t('loading')}
+		</div>
+	{/if}
+
+	{#if loadFailed}
+		<div
+			class="pointer-events-auto absolute inset-0 z-10 flex items-center justify-center p-4"
+		>
+			<section
+				class="w-full max-w-sm rounded-2xl border border-base-300/80 bg-base-100 p-6 text-center shadow-lg"
+			>
+				<h2 class="text-lg font-bold text-base-content">{$t('loadMapError')}</h2>
+				<button type="button" class="btn btn-primary mt-5 w-full rounded-xl" on:click={onEnd}>
+					{$t('home')}
+				</button>
+			</section>
 		</div>
 	{/if}
 
@@ -136,30 +151,17 @@
 		class:ease-out={panelRevealed}
 	>
 		<ProgressPanel
-		snapshot={$gameSnapshot}
-		correctLabel={$t('correct')}
-		remainingLabel={$t('remaining')}
-		livesLabel={$t('livesLabel')}
-		errorsLabel={$t('errorsLabel')}
-		timeLabel={$t('time')}
-		progressLabel={$t('progress')}
-		{formattedTime}
-		resetLabel={$t('resetView')}
-		endLabel={$t('endQuiz')}
-		guessPlaceholder={$t('guessPlaceholder')}
-		selectCountryHint={$t('selectCountryHint')}
-		randomCountryLabel={$t('randomCountry')}
-		randomCountryHint={$t('randomCountryHint')}
-		{canPickRandomCountry}
-		{guessQuery}
-		autocompleteResults={$autocompleteResults}
-		{wrongPulse}
-		on:reset={resetMapView}
-		on:end={onEnd}
-		on:guessInput={(e) => onGuessInput(e.detail)}
-		on:guessPick={(e) => onGuessPick(e.detail)}
-		on:guessClose={onGuessClose}
-		on:randomCountry={onRandomCountry}
+			snapshot={$gameSnapshot}
+			{canPickRandomCountry}
+			{guessQuery}
+			autocompleteResults={$autocompleteResults}
+			{wrongPulse}
+			on:reset={resetMapView}
+			on:end={onEnd}
+			on:guessInput={(e) => onGuessInput(e.detail)}
+			on:guessPick={(e) => onGuessPick(e.detail)}
+			on:guessClose={onGuessClose}
+			on:randomCountry={onRandomCountry}
 		/>
 	</div>
 </div>

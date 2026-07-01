@@ -6,23 +6,29 @@ export interface PinTransitionSteps {
 	enter?: () => void | Promise<void>
 }
 
+export interface PinTransitionOptions {
+	skipExit?: boolean
+}
+
 export async function runPinTransition(
 	currentPhase: PinPhase,
 	hasBody: boolean,
-	steps: PinTransitionSteps
+	steps: PinTransitionSteps,
+	options?: PinTransitionOptions
 ): Promise<PinPhase> {
-	const { phase } = await runPinTransitionWithLog(currentPhase, hasBody, steps)
+	const { phase } = await runPinTransitionWithLog(currentPhase, hasBody, steps, options)
 	return phase
 }
 
 export async function runPinTransitionWithLog(
 	currentPhase: PinPhase,
 	hasBody: boolean,
-	steps: PinTransitionSteps
+	steps: PinTransitionSteps,
+	options?: PinTransitionOptions
 ): Promise<{ phase: PinPhase; log: Array<'exit' | 'after-exit' | 'enter'> }> {
 	const log: Array<'exit' | 'after-exit' | 'enter'> = []
 
-	if (currentPhase !== 'idle' && hasBody) {
+	if (!options?.skipExit && currentPhase !== 'idle' && hasBody) {
 		await steps.exit?.()
 		log.push('exit')
 	}

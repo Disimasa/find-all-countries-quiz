@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 	import type { GameSnapshot, GeoEntity } from '@domain/entities'
+	import { t } from '@i18n'
 	import GuessDialog from './GuessDialog.svelte'
+	import { formatTime } from '../controller'
 	import IconCircleCheck from '~icons/lucide/circle-check'
 	import IconMap from '~icons/lucide/map'
 	import IconHeart from '~icons/lucide/heart'
@@ -12,19 +14,6 @@
 	import IconShuffle from '~icons/lucide/shuffle'
 
 	export let snapshot: GameSnapshot
-	export let correctLabel: string
-	export let remainingLabel: string
-	export let livesLabel: string
-	export let errorsLabel: string
-	export let timeLabel: string
-	export let progressLabel: string
-	export let formattedTime: string
-	export let resetLabel: string
-	export let endLabel: string
-	export let guessPlaceholder: string
-	export let selectCountryHint: string
-	export let randomCountryLabel: string
-	export let randomCountryHint: string
 	export let canPickRandomCountry = false
 	export let guessQuery = ''
 	export let autocompleteResults: GeoEntity[] = []
@@ -43,19 +32,20 @@
 	$: total = snapshot.progress.total
 	$: correct = snapshot.progress.correct
 	$: progressPercent = total > 0 ? Math.round((correct / total) * 100) : 0
-	$: livesOrErrorsStat = snapshot.livesEnabled
+	$: formattedTime = formatTime(snapshot.stats.timeRemaining)
+	$: livesOrErrorsStat = snapshot.stats.livesEnabled
 		? {
 				key: 'lives' as const,
-				label: livesLabel,
-				value: `${snapshot.lives}/${snapshot.maxLives}`,
+				label: $t('livesLabel'),
+				value: `${snapshot.stats.lives}/${snapshot.stats.maxLives}`,
 				icon: IconHeart,
 				iconClass: 'text-rose-600',
 				bgClass: 'bg-rose-500/10'
 			}
 		: {
 				key: 'errors' as const,
-				label: errorsLabel,
-				value: String(snapshot.wrongCount),
+				label: $t('errorsLabel'),
+				value: String(snapshot.stats.wrongCount),
 				icon: IconCircleX,
 				iconClass: 'text-amber-600',
 				bgClass: 'bg-amber-500/10'
@@ -64,7 +54,7 @@
 	$: stats = [
 		{
 			key: 'correct',
-			label: correctLabel,
+			label: $t('correct'),
 			value: String(correct),
 			icon: IconCircleCheck,
 			iconClass: 'text-emerald-600',
@@ -72,7 +62,7 @@
 		},
 		{
 			key: 'remaining',
-			label: remainingLabel,
+			label: $t('remaining'),
 			value: String(remaining),
 			icon: IconMap,
 			iconClass: 'text-violet-600',
@@ -81,7 +71,7 @@
 		livesOrErrorsStat,
 		{
 			key: 'time',
-			label: timeLabel,
+			label: $t('time'),
 			value: formattedTime,
 			icon: IconTimer,
 			iconClass: 'text-sky-600',
@@ -98,8 +88,6 @@
 	>
 		<div class="relative z-20 shrink-0">
 			<GuessDialog
-				placeholder={guessPlaceholder}
-				inactiveHint={selectCountryHint}
 				results={autocompleteResults}
 				query={guessQuery}
 				locale={snapshot.locale}
@@ -115,12 +103,12 @@
 				<button
 					type="button"
 					class="mt-1.5 flex w-full items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-base-content/55 transition-colors hover:bg-base-200/80 hover:text-base-content disabled:pointer-events-none disabled:opacity-35"
-					title={randomCountryHint}
+					title={$t('randomCountryHint')}
 					disabled={!canPickRandomCountry}
 					on:click={() => dispatch('randomCountry')}
 				>
 					<IconShuffle class="size-3 shrink-0" />
-					<span>{randomCountryLabel}</span>
+					<span>{$t('randomCountry')}</span>
 					<kbd
 						class="rounded border border-base-300/80 bg-base-200/70 px-1 py-px font-sans text-[9px] leading-none text-base-content/45"
 					>
@@ -135,7 +123,7 @@
 		<div class="flex shrink-0 flex-col gap-3">
 			<div class="flex flex-col gap-1.5 p-1">
 				<div class="flex items-baseline justify-between gap-2 text-xs">
-					<span class="font-semibold text-xs">{progressLabel}</span>
+					<span class="font-semibold text-xs">{$t('progress')}</span>
 					<span class="font-semibold tabular-nums text-emerald-500">{progressPercent}%</span>
 				</div>
 				<div
@@ -174,7 +162,7 @@
 				on:click={() => dispatch('reset')}
 			>
 				<IconRotateCcw class="size-3.5" />
-				{resetLabel}
+				{$t('resetView')}
 			</button>
 			<button
 				type="button"
@@ -182,7 +170,7 @@
 				on:click={() => dispatch('end')}
 			>
 				<IconLogOut class="size-3.5" />
-				{endLabel}
+				{$t('endQuiz')}
 			</button>
 		</div>
 	</div>

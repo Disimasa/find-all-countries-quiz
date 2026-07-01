@@ -8,3 +8,4 @@ export const LOBBY_TEASER_MAX_CENTROID_LAT = 62
 export const LOBBY_TEASER_EXCLUDED_COUNTRY_IDS = ['GL', 'JP'] as const
 
 export const LOBBY_PIN_MODES = ['question', 'thinking', 'dots', 'typing'] as const
+export const LOBBY_PIN_START_MODE = 'start' as const

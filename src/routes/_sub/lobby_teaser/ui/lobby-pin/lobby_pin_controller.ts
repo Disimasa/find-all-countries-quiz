@@ -1,7 +1,9 @@
 import type { LobbyPinMode } from '../../types.ts'
 import {
 	BUBBLE_ENTER_MS,
+	BUBBLE_ENTER_START_MS,
 	BUBBLE_EXIT_MS,
+	BUBBLE_EXIT_START_MS,
 	DOTS_FRAMES,
 	DOTS_STEP_MS,
 	delay,
@@ -25,8 +27,16 @@ export interface LobbyPinViewState {
 	dotsText: (typeof DOTS_FRAMES)[number]
 }
 
+export type PinReplayOptions = {
+	enterMs?: number
+	exitMs?: number
+	skipExit?: boolean
+	enterAnimation?: string
+	exitAnimation?: string
+}
+
 export function createLobbyPinController(options: {
-	getBodyEl: () => HTMLDivElement | undefined
+	getAnimEl: () => HTMLDivElement | undefined
 	onTick: () => Promise<void>
 	onPatch: (patch: Partial<LobbyPinViewState>) => void
 	getTypingText: () => string
@@ -98,47 +108,55 @@ export function createLobbyPinController(options: {
 
 	async function replay(
 		nextMode: LobbyPinMode,
-		afterExit?: () => void | Promise<void>
+		afterExit?: () => void | Promise<void>,
+		replayOptions?: PinReplayOptions
 	): Promise<void> {
 		stopTypingTimer()
 		stopDotsAnimation()
 
-		const bodyEl = options.getBodyEl()
 		const reducedMotion = prefersReducedMotion()
+		const enterMs = replayOptions?.enterMs ?? BUBBLE_ENTER_MS
+		const exitMs = replayOptions?.exitMs ?? BUBBLE_EXIT_MS
+		const enterAnimation = replayOptions?.enterAnimation ?? 'bubble-in'
+		const exitAnimation = replayOptions?.exitAnimation ?? 'bubble-out'
 
-		phase = await runPinTransition(phase, !!bodyEl, {
-			exit: async () => {
-				phase = 'leaving'
-				options.onPatch({ phase })
-				if (!bodyEl) return
-				await Promise.race([
-					waitPinAnimation(bodyEl, 'exit', reducedMotion),
-					delay(BUBBLE_EXIT_MS)
-				])
+		phase = await runPinTransition(
+			phase,
+			!!options.getAnimEl(),
+			{
+				exit: async () => {
+					phase = 'leaving'
+					options.onPatch({ phase })
+					await options.onTick()
+					const animEl = options.getAnimEl()
+					if (!animEl || reducedMotion) return
+					await Promise.race([
+						waitPinAnimation(animEl, 'exit', reducedMotion, exitAnimation),
+						delay(exitMs)
+					])
+				},
+				afterExit: async () => {
+					clearTyping()
+					clearDots()
+					await afterExit?.()
+				},
+				enter: async () => {
+					phase = 'entering'
+					options.onPatch({ mode: nextMode, phase })
+					await options.onTick()
+					const animEl = options.getAnimEl()
+					if (!animEl || reducedMotion) return
+					await Promise.race([
+						waitPinAnimation(animEl, 'enter', reducedMotion, enterAnimation),
+						delay(enterMs)
+					])
+				}
 			},
-			afterExit: async () => {
-				clearTyping()
-				clearDots()
-				await afterExit?.()
-			},
-			enter: async () => {
-				phase = 'entering'
-				options.onPatch({ mode: nextMode, phase })
-				await options.onTick()
-				if (!bodyEl || reducedMotion) return
-				await Promise.race([
-					waitPinAnimation(bodyEl, 'enter', reducedMotion),
-					delay(BUBBLE_ENTER_MS)
-				])
-			}
-		})
+			{ skipExit: replayOptions?.skipExit }
+		)
 
 		options.onPatch({ phase })
 		startModeAnimations(nextMode)
-	}
-
-	function setModeImmediate(mode: LobbyPinMode) {
-		options.onPatch({ mode })
 	}
 
 	function destroy() {
@@ -146,5 +164,5 @@ export function createLobbyPinController(options: {
 		clearDots()
 	}
 
-	return { replay, destroy, setModeImmediate }
+	return { replay, destroy }
 }

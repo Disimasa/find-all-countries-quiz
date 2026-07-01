@@ -2,8 +2,8 @@ export {
 	gameSnapshot,
 	autocompleteResults,
 	mapResetTick,
-	parseConfig,
 	startGame,
+	resumeGame,
 	destroyGame,
 	selectCountry,
 	selectRandomCountry,
@@ -12,9 +12,6 @@ export {
 	submitGuess,
 	submitGuessText,
 	updateAutocomplete,
-	formatTime,
-	getFlagEmoji,
-	getEntityName,
-	getSession,
-	warmupPlay
-} from './controller.ts'
+	warmupPlay,
+	getSession
+} from './session_bridge.ts'

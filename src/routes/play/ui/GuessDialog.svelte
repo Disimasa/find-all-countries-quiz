@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher, tick } from 'svelte'
 	import type { GeoEntity, Locale } from '@domain/entities'
+	import { t } from '@i18n'
 	import FlagIcon from '@shared/FlagIcon.svelte'
 	import IconSearch from '~icons/lucide/search'
 	import IconX from '~icons/lucide/x'
 	import IconMapPin from '~icons/lucide/map-pin'
 
-	export let placeholder: string
-	export let inactiveHint: string
+	export let placeholder = ''
+	export let inactiveHint = ''
 	export let results: GeoEntity[] = []
 	export let query = ''
 	export let locale: Locale
@@ -100,6 +101,8 @@
 
 	$: if (!selectedId) focusedSelectionId = null
 
+	$: resolvedPlaceholder = placeholder || $t('guessPlaceholder')
+	$: resolvedInactiveHint = inactiveHint || $t('selectCountryHint')
 	$: optionEls.length = results.length
 </script>
 
@@ -113,7 +116,7 @@
 			class="flex items-center gap-2 rounded-xl border border-base-300 bg-base-100 px-3 py-2 text-sm text-base-content/55"
 		>
 			<IconMapPin class="size-4 shrink-0 text-primary/70" />
-			<span>{inactiveHint}</span>
+			<span>{resolvedInactiveHint}</span>
 		</div>
 	{:else}
 		<div class="relative z-30">
@@ -130,7 +133,7 @@
 					aria-activedescendant={highlightIndex >= 0 ? `${listId}-opt-${highlightIndex}` : undefined}
 					autocomplete="off"
 					class="min-w-0 grow bg-transparent text-sm outline-none"
-					{placeholder}
+					placeholder={resolvedPlaceholder}
 					value={query}
 					on:input={onInput}
 					on:keydown={onKeydown}
@@ -138,7 +141,7 @@
 				<button
 					type="button"
 					class="shrink-0 rounded-full p-0.5 text-base-content/40 hover:bg-base-200 hover:text-base-content"
-					aria-label="Close"
+					aria-label={$t('closeLabel')}
 					on:click={() => dispatch('close')}
 				>
 					<IconX class="size-4" />

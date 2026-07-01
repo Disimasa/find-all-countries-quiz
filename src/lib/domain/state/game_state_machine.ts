@@ -1,6 +1,6 @@
 import type { GameStatus } from '@domain/entities'
 
-type GameEventType = 'start' | 'loaded' | 'won' | 'lost'
+type GameEventType = 'start' | 'loaded' | 'won' | 'lost' | 'loadFailed'
 
 interface GameEvent {
 	type: GameEventType
@@ -8,7 +8,7 @@ interface GameEvent {
 
 const TRANSITIONS: Partial<Record<GameStatus, Partial<Record<GameEventType, GameStatus>>>> = {
 	idle: { start: 'loading' },
-	loading: { loaded: 'playing', lost: 'lost' },
+	loading: { loaded: 'playing', loadFailed: 'error' },
 	playing: { won: 'won', lost: 'lost' }
 }
 

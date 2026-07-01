@@ -4,18 +4,26 @@ import { MapEraRegistry, MODERN_ERA_ID } from '@domain/maps'
 import type { GameConfig, GameSnapshot } from '@domain/entities'
 import { GeoJsonLoader } from '@infrastructure/data/geo_json_loader'
 import { MapRenderer, MAP_TRANSITION_IN_MS, MAP_TRANSITION_UI_REVEAL_AT } from '@infrastructure/map'
+import { getLocale, messages } from '@i18n'
 import {
 	destroyGame,
 	gameSnapshot,
 	getSession,
 	mapResetTick,
 	resumeGame,
+	selectCountry,
 	startGame
-} from './play/controller'
-import { parseConfig } from './play/parse_config.ts'
+} from './game/session_bridge'
 import { buildGameConfig, loadGameSettings, loadSavedGame, type SavedGameProgress } from '@persist'
 import { setSharedMapEra } from './map_era.ts'
-import { startLobbyTeaser, stopLobbyTeaser } from './_sub/lobby_teaser'
+import { buildPlayHref } from './controller'
+import {
+	pauseLobbyTeaser,
+	showLobbyCountryPick,
+	startLobbyTeaser,
+	stopLobbyTeaser,
+	getLobbyTeaserEpoch
+} from './_sub/lobby_teaser'
 
 export const mapShellReady = writable(false)
 export const mapShellTransitioning = writable(false)
@@ -44,6 +52,7 @@ async function finishZoomWithUiReveal(zoomIn: Promise<void>): Promise<void> {
 
 let renderer: MapRenderer | null = null
 let selectHandler: ((id: string) => void) | null = null
+let lobbyModeActive = false
 let unsubReset: (() => void) | null = null
 let initPromise: Promise<void> | null = null
 let mountWaiters: Array<() => void> = []
@@ -103,11 +112,32 @@ export function setMapSelectHandler(handler: ((id: string) => void) | null): voi
 	if (!renderer?.isReady()) return
 
 	if (handler) {
+		lobbyModeActive = false
+		stopLobbyTeaser(renderer)
 		const snapshot = get(gameSnapshot)
 		renderer.activatePlay(handler, snapshot)
 	} else {
-		renderer.activatePreview()
+		void activateLobbyMode()
 	}
+}
+
+function onLobbyCountrySelected(countryId: string): void {
+	if (!renderer) return
+
+	const startLabel = messages[getLocale()].start
+	showLobbyCountryPick(renderer, countryId, startLabel, () => {
+		stopLobbyTeaser(renderer)
+		void transitionToPlay(buildPlayHref(), { focusCountryId: countryId })
+	})
+}
+
+export async function activateLobbyMode(): Promise<void> {
+	if (lobbyModeActive) return
+	const map = await ensureReady()
+	lobbyModeActive = true
+	map.activateLobby(onLobbyCountrySelected, () => {
+		if (renderer) pauseLobbyTeaser(renderer)
+	})
 }
 
 export function updateMapStyles(snapshot: GameSnapshot): void {
@@ -122,12 +152,16 @@ export function flashWrongOnMap(id: string): void {
 	renderer?.flashWrong(id)
 }
 
-export async function transitionToPlay(href: string, options?: { resume?: boolean }): Promise<void> {
+export async function transitionToPlay(
+	href: string,
+	options?: { resume?: boolean; focusCountryId?: string }
+): Promise<void> {
 	if (get(mapShellTransitioning)) return
 
 	const map = await ensureReady()
 	mapShellTransitioning.set(true)
-	stopLobbyTeaser()
+	stopLobbyTeaser(map)
+	lobbyModeActive = false
 
 	try {
 		await map.flyToWideView()
@@ -142,7 +176,12 @@ export async function transitionToPlay(href: string, options?: { resume?: boolea
 			await startGame(config)
 		}
 		if (selectHandler) map.activatePlay(selectHandler, get(gameSnapshot))
-		await finishZoomWithUiReveal(map.flyToPlayView())
+		if (options?.focusCountryId) {
+			selectCountry(options.focusCountryId)
+			await finishZoomWithUiReveal(map.flyToCountry(options.focusCountryId))
+		} else {
+			await finishZoomWithUiReveal(map.flyToPlayView())
+		}
 	} finally {
 		mapShellTransitioning.set(false)
 	}
@@ -157,14 +196,15 @@ export async function transitionToHome(): Promise<void> {
 
 	const map = await ensureReady()
 	mapShellTransitioning.set(true)
-	stopLobbyTeaser()
+	stopLobbyTeaser(map)
 
 	try {
 		setMapSelectHandler(null)
 		await map.flyToWideView()
 		destroyGame()
 		await goto('/')
-		map.activatePreview()
+		lobbyModeActive = false
+		await activateLobbyMode()
 		await finishZoomWithUiReveal(map.flyToPreviewView())
 	} finally {
 		mapShellTransitioning.set(false)
@@ -176,7 +216,7 @@ export async function enterPlayDirect(
 	options?: { resume?: SavedGameProgress }
 ): Promise<void> {
 	const map = await ensureReady()
-	stopLobbyTeaser()
+	stopLobbyTeaser(map)
 	if (options?.resume) {
 		await resumeGame(config, options.resume)
 	} else {
@@ -187,8 +227,14 @@ export async function enterPlayDirect(
 }
 
 export async function runLobbyTeaserWhenReady(): Promise<void> {
+	const epoch = getLobbyTeaserEpoch()
 	const map = await ensureReady()
+	if (epoch !== getLobbyTeaserEpoch()) return
 	startLobbyTeaser(map)
+}
+
+export function stopLobbyMapOverlays(): void {
+	stopLobbyTeaser(renderer ?? undefined)
 }
 
 export { stopLobbyTeaser } from './_sub/lobby_teaser'

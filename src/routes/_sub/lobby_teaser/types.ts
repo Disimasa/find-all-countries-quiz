@@ -1,16 +1,7 @@
-import type { Map } from 'maplibre-gl'
-import type { BaseMapEra } from '@domain/maps'
-import type { EntityVisualState } from '@domain/entities'
-import type { LOBBY_PIN_MODES } from './constants.ts'
+import type { LOBBY_PIN_MODES, LOBBY_PIN_START_MODE } from './constants.ts'
 
-export type LobbyPinMode = (typeof LOBBY_PIN_MODES)[number]
-
-export interface LobbyMapHost {
-	isReady(): boolean
-	getMap(): Map | null
-	getEra(): BaseMapEra | null
-	setCountryVisual(id: string, visual: EntityVisualState): void
-}
+export type LobbyTeaserPinMode = (typeof LOBBY_PIN_MODES)[number]
+export type LobbyPinMode = LobbyTeaserPinMode | typeof LOBBY_PIN_START_MODE
 
 export type LobbyMarkerPlacementPhase = 'before-replay' | 'after-exit'
 

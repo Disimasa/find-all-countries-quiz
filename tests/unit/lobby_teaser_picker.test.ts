@@ -3,7 +3,8 @@ import { LOBBY_PIN_MODES } from '@lobby-teaser'
 import {
 	pickNextTeaserCountryId,
 	pickNextTeaserMode,
-	pickRandomExcludingRecent
+	pickRandomExcludingRecent,
+	pickTeaserCountryPool
 } from '@lobby-teaser'
 
 describe('lobby_teaser_picker', () => {
@@ -59,6 +60,11 @@ describe('lobby_teaser_picker', () => {
 		}
 
 		expect(new Set(seen).size).toBe(LOBBY_PIN_MODES.length)
+	})
+
+	it('pickTeaserCountryPool excludes manually picked country', () => {
+		expect(pickTeaserCountryPool(['BR', 'AR', 'CL'], 'AR')).toEqual(['BR', 'CL'])
+		expect(pickTeaserCountryPool(['BR'], 'BR')).toEqual([])
 	})
 
 	it('pickRandomExcludingRecent keeps recent window size', () => {

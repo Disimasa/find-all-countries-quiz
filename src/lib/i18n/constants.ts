@@ -38,6 +38,8 @@ export const messages = {
 			'Some regions are territories or disputed areas. Borders shown are for quiz purposes only.',
 		lobbyTeaserTyping: 'What country is this?',
 		continueGame: 'Continue ({n}/{total})',
+		loadMapError: 'Could not load map data. Check your connection and try again.',
+		closeLabel: 'Close',
 		errorTitle: 'Something went wrong',
 		errorHint: 'The page failed to load. You can go back and try again.',
 		errorHome: 'Back to home'
@@ -76,6 +78,8 @@ export const messages = {
 			'Некоторые регионы — территории или спорные зоны. Границы показаны только для квиза.',
 		lobbyTeaserTyping: 'Что это за страна?',
 		continueGame: 'Продолжить ({n}/{total})',
+		loadMapError: 'Не удалось загрузить карту. Проверьте соединение и попробуйте снова.',
+		closeLabel: 'Закрыть',
 		errorTitle: 'Что-то пошло не так',
 		errorHint: 'Страница не загрузилась. Вернитесь на главную и попробуйте снова.',
 		errorHome: 'На главную'
