@@ -50,7 +50,9 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Pull
-        run: git pull
+        run: |
+          cd /home/user1/find_all_countries
+          git pull
       - name: Deploy
         run: |
           cd "/home/user1/find_all_countries"
