@@ -121,7 +121,7 @@
 	{:else}
 		<div class="relative z-30">
 			<label
-				class="flex w-full items-center gap-2 rounded-xl border border-base-300 bg-base-100 px-3 py-2.5 focus-within:border-base-content/30"
+				class="flex w-full items-center gap-2 rounded-xl border border-base-300 bg-base-100 px-3 py-2 focus-within:border-base-content/30"
 			>
 				<IconSearch class="size-4 shrink-0 text-base-content/40" />
 				<input
