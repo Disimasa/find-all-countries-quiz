@@ -140,7 +140,7 @@
 		correctLabel={$t('correct')}
 		remainingLabel={$t('remaining')}
 		livesLabel={$t('livesLabel')}
-		infiniteLabel={$t('infinite')}
+		errorsLabel={$t('errorsLabel')}
 		timeLabel={$t('time')}
 		progressLabel={$t('progress')}
 		{formattedTime}

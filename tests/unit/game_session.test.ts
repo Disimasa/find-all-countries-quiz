@@ -141,6 +141,18 @@ describe('GameSession', () => {
 		expect(snapshot.status).toBe('playing')
 		expect(snapshot.livesEnabled).toBe(false)
 		expect(snapshot.lives).toBe(3)
+		expect(snapshot.wrongCount).toBe(1)
+	})
+
+	it('increments wrong count on each mistake when lives are enabled', async () => {
+		const session = createSession()
+		await session.start()
+		session.selectEntity('DE')
+
+		session.submitAnswer('France')
+		expect(session.getSnapshot().wrongCount).toBe(1)
+		expect(session.getSnapshot().lives).toBe(2)
+		expect(session.getSnapshot().maxLives).toBe(3)
 	})
 
 	it('expires timer and transitions to lost', async () => {

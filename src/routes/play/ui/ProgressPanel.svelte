@@ -5,6 +5,7 @@
 	import IconCircleCheck from '~icons/lucide/circle-check'
 	import IconMap from '~icons/lucide/map'
 	import IconHeart from '~icons/lucide/heart'
+	import IconCircleX from '~icons/lucide/circle-x'
 	import IconTimer from '~icons/lucide/timer'
 	import IconRotateCcw from '~icons/lucide/rotate-ccw'
 	import IconLogOut from '~icons/lucide/log-out'
@@ -14,7 +15,7 @@
 	export let correctLabel: string
 	export let remainingLabel: string
 	export let livesLabel: string
-	export let infiniteLabel: string
+	export let errorsLabel: string
 	export let timeLabel: string
 	export let progressLabel: string
 	export let formattedTime: string
@@ -42,6 +43,23 @@
 	$: total = snapshot.progress.total
 	$: correct = snapshot.progress.correct
 	$: progressPercent = total > 0 ? Math.round((correct / total) * 100) : 0
+	$: livesOrErrorsStat = snapshot.livesEnabled
+		? {
+				key: 'lives' as const,
+				label: livesLabel,
+				value: `${snapshot.lives}/${snapshot.maxLives}`,
+				icon: IconHeart,
+				iconClass: 'text-rose-600',
+				bgClass: 'bg-rose-500/10'
+			}
+		: {
+				key: 'errors' as const,
+				label: errorsLabel,
+				value: String(snapshot.wrongCount),
+				icon: IconCircleX,
+				iconClass: 'text-amber-600',
+				bgClass: 'bg-amber-500/10'
+			}
 
 	$: stats = [
 		{
@@ -60,14 +78,7 @@
 			iconClass: 'text-violet-600',
 			bgClass: 'bg-violet-500/10'
 		},
-		{
-			key: 'lives',
-			label: livesLabel,
-			value: snapshot.livesEnabled ? String(snapshot.lives) : infiniteLabel,
-			icon: IconHeart,
-			iconClass: 'text-rose-600',
-			bgClass: 'bg-rose-500/10'
-		},
+		livesOrErrorsStat,
 		{
 			key: 'time',
 			label: timeLabel,

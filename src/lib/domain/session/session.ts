@@ -20,7 +20,9 @@ const EMPTY_SNAPSHOT: GameSnapshot = {
 	prompt: null,
 	progress: { correct: 0, total: 0 },
 	lives: 3,
+	maxLives: 3,
 	livesEnabled: true,
+	wrongCount: 0,
 	timeRemaining: null,
 	locale: 'en'
 }
@@ -32,6 +34,7 @@ export class GameSession {
 	private readonly timer: TimerService
 	private readonly lives: LivesService
 	private readonly guessedIds = new Set<string>()
+	private wrongCount = 0
 	private selectedId: string | null = null
 	private listeners = new Set<SessionListener>()
 	private locale: Locale = 'en'
@@ -59,6 +62,7 @@ export class GameSession {
 	async start(restore?: { guessedIds: string[]; livesRemaining: number; timeRemaining: number | null }): Promise<void> {
 		this.stateMachine.reset()
 		this.guessedIds.clear()
+		this.wrongCount = 0
 		this.selectedId = null
 
 		if (restore) {
@@ -155,6 +159,7 @@ export class GameSession {
 				this.stateMachine.transition({ type: 'won' })
 			}
 		} else {
+			this.wrongCount += 1
 			livesRemaining = this.lives.loseLife()
 			if (this.lives.isExhausted()) {
 				this.stateMachine.transition({ type: 'lost' })
@@ -177,7 +182,9 @@ export class GameSession {
 					: null,
 			progress: { correct: this.guessedIds.size, total },
 			lives: this.lives.getRemaining(),
+			maxLives: this.config.maxLives,
 			livesEnabled: this.config.livesEnabled,
+			wrongCount: this.wrongCount,
 			timeRemaining: this.timer.getRemaining(),
 			locale: this.locale
 		}
