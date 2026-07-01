@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, tick } from 'svelte'
 	import type { GeoEntity, Locale } from '@domain/entities'
-	import { getFlagEmoji } from '@shared/flag_emoji'
+	import FlagIcon from '@shared/FlagIcon.svelte'
 	import IconSearch from '~icons/lucide/search'
 	import IconX from '~icons/lucide/x'
 	import IconMapPin from '~icons/lucide/map-pin'
@@ -164,7 +164,7 @@
 							on:mouseenter={() => (highlightIndex = index)}
 							on:click={() => dispatch('pick', entity.id)}
 						>
-							<span class="inline-flex w-6 shrink-0 justify-center text-base leading-none">{getFlagEmoji(entity.id, entity.flagCode)}</span>
+							<FlagIcon entityId={entity.id} flagCode={entity.flagCode} />
 							<span class="min-w-0 truncate">{entity.names[locale]}</span>
 						</button>
 					</li>
