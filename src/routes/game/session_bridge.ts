@@ -57,6 +57,7 @@ function bindSession(nextSession: GameSession, config: GameConfig): void {
 				victoryTitle: m.victory,
 				gameOverTitle: m.gameOver,
 				playAgainLabel: m.playAgain,
+				exploreLinkLabel: m.gameOverExploreLink,
 				homeLabel: m.home
 			})
 		}

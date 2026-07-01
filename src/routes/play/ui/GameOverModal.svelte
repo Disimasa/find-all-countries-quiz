@@ -6,7 +6,7 @@
 	import { buildGameConfig, clearSavedGame, loadGameSettings } from '@persist'
 	import { formatTime, startGame } from '../controller'
 	import { buildGameOverSummary } from '../game_over_summary'
-	import { transitionToHome } from '../../map_shell'
+	import { transitionToExplore, transitionToHome } from '../../map_shell'
 	import ProgressDonut from './ProgressDonut.svelte'
 
 	export let snapshot: GameSnapshot
@@ -14,6 +14,7 @@
 	export let victoryTitle: string
 	export let gameOverTitle: string
 	export let playAgainLabel: string
+	export let exploreLinkLabel: string
 	export let homeLabel: string
 
 	let dialog: HTMLDialogElement
@@ -59,6 +60,11 @@
 		void transitionToHome()
 	}
 
+	function goExplore() {
+		closeDialog()
+		void transitionToExplore()
+	}
+
 	function playAgain() {
 		closeDialog()
 		clearSavedGame()
@@ -101,6 +107,16 @@
 				{livesChip}
 			</span>
 		</div>
+
+		{#if !won}
+			<button
+				type="button"
+				class="btn btn-link border-0 btn-sm mt-3 h-auto min-h-0 px-0 text-primary no-underline hover:underline"
+				on:click={goExplore}
+			>
+				{exploreLinkLabel}
+			</button>
+		{/if}
 
 		<div class="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
 			<button type="button" class="btn btn-primary flex-1 rounded-xl sm:flex-none" on:click={playAgain}>

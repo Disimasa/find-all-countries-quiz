@@ -214,6 +214,27 @@ export async function transitionToPlayResume(href: string): Promise<void> {
 	await transitionToPlay(href, { resume: true })
 }
 
+export async function transitionToExplore(): Promise<void> {
+	if (get(mapShellTransitioning)) return
+
+	const map = await ensureReady()
+	mapShellTransitioning.set(true)
+	stopLobbyTeaser(map)
+
+	try {
+		setMapSelectHandler(null)
+		destroyGame()
+		await map.flyToWideView()
+		await goto('/explore')
+		lobbyModeActive = false
+		exploreModeActive = false
+		await activateExploreMode(getLocale())
+		await finishZoomWithUiReveal(map.flyToPreviewView())
+	} finally {
+		mapShellTransitioning.set(false)
+	}
+}
+
 export async function transitionToHome(): Promise<void> {
 	if (get(mapShellTransitioning)) return
 

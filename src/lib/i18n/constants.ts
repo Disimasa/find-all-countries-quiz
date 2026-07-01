@@ -41,6 +41,7 @@ export const messages = {
 		gameOverModeNoTimer: 'No timer',
 		gameOverModeNoLives: 'No lives',
 		playAgain: 'Play again',
+		gameOverExploreLink: 'Study the map with country names',
 		home: 'Home',
 		wrong: 'Wrong answer',
 		disclaimer:
@@ -91,6 +92,7 @@ export const messages = {
 		gameOverModeNoTimer: 'Без таймера',
 		gameOverModeNoLives: 'Без жизней',
 		playAgain: 'Играть снова',
+		gameOverExploreLink: 'Посмотреть карту с названиями стран',
 		home: 'На главную',
 		wrong: 'Неверный ответ',
 		disclaimer:
