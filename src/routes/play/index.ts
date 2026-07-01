@@ -6,6 +6,7 @@ export {
 	startGame,
 	destroyGame,
 	selectCountry,
+	selectRandomCountry,
 	clearSelection,
 	resetMapView,
 	submitGuess,

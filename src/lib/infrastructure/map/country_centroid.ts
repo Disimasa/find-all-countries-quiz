@@ -1,5 +1,7 @@
 import type { Feature, FeatureCollection, MultiPolygon, Polygon, Position } from 'geojson'
 
+export type LngLatBounds = [number, number, number, number]
+
 function ringCentroid(ring: Position[]): [number, number] {
 	const n = ring.length > 1 && ring[0][0] === ring[ring.length - 1][0] ? ring.length - 1 : ring.length
 	if (n <= 0) return [0, 0]
@@ -59,6 +61,55 @@ export function featureCentroid(feature: Feature): [number, number] | null {
 		return largestPolygonCentroid(geometry.coordinates)
 	}
 	return null
+}
+
+function extendRingBounds(
+	bounds: [number, number, number, number],
+	ring: Position[]
+): void {
+	let [west, south, east, north] = bounds
+	for (const [lng, lat] of ring) {
+		west = Math.min(west, lng)
+		east = Math.max(east, lng)
+		south = Math.min(south, lat)
+		north = Math.max(north, lat)
+	}
+	bounds[0] = west
+	bounds[1] = south
+	bounds[2] = east
+	bounds[3] = north
+}
+
+export function featureBounds(feature: Feature): [number, number, number, number] | null {
+	const geometry = feature.geometry
+	const bounds: [number, number, number, number] = [Infinity, Infinity, -Infinity, -Infinity]
+
+	if (geometry.type === 'Polygon') {
+		for (const ring of geometry.coordinates) extendRingBounds(bounds, ring)
+	} else if (geometry.type === 'MultiPolygon') {
+		for (const polygon of geometry.coordinates) {
+			for (const ring of polygon) extendRingBounds(bounds, ring)
+		}
+	} else {
+		return null
+	}
+
+	if (!Number.isFinite(bounds[0])) return null
+	return bounds
+}
+
+export function expandFeatureBounds(
+	bounds: [number, number, number, number],
+	marginRatio = 0.42,
+	minMarginDeg = 1.35
+): [number, number, number, number] {
+	const [west, south, east, north] = bounds
+	const lngSpan = east - west
+	const latSpan = north - south
+	const lngPad = Math.max(lngSpan * marginRatio, minMarginDeg)
+	const latPad = Math.max(latSpan * marginRatio, minMarginDeg)
+
+	return [west - lngPad, south - latPad, east + lngPad, north + latPad]
 }
 
 export function featureBBoxSpan(feature: Feature): number {

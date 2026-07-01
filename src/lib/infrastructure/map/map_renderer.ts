@@ -10,6 +10,7 @@ import {
 	type LobbyPinMode
 } from '@lobby-teaser'
 import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './hover_state.ts'
+import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import {
 	COUNTRIES_FILL_LAYER_ID,
@@ -17,6 +18,11 @@ import {
 	COUNTRIES_SOURCE_ID,
 	COUNTRY_ID_PROPERTY,
 	HIDDEN_BOUNDARY_LAYER_IDS,
+	MAP_COUNTRY_FOCUS_DURATION_MS,
+	MAP_COUNTRY_FOCUS_MARGIN_RATIO,
+	MAP_COUNTRY_FOCUS_MAX_ZOOM,
+	MAP_COUNTRY_FOCUS_MIN_MARGIN_DEG,
+	MAP_COUNTRY_FOCUS_PADDING,
 	MAP_FIT_PADDING,
 	MAP_DEFAULT_MAX_FIT_ZOOM,
 	MAP_WIDE_FIT_PADDING,
@@ -178,18 +184,57 @@ export class MapRenderer implements LobbyMapHost {
 	}
 
 	flyToWideView(duration = MAP_TRANSITION_OUT_MS): Promise<void> {
-		return this.flyToBounds(MAP_WIDE_FIT_PADDING, MAP_WIDE_MAX_ZOOM, duration, EASE_IN_OUT_CUBIC)
+		return this.flyToBounds(
+			MAP_WORLD_BOUNDS,
+			MAP_WIDE_FIT_PADDING,
+			MAP_WIDE_MAX_ZOOM,
+			duration,
+			EASE_IN_OUT_CUBIC
+		)
 	}
 
 	flyToPlayView(duration = MAP_TRANSITION_IN_MS): Promise<void> {
-		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_BACK)
+		return this.flyToBounds(
+			MAP_WORLD_BOUNDS,
+			MAP_FIT_PADDING,
+			MAP_DEFAULT_MAX_FIT_ZOOM,
+			duration,
+			EASE_OUT_BACK
+		)
 	}
 
 	flyToPreviewView(duration = MAP_TRANSITION_IN_MS): Promise<void> {
-		return this.flyToBounds(MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_BACK)
+		return this.flyToBounds(MAP_WORLD_BOUNDS, MAP_FIT_PADDING, MAP_DEFAULT_MAX_FIT_ZOOM, duration, EASE_OUT_BACK)
+	}
+
+	flyToCountry(countryId: string, duration = MAP_COUNTRY_FOCUS_DURATION_MS): Promise<void> {
+		if (!this.map || !this.era) return Promise.resolve()
+
+		const feature = this.era.getGeoJson().features.find(
+			(item) => this.era!.getEntityIdFromFeature(item) === countryId
+		)
+		if (!feature) return Promise.resolve()
+
+		const bounds = featureBounds(feature)
+		if (!bounds) return Promise.resolve()
+
+		const focusBounds = expandFeatureBounds(
+			bounds,
+			MAP_COUNTRY_FOCUS_MARGIN_RATIO,
+			MAP_COUNTRY_FOCUS_MIN_MARGIN_DEG
+		)
+
+		return this.flyToBounds(
+			focusBounds,
+			MAP_COUNTRY_FOCUS_PADDING,
+			MAP_COUNTRY_FOCUS_MAX_ZOOM,
+			duration,
+			EASE_OUT_CUBIC
+		)
 	}
 
 	private flyToBounds(
+		bounds: [number, number, number, number],
 		padding: number,
 		maxZoom: number,
 		duration: number,
@@ -202,13 +247,13 @@ export class MapRenderer implements LobbyMapHost {
 			}
 
 			const ms = motionDuration(duration)
-			const camera = this.map.cameraForBounds(MAP_WORLD_BOUNDS, { padding, maxZoom })
+			const camera = this.map.cameraForBounds(bounds, { padding, maxZoom })
 
 			if (ms === 0 || !camera) {
 				if (camera) {
 					this.map.jumpTo({ center: camera.center, zoom: camera.zoom, bearing: 0, pitch: 0 })
 				} else {
-					this.map.fitBounds(MAP_WORLD_BOUNDS, { padding, maxZoom, animate: false })
+					this.map.fitBounds(bounds, { padding, maxZoom, animate: false })
 				}
 				resolve()
 				return

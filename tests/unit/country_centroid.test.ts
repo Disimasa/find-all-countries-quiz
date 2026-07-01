@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import type { Feature } from 'geojson'
 import {
+	expandFeatureBounds,
 	featureBBoxSpan,
+	featureBounds,
 	featureCentroid,
 	filterTeaserCountryIds
 } from '@infrastructure/map/country_centroid'
@@ -48,6 +50,11 @@ describe('country_centroid', () => {
 	it('measures bbox span for teaser filtering', () => {
 		expect(featureBBoxSpan(square)).toBe(10)
 		expect(featureBBoxSpan(tiny)).toBeCloseTo(0.2)
+	})
+
+	it('builds bounds and expands them with surrounding margin', () => {
+		expect(featureBounds(square)).toEqual([0, 0, 10, 10])
+		expect(expandFeatureBounds([0, 0, 10, 10])).toEqual([-4.2, -4.2, 14.2, 14.2])
 	})
 
 	it('filters out countries below minimum bbox span', () => {

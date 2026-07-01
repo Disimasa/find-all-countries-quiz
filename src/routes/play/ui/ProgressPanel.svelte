@@ -8,11 +8,13 @@
 	import IconTimer from '~icons/lucide/timer'
 	import IconRotateCcw from '~icons/lucide/rotate-ccw'
 	import IconLogOut from '~icons/lucide/log-out'
+	import IconShuffle from '~icons/lucide/shuffle'
 
 	export let snapshot: GameSnapshot
 	export let correctLabel: string
 	export let remainingLabel: string
 	export let livesLabel: string
+	export let infiniteLabel: string
 	export let timeLabel: string
 	export let progressLabel: string
 	export let formattedTime: string
@@ -20,6 +22,9 @@
 	export let endLabel: string
 	export let guessPlaceholder: string
 	export let selectCountryHint: string
+	export let randomCountryLabel: string
+	export let randomCountryHint: string
+	export let canPickRandomCountry = false
 	export let guessQuery = ''
 	export let autocompleteResults: GeoEntity[] = []
 	export let wrongPulse = 0
@@ -30,6 +35,7 @@
 		guessInput: string
 		guessPick: string
 		guessClose: void
+		randomCountry: void
 	}>()
 
 	$: remaining = snapshot.progress.total - snapshot.progress.correct
@@ -57,7 +63,7 @@
 		{
 			key: 'lives',
 			label: livesLabel,
-			value: String(snapshot.lives),
+			value: snapshot.livesEnabled ? String(snapshot.lives) : infiniteLabel,
 			icon: IconHeart,
 			iconClass: 'text-rose-600',
 			bgClass: 'bg-rose-500/10'
@@ -93,6 +99,24 @@
 				on:pick={(e) => dispatch('guessPick', e.detail)}
 				on:close={() => dispatch('guessClose')}
 			/>
+
+			{#if snapshot.status === 'playing'}
+				<button
+					type="button"
+					class="mt-1.5 flex w-full items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-base-content/55 transition-colors hover:bg-base-200/80 hover:text-base-content disabled:pointer-events-none disabled:opacity-35"
+					title={randomCountryHint}
+					disabled={!canPickRandomCountry}
+					on:click={() => dispatch('randomCountry')}
+				>
+					<IconShuffle class="size-3 shrink-0" />
+					<span>{randomCountryLabel}</span>
+					<kbd
+						class="rounded border border-base-300/80 bg-base-200/70 px-1 py-px font-sans text-[9px] leading-none text-base-content/45"
+					>
+						F2
+					</kbd>
+				</button>
+			{/if}
 		</div>
 
 		<div class="min-h-0 flex-1" aria-hidden="true"></div>

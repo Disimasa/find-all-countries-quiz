@@ -137,10 +137,14 @@ export function createLobbyPinController(options: {
 		startModeAnimations(nextMode)
 	}
 
+	function setModeImmediate(mode: LobbyPinMode) {
+		options.onPatch({ mode })
+	}
+
 	function destroy() {
 		clearTyping()
 		clearDots()
 	}
 
-	return { replay, destroy }
+	return { replay, destroy, setModeImmediate }
 }

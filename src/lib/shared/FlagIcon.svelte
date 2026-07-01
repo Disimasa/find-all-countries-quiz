@@ -1,15 +1,11 @@
 <script lang="ts">
 	import { getFlagIconUrl } from './flag_icon_url.ts'
 
-	interface Props {
-		entityId: string
-		flagCode?: string
-		class?: string
-	}
+	export let entityId: string
+	export let flagCode: string | undefined = undefined
+	export let className = ''
 
-	let { entityId, flagCode, class: className = '' }: Props = $props()
-
-	const src = $derived(getFlagIconUrl(entityId, flagCode))
+	$: src = getFlagIconUrl(entityId, flagCode)
 </script>
 
 {#if src}

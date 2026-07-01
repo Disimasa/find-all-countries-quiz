@@ -62,6 +62,7 @@ export function planLobbyMarkerPlacement(isFirstMount: boolean): LobbyMarkerPlac
 
 type LobbyMarker = {
 	root: HTMLDivElement
+	setMode: (mode: LobbyPinMode) => void
 	replayPop: (
 		mode: LobbyPinMode,
 		afterExit?: () => void | Promise<void>
@@ -72,6 +73,7 @@ type LobbyMarker = {
 function createLobbyMarker(): LobbyMarker {
 	const root = document.createElement('div')
 	let replayPop = async (_mode: LobbyPinMode, _afterExit?: () => void | Promise<void>) => {}
+	let setMode = (_mode: LobbyPinMode) => {}
 
 	const instance = mount(LobbyMapPin, {
 		target: root,
@@ -80,12 +82,16 @@ function createLobbyMarker(): LobbyMarker {
 				fn: (mode: LobbyPinMode, afterExit?: () => void | Promise<void>) => Promise<void>
 			) {
 				replayPop = fn
+			},
+			registerSetMode(fn: (mode: LobbyPinMode) => void) {
+				setMode = fn
 			}
 		}
 	})
 
 	return {
 		root,
+		setMode: (mode) => setMode(mode),
 		replayPop: (mode, afterExit) => replayPop(mode, afterExit),
 		destroy: () => unmount(instance)
 	}
@@ -157,6 +163,10 @@ async function placeHintMarker(
 	const marker = hintMapMarker!
 	const isFirstMount = !marker.getElement().parentElement
 	const plan = planLobbyMarkerPlacement(isFirstMount)
+
+	if (isFirstMount) {
+		hintLobbyMarker.setMode(hintPinMode)
+	}
 
 	for (const action of plan) {
 		if (action.phase !== 'before-replay') continue

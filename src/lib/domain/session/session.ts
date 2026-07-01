@@ -20,6 +20,7 @@ const EMPTY_SNAPSHOT: GameSnapshot = {
 	prompt: null,
 	progress: { correct: 0, total: 0 },
 	lives: 3,
+	livesEnabled: true,
 	timeRemaining: null,
 	locale: 'en'
 }
@@ -106,6 +107,27 @@ export class GameSession {
 		this.emit()
 	}
 
+	selectRandomUnguessedEntity(): string | null {
+		if (this.stateMachine.getStatus() !== 'playing') return null
+
+		const pool = this.era
+			.getAllEntities()
+			.map((entity) => entity.id)
+			.filter((id) => !this.guessedIds.has(id))
+
+		if (pool.length === 0) return null
+
+		const candidates =
+			this.selectedId && pool.length > 1
+				? pool.filter((id) => id !== this.selectedId)
+				: pool
+
+		const id = candidates[Math.floor(Math.random() * candidates.length)]!
+		this.selectedId = id
+		this.emit()
+		return id
+	}
+
 	submitAnswer(answerText: string): AnswerResult | null {
 		if (!this.selectedId || this.stateMachine.getStatus() !== 'playing') return null
 
@@ -155,6 +177,7 @@ export class GameSession {
 					: null,
 			progress: { correct: this.guessedIds.size, total },
 			lives: this.lives.getRemaining(),
+			livesEnabled: this.config.livesEnabled,
 			timeRemaining: this.timer.getRemaining(),
 			locale: this.locale
 		}

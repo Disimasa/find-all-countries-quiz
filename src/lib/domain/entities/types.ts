@@ -52,6 +52,7 @@ export interface GameSnapshot {
 	readonly prompt: ModePrompt | null
 	readonly progress: { correct: number; total: number }
 	readonly lives: number
+	readonly livesEnabled: boolean
 	readonly timeRemaining: number | null
 	readonly locale: Locale
 }

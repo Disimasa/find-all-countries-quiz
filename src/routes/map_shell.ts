@@ -114,6 +114,10 @@ export function updateMapStyles(snapshot: GameSnapshot): void {
 	renderer?.updateStyles(snapshot)
 }
 
+export function focusMapOnCountry(countryId: string): void {
+	void renderer?.flyToCountry(countryId)
+}
+
 export function flashWrongOnMap(id: string): void {
 	renderer?.flashWrong(id)
 }

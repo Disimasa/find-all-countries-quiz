@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, onMount, tick } from 'svelte'
+	import { onDestroy, tick } from 'svelte'
 	import { locale } from '@i18n'
 	import { messages } from '@i18n/constants'
 	import type { LobbyPinMode } from '../types.ts'
@@ -7,24 +7,24 @@
 	import { createLobbyPinController } from './lobby-pin/lobby_pin_controller.ts'
 	import type { PinPhase } from './lobby-pin/constants.ts'
 
-	interface Props {
-		registerReplay?: (
-			fn: (
-				mode: LobbyPinMode,
-				afterExit?: () => void | Promise<void>
-			) => Promise<void>
-		) => void
-	}
+	export let registerReplay:
+		| ((
+				fn: (
+					mode: LobbyPinMode,
+					afterExit?: () => void | Promise<void>
+				) => Promise<void>
+		  ) => void)
+		| undefined = undefined
+	export let registerSetMode: ((fn: (mode: LobbyPinMode) => void) => void) | undefined = undefined
 
-	let { registerReplay }: Props = $props()
+	let mode: LobbyPinMode = 'question'
+	let phase: PinPhase = 'idle'
+	let typedText = ''
+	let dotsText = '.'
+	let bodyEl: HTMLDivElement | undefined
 
-	let mode = $state<LobbyPinMode>('question')
-	let phase = $state<PinPhase>('idle')
-	let typedText = $state('')
-	let dotsText = $state('.')
-	let bodyEl = $state<HTMLDivElement>()
-	const typingFullText = $derived(messages[$locale].lobbyTeaserTyping)
-	const showCursor = $derived(mode === 'typing' && phase !== 'leaving')
+	$: typingFullText = messages[$locale].lobbyTeaserTyping
+	$: showCursor = mode === 'typing' && phase !== 'leaving'
 
 	const controller = createLobbyPinController({
 		getBodyEl: () => bodyEl,
@@ -38,9 +38,8 @@
 		}
 	})
 
-	onMount(() => {
-		registerReplay?.(controller.replay)
-	})
+	registerReplay?.(controller.replay)
+	registerSetMode?.(controller.setModeImmediate)
 
 	onDestroy(() => {
 		controller.destroy()

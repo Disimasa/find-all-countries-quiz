@@ -106,6 +106,10 @@ export function selectCountry(id: string): void {
 	session?.selectEntity(id)
 }
 
+export function selectRandomCountry(): string | null {
+	return session?.selectRandomUnguessedEntity() ?? null
+}
+
 export function clearSelection(): void {
 	session?.clearSelection()
 }

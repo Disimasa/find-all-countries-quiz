@@ -19,6 +19,11 @@ export const MAP_TRANSITION_OUT_MS = 1100
 export const MAP_TRANSITION_IN_MS = 1000
 /** 0–1: when zoom-in reaches this progress, route UI starts appearing. */
 export const MAP_TRANSITION_UI_REVEAL_AT = 0.25
+export const MAP_COUNTRY_FOCUS_PADDING = 72
+export const MAP_COUNTRY_FOCUS_MAX_ZOOM = 4.1
+export const MAP_COUNTRY_FOCUS_DURATION_MS = 900
+export const MAP_COUNTRY_FOCUS_MARGIN_RATIO = 0.72
+export const MAP_COUNTRY_FOCUS_MIN_MARGIN_DEG = 2.75
 
 /** Default MapLibre wheel rate is 1/450 — higher value zooms faster. */
 export const MAP_WHEEL_ZOOM_RATE = 1 / 180

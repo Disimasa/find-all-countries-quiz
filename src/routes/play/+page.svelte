@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte'
+	import { get } from 'svelte/store'
 	import { page } from '$app/stores'
 	import ProgressPanel from './ui/ProgressPanel.svelte'
 	import {
@@ -12,13 +13,16 @@
 		parseConfig,
 		resetMapView,
 		selectCountry,
+		selectRandomCountry,
 		submitGuess,
 		updateAutocomplete
 	} from './controller'
+	import { isRandomCountryHotkey } from './hotkeys'
 	import { locale, t } from '@i18n'
 	import { loadSavedGame } from '@persist'
 	import {
 		enterPlayDirect,
+		focusMapOnCountry,
 		flashWrongOnMap,
 		mapShellReady,
 		mapShellTransitioning,
@@ -42,6 +46,16 @@
 				void enterPlayDirect(config)
 			}
 		}
+
+		const onKeydown = (event: KeyboardEvent) => {
+			if (!isRandomCountryHotkey(event)) return
+			if (get(gameSnapshot).status !== 'playing') return
+			event.preventDefault()
+			onRandomCountry()
+		}
+
+		window.addEventListener('keydown', onKeydown, { capture: true })
+		return () => window.removeEventListener('keydown', onKeydown, { capture: true })
 	})
 
 	$: if (session) session.setLocale($locale)
@@ -79,11 +93,22 @@
 		clearSelection()
 	}
 
+	function onRandomCountry() {
+		const id = selectRandomCountry()
+		if (!id) return
+		guessQuery = ''
+		updateAutocomplete('')
+		focusMapOnCountry(id)
+	}
+
 	function onEnd() {
 		void transitionToHome()
 	}
 
 	$: formattedTime = formatTime($gameSnapshot.timeRemaining)
+	$: canPickRandomCountry =
+		$gameSnapshot.status === 'playing' &&
+		$gameSnapshot.progress.correct < $gameSnapshot.progress.total
 	$: session = ($gameSnapshot.status, getSession())
 	$: mapLoading =
 		($gameSnapshot.status === 'loading' || !$mapShellReady) && !$mapShellTransitioning
@@ -115,6 +140,7 @@
 		correctLabel={$t('correct')}
 		remainingLabel={$t('remaining')}
 		livesLabel={$t('livesLabel')}
+		infiniteLabel={$t('infinite')}
 		timeLabel={$t('time')}
 		progressLabel={$t('progress')}
 		{formattedTime}
@@ -122,6 +148,9 @@
 		endLabel={$t('endQuiz')}
 		guessPlaceholder={$t('guessPlaceholder')}
 		selectCountryHint={$t('selectCountryHint')}
+		randomCountryLabel={$t('randomCountry')}
+		randomCountryHint={$t('randomCountryHint')}
+		{canPickRandomCountry}
 		{guessQuery}
 		autocompleteResults={$autocompleteResults}
 		{wrongPulse}
@@ -130,6 +159,7 @@
 		on:guessInput={(e) => onGuessInput(e.detail)}
 		on:guessPick={(e) => onGuessPick(e.detail)}
 		on:guessClose={onGuessClose}
+		on:randomCountry={onRandomCountry}
 		/>
 	</div>
 </div>
