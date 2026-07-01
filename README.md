@@ -1,42 +1,68 @@
-# sv
+# Find All Countries
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Click countries on a world map, name them correctly, and try to find them all. Play at your own pace or race the clock—on. Try modern borders or maps from other times in history.
 
-## Creating a project
+## How to play
 
-If you're seeing this, you've probably already done this step. Congrats!
+1. Open the lobby and choose your map era and rules.
+2. Click a country on the map.
+3. Type its name.
+4. Keep going until every country is found or you run out of time or lives.
+
+Correct answers light up on the map. Wrong answers cost a life when lives are on. A side panel shows your progress and what’s left to find.
+
+## Map eras
+
+Switch between political maps from different periods. Each era has its own borders, country list, and acceptable names:
+
+| Era | What you practice |
+| --- | --- |
+| **Modern** | Today’s internationally recognized borders |
+| **1939** | Europe and the world on the eve of the Second World War |
+| **1914** | Europe and the world on the eve of the First World War |
+| **Before the Napoleonic Wars** | States and borders in the late 18th century |
+| **Fall of the Eastern Roman Empire** | The Byzantine world in the empire’s final years before Constantinople fell in 1453 |
+| **Roman Empire at its height** | Provinces and frontiers around the empire’s greatest extent |
+
+Good for learning geography beyond “where things are today”—see how borders used to look.
+
+## Game settings
+
+Before you start:
+
+- **Time** — no limit, or 15 / 30 / 60 minutes
+- **Lives** — no limit, or 1 / 3 / 5 mistakes
+- **Language** — English or Russian (menus and country names)
+
+Your choices are saved in the browser for the next visit.
+
+## Save & continue
+
+Progress is saved automatically. Leave mid-game and the lobby will offer **Continue** with your score (e.g. 12/195). **New game** starts fresh.
+
+---
+
+## Disclaimer
+
+Some regions are territories or disputed areas. Borders are shown for quiz purposes only.
+
+## Development
+
+### Requirements
+
+Node.js 22+, pnpm 10+.
 
 ```sh
-# create a new project
-npx sv create my-app
+pnpm install
+pnpm dev
 ```
 
-To recreate this project with the same configuration:
+### Stack
+
+SvelteKit 5, MapLibre GL, Tailwind CSS 4, DaisyUI, Vitest. Domain logic lives in `src/lib/domain/`.
+
+### Docker
 
 ```sh
-# recreate this project
-pnpm dlx sv@0.16.1 create --template minimal --types ts --add prettier eslint vitest="usages:unit,component" tailwindcss="plugins:none" sveltekit-adapter="adapter:static" --install pnpm .
+docker compose up -d --build
 ```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
