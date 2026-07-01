@@ -49,11 +49,12 @@ jobs:
       group: deploy-production
       cancel-in-progress: false
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build and start containers
-        run: docker compose up -d --build --remove-orphans
+      - name: Pull
+        run: git pull
+      - name: Deploy
+        run: |
+          cd "/home/user1/find_all_countries"
+          docker compose up -d --build --remove-orphans
 
       - name: Prune dangling images
         run: docker image prune -f
