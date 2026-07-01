@@ -23,7 +23,6 @@
 		background: var(--color-base-100);
 		box-shadow: 0 0 0 2px var(--color-primary);
 		transform: translateX(-50%);
-		pointer-events: none;
 	}
 
 	.start-line {
