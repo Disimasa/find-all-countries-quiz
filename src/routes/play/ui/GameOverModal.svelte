@@ -116,7 +116,7 @@
 		{#if !won}
 			<button
 				type="button"
-				class="btn btn-link border-0 btn-sm mt-3 h-auto min-h-0 px-0 text-primary no-underline hover:underline"
+				class="mt-3 bg-transparent p-0 text-sm font-medium text-primary underline-offset-2 hover:underline focus:outline-none"
 				on:click={goExplore}
 			>
 				{exploreLinkLabel}

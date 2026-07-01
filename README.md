@@ -1,5 +1,7 @@
 # Find All Countries
 
+> 🌍 **Live → [find-all-countries.ru](https://find-all-countries.ru/)**
+
 Click countries on a world map, name them correctly, and try to find them all. Play at your own pace or race the clock—on. Try modern borders or maps from other times in history.
 
 ## How to play
