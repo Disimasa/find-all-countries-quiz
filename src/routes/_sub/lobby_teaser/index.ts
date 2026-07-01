@@ -17,6 +17,7 @@ export {
 	isLobbyTeaserRunning,
 	getLobbyTeaserEpoch,
 	pauseLobbyTeaser,
+	resumeLobbyTeaser,
 	showLobbyCountryPick,
 	pickRandomExcludingRecent,
 	pickNextTeaserCountryId,

@@ -53,6 +53,7 @@ function bindSession(nextSession: GameSession, config: GameConfig): void {
 			const m = messages[snapshot.locale]
 			void openDialog(GameOverModal, {
 				snapshot,
+				config,
 				victoryTitle: m.victory,
 				gameOverTitle: m.gameOver,
 				playAgainLabel: m.playAgain,

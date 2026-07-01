@@ -19,6 +19,7 @@ import { setSharedMapEra } from './map_era.ts'
 import { buildPlayHref } from './controller'
 import {
 	pauseLobbyTeaser,
+	resumeLobbyTeaser,
 	showLobbyCountryPick,
 	startLobbyTeaser,
 	stopLobbyTeaser,
@@ -138,9 +139,15 @@ export async function activateLobbyMode(): Promise<void> {
 	exploreModeActive = false
 	const map = await ensureReady()
 	lobbyModeActive = true
-	map.activateLobby(onLobbyCountrySelected, () => {
-		if (renderer) pauseLobbyTeaser(renderer)
-	})
+	map.activateLobby(
+		onLobbyCountrySelected,
+		() => {
+			if (renderer) pauseLobbyTeaser(renderer)
+		},
+		() => {
+			if (renderer) resumeLobbyTeaser(renderer)
+		}
+	)
 }
 
 export async function activateExploreMode(locale: Locale): Promise<void> {

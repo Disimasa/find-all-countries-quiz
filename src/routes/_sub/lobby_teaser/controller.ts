@@ -155,7 +155,7 @@ function removeMapMarkers(map: Map | null | undefined): void {
 	}
 }
 
-function clearMarkerSlot(slot: MarkerSlot, map?: Map | null): void {
+function clearMarkerSlot(slot: MarkerSlot): void {
 	const marker = slot.map
 	const root = slot.lobby?.root
 	marker?.remove()
@@ -164,7 +164,6 @@ function clearMarkerSlot(slot: MarkerSlot, map?: Map | null): void {
 		wrapper?.remove()
 		root.remove()
 	}
-	removeMapMarkers(map)
 	slot.map = null
 	slot.lobby?.destroy()
 	slot.lobby = null
@@ -198,14 +197,14 @@ export function clearLobbyMapHint(host: MapHost): void {
 	hintSlotGeneration++
 	hintCountryId = null
 	host.setLobbyHint(null)
-	clearMarkerSlot(hintSlot, host.getMap())
+	clearMarkerSlot(hintSlot)
 }
 
 function clearLobbyPick(host: MapHost | null): void {
 	pickSlotGeneration++
 	pickedCountryId = null
 	host?.setLobbyPick(null)
-	clearMarkerSlot(pickSlot, host?.getMap())
+	clearMarkerSlot(pickSlot)
 	lobbyPinStartCta.set(null)
 }
 
@@ -237,12 +236,16 @@ export function showLobbyCountryPick(
 function pauseLobbyTeaserCycle(): void {
 	if (timerId) clearInterval(timerId)
 	timerId = null
-	if (mapRef) clearLobbyMapHint(mapRef)
 }
 
-export function pauseLobbyTeaser(host: MapHost): void {
+export function pauseLobbyTeaser(_host: MapHost): void {
 	if (pickedCountryId) return
 	pauseLobbyTeaserCycle()
+}
+
+export function resumeLobbyTeaser(_host: MapHost): void {
+	if (!running || !mapRef) return
+	ensureTeaserTimerRunning()
 }
 
 async function placeMarker(
@@ -386,8 +389,8 @@ export function stopLobbyTeaser(host?: MapHost): void {
 	pickedCountryId = null
 	mapHost?.setLobbyHint(null)
 	mapHost?.setLobbyPick(null)
-	clearMarkerSlot(hintSlot, map)
-	clearMarkerSlot(pickSlot, map)
+	clearMarkerSlot(hintSlot)
+	clearMarkerSlot(pickSlot)
 	removeMapMarkers(map)
 	lobbyPinStartCta.set(null)
 

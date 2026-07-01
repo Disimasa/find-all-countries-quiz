@@ -6,16 +6,17 @@ import { buildCountryBorderPaint, buildCountryPaint, readMapTheme } from '@theme
 import type { MapHost } from './map_host.ts'
 import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './hover_state.ts'
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
-import { buildCountryLabelPoints } from './country_labels.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
+import {
+	buildExploreCountryTextField,
+	isBasemapCountryLabelLayerId
+} from './explore_country_labels.ts'
 import { lobbyCountryVisual, lobbyHoverableCountryId } from './lobby_feature_state.ts'
 import { isClickOnMapMarker } from './marker_click_guard.ts'
 import {
 	COUNTRIES_FILL_LAYER_ID,
 	COUNTRIES_LINE_LAYER_ID,
 	COUNTRIES_SOURCE_ID,
-	COUNTRY_LABELS_LAYER_ID,
-	COUNTRY_LABELS_SOURCE_ID,
 	COUNTRY_ID_PROPERTY,
 	HIDDEN_BOUNDARY_LAYER_IDS,
 	MAP_COUNTRY_FOCUS_DURATION_MS,
@@ -69,9 +70,11 @@ export class MapRenderer implements MapHost {
 	private interactive = false
 	private lobbyMode = false
 	private exploreMode = false
+	private exploreLocale: Locale = 'en'
 	private lobbySelectedId: string | null = null
 	private lobbyHintId: string | null = null
 	private onLobbyNavigate: (() => void) | null = null
+	private onLobbyNavigateEnd: (() => void) | null = null
 
 	getMap(): Map | null {
 		return this.map
@@ -136,7 +139,6 @@ export class MapRenderer implements MapHost {
 			this.hideBasemapOverlays()
 			applyBasemapTheme(this.map)
 			this.addCountryLayers(era.getGeoJson())
-			this.addCountryLabelLayer('en')
 			this.bindInteractions()
 			this.initDefaultFeatureStates()
 			this.ready = true
@@ -174,11 +176,12 @@ export class MapRenderer implements MapHost {
 
 	activatePlay(onSelect: (id: string) => void, snapshot: GameSnapshot): void {
 		this.exploreMode = false
-		this.setExploreLabelsVisible(false)
+		this.hideBasemapSymbolLayers()
 		this.lobbyMode = false
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
 		this.onLobbyNavigate = null
+		this.onLobbyNavigateEnd = null
 		this.unbindLobbyNavigation()
 		this.setInteractive(true, onSelect)
 		this.updateStyles(snapshot)
@@ -192,13 +195,18 @@ export class MapRenderer implements MapHost {
 		this.activateLobby(() => {})
 	}
 
-	activateLobby(onCountryClick: (id: string) => void, onNavigate?: () => void): void {
+	activateLobby(
+		onCountryClick: (id: string) => void,
+		onNavigate?: () => void,
+		onNavigateEnd?: () => void
+	): void {
 		this.exploreMode = false
-		this.setExploreLabelsVisible(false)
+		this.hideBasemapSymbolLayers()
 		this.lobbyMode = true
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
 		this.onLobbyNavigate = onNavigate ?? null
+		this.onLobbyNavigateEnd = onNavigateEnd ?? null
 		this.snapshot = null
 		this.setInteractive(true, onCountryClick)
 		this.syncLobbyFeatureStates()
@@ -207,26 +215,24 @@ export class MapRenderer implements MapHost {
 
 	activateExplore(locale: Locale): void {
 		this.exploreMode = true
+		this.exploreLocale = locale
 		this.lobbyMode = false
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
 		this.onLobbyNavigate = null
+		this.onLobbyNavigateEnd = null
 		this.unbindLobbyNavigation()
 		this.snapshot = null
 		this.setInteractive(true, () => {})
 		this.syncExploreFeatureStates()
-		this.updateExploreLabels(locale)
-		this.setExploreLabelsVisible(true)
+		this.showBasemapSymbolLayers()
 		void this.flyToPreviewView()
 	}
 
 	updateExploreLabels(locale: Locale): void {
-		if (!this.map || !this.era) return
-
-		const source = this.map.getSource(COUNTRY_LABELS_SOURCE_ID) as GeoJSONSource | undefined
-		if (!source) return
-
-		source.setData(buildCountryLabelPoints(this.era, locale))
+		if (!this.exploreMode) return
+		this.exploreLocale = locale
+		this.applyExploreCountryLabelFields()
 	}
 
 	isReady(): boolean {
@@ -376,6 +382,7 @@ export class MapRenderer implements MapHost {
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
 		this.onLobbyNavigate = null
+		this.onLobbyNavigateEnd = null
 	}
 
 	private onLobbyDragStart = (): void => {
@@ -386,16 +393,28 @@ export class MapRenderer implements MapHost {
 		this.onLobbyNavigate?.()
 	}
 
+	private onLobbyDragEnd = (): void => {
+		this.onLobbyNavigateEnd?.()
+	}
+
+	private onLobbyZoomEnd = (): void => {
+		this.onLobbyNavigateEnd?.()
+	}
+
 	private bindLobbyNavigation(): void {
 		if (!this.map) return
 		this.map.on('dragstart', this.onLobbyDragStart)
 		this.map.on('zoomstart', this.onLobbyZoomStart)
+		this.map.on('dragend', this.onLobbyDragEnd)
+		this.map.on('zoomend', this.onLobbyZoomEnd)
 	}
 
 	private unbindLobbyNavigation(): void {
 		if (!this.map) return
 		this.map.off('dragstart', this.onLobbyDragStart)
 		this.map.off('zoomstart', this.onLobbyZoomStart)
+		this.map.off('dragend', this.onLobbyDragEnd)
+		this.map.off('zoomend', this.onLobbyZoomEnd)
 	}
 
 	private syncLobbyFeatureStates(): void {
@@ -427,16 +446,59 @@ export class MapRenderer implements MapHost {
 	}
 
 	private hideBasemapOverlays(): void {
+		this.hideBasemapSymbolLayers()
+		this.hideBasemapBoundaries()
+	}
+
+	private hideBasemapSymbolLayers(): void {
+		this.setBasemapSymbolLayersVisible(false)
+	}
+
+	private showBasemapSymbolLayers(): void {
 		if (!this.map) return
+		const textField = buildExploreCountryTextField(this.exploreLocale)
 		for (const layer of this.map.getStyle().layers ?? []) {
-			if (layer.type === 'symbol') {
-				this.map.setLayoutProperty(layer.id, 'visibility', 'none')
+			if (layer.type !== 'symbol' || !this.map.getLayer(layer.id)) continue
+			const isCountryLabel = isBasemapCountryLabelLayerId(layer.id)
+			this.map.setLayoutProperty(layer.id, 'visibility', isCountryLabel ? 'visible' : 'none')
+			if (isCountryLabel) {
+				this.map.setLayoutProperty(layer.id, 'text-field', textField)
 			}
 		}
+		this.raiseBasemapCountryLabelLayers()
+	}
 
+	private applyExploreCountryLabelFields(): void {
+		if (!this.map) return
+		const textField = buildExploreCountryTextField(this.exploreLocale)
+		for (const layer of this.map.getStyle().layers ?? []) {
+			if (!isBasemapCountryLabelLayerId(layer.id) || !this.map.getLayer(layer.id)) continue
+			this.map.setLayoutProperty(layer.id, 'text-field', textField)
+		}
+	}
+
+	private raiseBasemapCountryLabelLayers(): void {
+		if (!this.map) return
+		for (const layer of this.map.getStyle().layers ?? []) {
+			if (!isBasemapCountryLabelLayerId(layer.id) || !this.map.getLayer(layer.id)) continue
+			this.map.moveLayer(layer.id)
+		}
+	}
+
+	private hideBasemapBoundaries(): void {
+		if (!this.map) return
 		for (const layerId of HIDDEN_BOUNDARY_LAYER_IDS) {
 			if (this.map.getLayer(layerId)) {
 				this.map.setLayoutProperty(layerId, 'visibility', 'none')
+			}
+		}
+	}
+
+	private setBasemapSymbolLayersVisible(visible: boolean): void {
+		if (!this.map) return
+		for (const layer of this.map.getStyle().layers ?? []) {
+			if (layer.type === 'symbol') {
+				this.map.setLayoutProperty(layer.id, 'visibility', visible ? 'visible' : 'none')
 			}
 		}
 	}
@@ -475,56 +537,6 @@ export class MapRenderer implements MapHost {
 				'line-opacity': borderPaint.lineOpacity
 			}
 		})
-	}
-
-	private addCountryLabelLayer(locale: Locale): void {
-		if (!this.map || !this.era) return
-
-		this.map.addSource(COUNTRY_LABELS_SOURCE_ID, {
-			type: 'geojson',
-			data: buildCountryLabelPoints(this.era, locale)
-		})
-
-		this.map.addLayer({
-			id: COUNTRY_LABELS_LAYER_ID,
-			type: 'symbol',
-			source: COUNTRY_LABELS_SOURCE_ID,
-			layout: {
-				visibility: 'none',
-				'text-field': ['get', 'name'],
-				'text-font': this.getBasemapTextFont(),
-				'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9, 4, 11, 6, 13],
-				'text-anchor': 'center',
-				'text-allow-overlap': false,
-				'text-optional': true
-			},
-			paint: {
-				'text-color': '#3f3f46',
-				'text-halo-color': '#fafafa',
-				'text-halo-width': 1.25
-			}
-		})
-	}
-
-	private getBasemapTextFont(): string[] {
-		if (!this.map) return ['Noto Sans Regular']
-
-		for (const layer of this.map.getStyle().layers ?? []) {
-			if (layer.type !== 'symbol') continue
-			const font = layer.layout?.['text-font']
-			if (Array.isArray(font) && font.length > 0) return font as string[]
-		}
-
-		return ['Noto Sans Regular']
-	}
-
-	private setExploreLabelsVisible(visible: boolean): void {
-		if (!this.map?.getLayer(COUNTRY_LABELS_LAYER_ID)) return
-		this.map.setLayoutProperty(
-			COUNTRY_LABELS_LAYER_ID,
-			'visibility',
-			visible ? 'visible' : 'none'
-		)
 	}
 
 	private syncExploreFeatureStates(): void {

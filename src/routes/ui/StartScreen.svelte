@@ -53,7 +53,7 @@
 		</section>
 
 		<section
-			class="flex flex-col gap-3 rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md"
+			class="flex flex-col gap-2 rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md"
 		>
 			<GameSettingsEditor
 				disabled={$mapShellTransitioning}
@@ -74,7 +74,7 @@
 			{#if continueLabel}
 				<button
 					type="button"
-					class="btn btn-primary mt-1 w-full gap-2"
+					class="btn btn-primary rounded-lg mt-1 w-full gap-2"
 					disabled={$mapShellTransitioning}
 					on:click={() => dispatch('continue')}
 				>
@@ -83,7 +83,7 @@
 				</button>
 				<button
 					type="button"
-					class="btn btn-outline w-full border-primary/45 text-primary hover:border-primary hover:bg-primary/10 hover:text-primary"
+					class="btn btn-outline w-full rounded-lg border-primary/45 text-primary hover:border-primary hover:bg-primary/10 hover:text-primary"
 					disabled={$mapShellTransitioning}
 					on:click={() => dispatch('start')}
 				>
@@ -92,7 +92,7 @@
 			{:else}
 				<button
 					type="button"
-					class="btn btn-primary mt-1 w-full gap-2"
+					class="btn btn-primary rounded-lg mt-1 w-full gap-2"
 					disabled={$mapShellTransitioning}
 					on:click={() => dispatch('start')}
 				>

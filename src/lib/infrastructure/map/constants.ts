@@ -32,8 +32,6 @@ export const MAP_TRACKPAD_ZOOM_RATE = 1 / 40
 export const COUNTRIES_SOURCE_ID = 'countries'
 export const COUNTRIES_FILL_LAYER_ID = 'countries-fill'
 export const COUNTRIES_LINE_LAYER_ID = 'countries-line'
-export const COUNTRY_LABELS_SOURCE_ID = 'country-labels'
-export const COUNTRY_LABELS_LAYER_ID = 'country-labels'
 export const COUNTRY_ID_PROPERTY = 'ISO_A2'
 
 /** Basemap admin borders use a different dataset than quiz GeoJSON — keep hidden. */
