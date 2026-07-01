@@ -149,3 +149,12 @@ input[type='reset']:disabled,
 .btn[disabled] {
 	cursor: not-allowed;
 }
+
+/* MapLibre compact attribution: icon only until opened. */
+.maplibregl-ctrl-attrib.maplibregl-compact:not([open]) {
+	padding: 2px 24px 2px 0 !important;
+}
+
+.maplibregl-ctrl-attrib.maplibregl-compact:not([open]) .maplibregl-ctrl-attrib-inner {
+	display: none !important;
+}

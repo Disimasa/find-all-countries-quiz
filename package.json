@@ -15,6 +15,7 @@
 		"generate:entities": "node scripts/generate_entities.mjs",
 		"test:unit": "vitest --project unit",
 		"test:integration": "vitest --project integration",
+		"test:e2e": "vitest --project e2e",
 		"test": "vitest --run --project unit --project integration"
 	},
 	"devDependencies": {

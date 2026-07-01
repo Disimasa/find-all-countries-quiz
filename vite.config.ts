@@ -43,6 +43,14 @@ export default defineConfig({
 			{
 				extends: true,
 				test: {
+					name: 'e2e',
+					environment: 'node',
+					include: ['tests/e2e/**/*.{test,spec}.ts']
+				}
+			},
+			{
+				extends: true,
+				test: {
 					name: 'client',
 					browser: {
 						enabled: true,

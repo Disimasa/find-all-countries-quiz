@@ -74,10 +74,15 @@
 
 <dialog
 	bind:this={dialog}
+	data-testid="game-over-modal"
+	data-outcome={snapshot.status}
 	class="fixed top-1/2 left-1/2 m-0 w-[min(100vw-2rem,22rem)] -translate-x-1/2 -translate-y-1/2 border-0 bg-transparent p-0 shadow-none backdrop:bg-black/40"
 >
 	<div class="rounded-2xl border border-base-300/80 bg-base-100 p-6 text-center shadow-xl">
-		<h2 class="text-xl font-bold text-base-content sm:text-2xl">
+		<h2
+			data-testid="game-over-title"
+			class="text-xl font-bold text-base-content sm:text-2xl"
+		>
 			{won ? victoryTitle : gameOverTitle}
 		</h2>
 

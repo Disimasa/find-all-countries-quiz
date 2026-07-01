@@ -129,6 +129,8 @@ export class MapRenderer implements MapHost {
 			reduceMotion: false
 		})
 
+		this.bindAttributionCollapse()
+
 		this.map.once('style.load', () => this.hideBasemapOverlays())
 
 		this.map.once('load', () => {
@@ -383,6 +385,23 @@ export class MapRenderer implements MapHost {
 		this.lobbyHintId = null
 		this.onLobbyNavigate = null
 		this.onLobbyNavigateEnd = null
+	}
+
+	private collapseMapAttribution(): void {
+		const el = this.map?.getContainer().querySelector('details.maplibregl-ctrl-attrib')
+		if (!(el instanceof HTMLDetailsElement)) return
+		el.open = false
+		el.classList.remove('maplibregl-compact-show')
+	}
+
+	private bindAttributionCollapse(): void {
+		if (!this.map) return
+
+		const collapse = () => this.collapseMapAttribution()
+		this.map.on('sourcedata', (event) => {
+			if (event.sourceDataType === 'metadata') queueMicrotask(collapse)
+		})
+		this.map.once('load', collapse)
 	}
 
 	private onLobbyDragStart = (): void => {

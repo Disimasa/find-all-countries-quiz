@@ -126,6 +126,7 @@
 				<IconSearch class="size-4 shrink-0 text-base-content/40" />
 				<input
 					bind:this={inputEl}
+					data-testid="guess-input"
 					type="text"
 					enterkeyhint="go"
 					role="combobox"

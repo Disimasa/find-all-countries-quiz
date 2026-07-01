@@ -102,6 +102,7 @@
 			{#if snapshot.status === 'playing'}
 				<button
 					type="button"
+					data-testid="random-country"
 					class="mt-1.5 flex w-full items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-base-content/55 transition-colors hover:bg-base-200/80 hover:text-base-content disabled:pointer-events-none disabled:opacity-35"
 					class:max-md:hidden={!!snapshot.selectedId}
 					title={$t('randomCountryHint')}

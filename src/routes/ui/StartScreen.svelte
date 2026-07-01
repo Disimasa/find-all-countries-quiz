@@ -74,6 +74,7 @@
 			{#if continueLabel}
 				<button
 					type="button"
+					data-testid="continue-game"
 					class="btn btn-primary rounded-lg mt-1 w-full gap-2"
 					disabled={$mapShellTransitioning}
 					on:click={() => dispatch('continue')}

@@ -115,7 +115,16 @@
 	$: loadFailed = $gameSnapshot.status === 'error'
 </script>
 
-<div class="pointer-events-none relative h-full overflow-hidden">
+<div
+	class="pointer-events-none relative h-full overflow-hidden"
+	data-testid="play-state"
+	data-status={$gameSnapshot.status}
+	data-selected-id={$gameSnapshot.selectedId ?? ''}
+	data-correct={$gameSnapshot.progress.correct}
+	data-lives={$gameSnapshot.stats.lives}
+	data-max-lives={$gameSnapshot.stats.maxLives}
+	data-lives-enabled={$gameSnapshot.stats.livesEnabled}
+>
 	{#if mapLoading}
 		<div
 			class="pointer-events-none absolute inset-0 z-5 flex items-center justify-center bg-base-100/40 text-base-content backdrop-blur-[1px]"
