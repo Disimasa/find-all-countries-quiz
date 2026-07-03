@@ -10,6 +10,14 @@ export function resolveHoverableCountryId(
 	return id
 }
 
+export function resolveGuessedTooltipId(
+	id: string | null | undefined,
+	guessedIds: ReadonlySet<string>
+): string | null {
+	if (!id || !guessedIds.has(id)) return null
+	return id
+}
+
 export function baseCountryVisual(
 	id: string,
 	snapshot: Pick<GameSnapshot, 'guessedIds' | 'selectedId'> | null

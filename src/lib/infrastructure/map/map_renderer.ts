@@ -4,7 +4,12 @@ import type { BaseMapEra } from '@domain/maps'
 import type { EntityVisualState, GameSnapshot, Locale } from '@domain/entities'
 import { buildCountryBorderPaint, buildCountryPaint, readMapTheme } from '@theme'
 import type { MapHost } from './map_host.ts'
-import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './hover_state.ts'
+import {
+	baseCountryVisual,
+	countryVisual,
+	resolveGuessedTooltipId,
+	resolveHoverableCountryId
+} from './hover_state.ts'
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import {
@@ -64,6 +69,8 @@ export class MapRenderer implements MapHost {
 	private onSelect: ((id: string) => void) | null = null
 	private snapshot: GameSnapshot | null = null
 	private hoveredId: string | null = null
+	private guessedTooltip: maplibregl.Popup | null = null
+	private tooltipCountryId: string | null = null
 	private flashingId: string | null = null
 	private flashToken = 0
 	private ready = false
@@ -172,6 +179,7 @@ export class MapRenderer implements MapHost {
 
 		if (!enabled) {
 			this.clearHover()
+			this.hideGuessedTooltip()
 			this.map.getCanvas().style.cursor = ''
 		}
 	}
@@ -210,6 +218,7 @@ export class MapRenderer implements MapHost {
 		this.onLobbyNavigate = onNavigate ?? null
 		this.onLobbyNavigateEnd = onNavigateEnd ?? null
 		this.snapshot = null
+		this.hideGuessedTooltip()
 		this.setInteractive(true, onCountryClick)
 		this.syncLobbyFeatureStates()
 		this.bindLobbyNavigation()
@@ -225,6 +234,7 @@ export class MapRenderer implements MapHost {
 		this.onLobbyNavigateEnd = null
 		this.unbindLobbyNavigation()
 		this.snapshot = null
+		this.hideGuessedTooltip()
 		this.setInteractive(true, () => {})
 		this.syncExploreFeatureStates()
 		this.showBasemapSymbolLayers()
@@ -374,6 +384,9 @@ export class MapRenderer implements MapHost {
 		this.flashToken++
 		this.flashingId = null
 		this.unbindLobbyNavigation()
+		this.guessedTooltip?.remove()
+		this.guessedTooltip = null
+		this.tooltipCountryId = null
 		this.map?.remove()
 		this.map = null
 		this.era = null
@@ -589,11 +602,18 @@ export class MapRenderer implements MapHost {
 
 		this.map.on('mouseout', () => {
 			this.clearHover()
+			this.hideGuessedTooltip()
 			if (this.map) this.map.getCanvas().style.cursor = ''
 		})
 
-		this.map.on('dragstart', () => this.clearHover())
-		this.map.on('zoomstart', () => this.clearHover())
+		this.map.on('dragstart', () => {
+			this.clearHover()
+			this.hideGuessedTooltip()
+		})
+		this.map.on('zoomstart', () => {
+			this.clearHover()
+			this.hideGuessedTooltip()
+		})
 	}
 
 	private updateHoverAtPoint(point: maplibregl.PointLike): void {
@@ -614,6 +634,8 @@ export class MapRenderer implements MapHost {
 			this.updateLobbyHoverAtPoint(id)
 			return
 		}
+
+		this.updateGuessedTooltip(id, point)
 
 		const hoverableId = resolveHoverableCountryId(
 			id,
@@ -724,5 +746,50 @@ export class MapRenderer implements MapHost {
 
 	private setFeatureVisual(id: string, visual: EntityVisualState): void {
 		this.map?.setFeatureState({ source: COUNTRIES_SOURCE_ID, id }, { visual })
+	}
+
+	private ensureGuessedTooltip(): maplibregl.Popup {
+		if (!this.guessedTooltip) {
+			this.guessedTooltip = new maplibregl.Popup({
+				closeButton: false,
+				closeOnClick: false,
+				closeOnMove: false,
+				focusAfterOpen: false,
+				className: 'country-tooltip',
+				offset: 12,
+				maxWidth: 'none'
+			})
+		}
+		return this.guessedTooltip
+	}
+
+	private updateGuessedTooltip(id: string | null, point: maplibregl.PointLike): void {
+		if (!this.map) return
+
+		const tooltipId = resolveGuessedTooltipId(id, this.snapshot?.guessedIds ?? new Set())
+		if (!tooltipId) {
+			this.hideGuessedTooltip()
+			return
+		}
+
+		const name = this.era?.getDisplayName(tooltipId, this.snapshot?.locale ?? 'en')
+		if (!name) {
+			this.hideGuessedTooltip()
+			return
+		}
+
+		const popup = this.ensureGuessedTooltip()
+		if (this.tooltipCountryId !== tooltipId) {
+			popup.setText(name)
+			this.tooltipCountryId = tooltipId
+		}
+		popup.setLngLat(this.map.unproject(point))
+		if (!popup.isOpen()) popup.addTo(this.map)
+	}
+
+	private hideGuessedTooltip(): void {
+		if (!this.tooltipCountryId && !this.guessedTooltip?.isOpen()) return
+		this.tooltipCountryId = null
+		this.guessedTooltip?.remove()
 	}
 }

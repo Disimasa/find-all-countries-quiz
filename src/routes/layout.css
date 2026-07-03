@@ -158,3 +158,27 @@ input[type='reset']:disabled,
 .maplibregl-ctrl-attrib.maplibregl-compact:not([open]) .maplibregl-ctrl-attrib-inner {
 	display: none !important;
 }
+
+/* Hover tooltip for already-guessed countries. Must never block map input. */
+.country-tooltip {
+	pointer-events: none;
+	z-index: 5;
+	will-change: transform;
+}
+
+.country-tooltip .maplibregl-popup-content {
+	padding: 3px 9px;
+	border-radius: 9px;
+	background: color-mix(in srgb, var(--color-base-100) 94%, transparent);
+	color: var(--color-base-content);
+	font-size: 0.78rem;
+	font-weight: 600;
+	line-height: 1.25;
+	white-space: nowrap;
+	border: 1px solid color-mix(in srgb, var(--map-country-guessed) 55%, transparent);
+	box-shadow: 0 4px 14px rgb(0 0 0 / 0.16);
+}
+
+.country-tooltip .maplibregl-popup-tip {
+	display: none;
+}
