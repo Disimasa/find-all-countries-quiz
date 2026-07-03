@@ -137,6 +137,14 @@ export function showEndGameSummary(): void {
 	const snapshot = session.getSnapshot()
 	if (snapshot.status !== 'playing') return
 
+	// Suppress the automatic win/loss modal so a timer expiring behind this summary
+	// cannot stack a second dialog on top. Re-enable it if the player dismisses the
+	// summary and keeps playing.
+	gameOverShown = true
+	const reenableGameOverModal = () => {
+		if (session?.getSnapshot().status === 'playing') gameOverShown = false
+	}
+
 	const m = messages[snapshot.locale]
 	void openDialog(GameOverModal, {
 		snapshot,
@@ -149,7 +157,7 @@ export function showEndGameSummary(): void {
 		playAgainLabel: m.playAgain,
 		exploreLinkLabel: m.gameOverExploreLink,
 		homeLabel: m.home
-	})
+	}).then(reenableGameOverModal, reenableGameOverModal)
 }
 
 export function getSession(): GameSession | null {
