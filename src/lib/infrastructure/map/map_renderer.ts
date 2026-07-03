@@ -69,8 +69,10 @@ export class MapRenderer implements MapHost {
 	private onSelect: ((id: string) => void) | null = null
 	private snapshot: GameSnapshot | null = null
 	private hoveredId: string | null = null
-	private guessedTooltip: maplibregl.Popup | null = null
+	private guessedTooltip: maplibregl.Marker | null = null
+	private guessedTooltipEl: HTMLElement | null = null
 	private tooltipCountryId: string | null = null
+	private tooltipVisible = false
 	private flashingId: string | null = null
 	private flashToken = 0
 	private ready = false
@@ -386,7 +388,9 @@ export class MapRenderer implements MapHost {
 		this.unbindLobbyNavigation()
 		this.guessedTooltip?.remove()
 		this.guessedTooltip = null
+		this.guessedTooltipEl = null
 		this.tooltipCountryId = null
+		this.tooltipVisible = false
 		this.map?.remove()
 		this.map = null
 		this.era = null
@@ -748,16 +752,16 @@ export class MapRenderer implements MapHost {
 		this.map?.setFeatureState({ source: COUNTRIES_SOURCE_ID, id }, { visual })
 	}
 
-	private ensureGuessedTooltip(): maplibregl.Popup {
+	private ensureGuessedTooltip(): maplibregl.Marker {
 		if (!this.guessedTooltip) {
-			this.guessedTooltip = new maplibregl.Popup({
-				closeButton: false,
-				closeOnClick: false,
-				closeOnMove: false,
-				focusAfterOpen: false,
-				className: 'country-tooltip',
-				offset: 12,
-				maxWidth: 'none'
+			const el = document.createElement('div')
+			el.className =
+				'pointer-events-none select-none whitespace-nowrap rounded-lg border border-success/60 bg-base-100/90 px-2 py-0.5 text-xs font-semibold text-base-content shadow-lg'
+			this.guessedTooltipEl = el
+			this.guessedTooltip = new maplibregl.Marker({
+				element: el,
+				anchor: 'bottom',
+				offset: [0, -12]
 			})
 		}
 		return this.guessedTooltip
@@ -778,18 +782,22 @@ export class MapRenderer implements MapHost {
 			return
 		}
 
-		const popup = this.ensureGuessedTooltip()
-		if (this.tooltipCountryId !== tooltipId) {
-			popup.setText(name)
+		const marker = this.ensureGuessedTooltip()
+		if (this.tooltipCountryId !== tooltipId && this.guessedTooltipEl) {
+			this.guessedTooltipEl.textContent = name
 			this.tooltipCountryId = tooltipId
 		}
-		popup.setLngLat(this.map.unproject(point))
-		if (!popup.isOpen()) popup.addTo(this.map)
+		marker.setLngLat(this.map.unproject(point))
+		if (!this.tooltipVisible) {
+			marker.addTo(this.map)
+			this.tooltipVisible = true
+		}
 	}
 
 	private hideGuessedTooltip(): void {
-		if (!this.tooltipCountryId && !this.guessedTooltip?.isOpen()) return
+		if (!this.tooltipVisible && !this.tooltipCountryId) return
 		this.tooltipCountryId = null
+		this.tooltipVisible = false
 		this.guessedTooltip?.remove()
 	}
 }
