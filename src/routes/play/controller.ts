@@ -17,6 +17,7 @@ export {
 	submitGuessText,
 	updateAutocomplete,
 	warmupPlay,
+	showEndGameSummary,
 	getSession
 } from '../game/session_bridge.ts'
 

@@ -131,6 +131,27 @@ export function warmupPlay(): void {
 	void import('@infrastructure/data/geo_json_loader')
 }
 
+/** Show the game-over summary modal for a still-running game the player chose to end. */
+export function showEndGameSummary(): void {
+	if (!session || !activeConfig) return
+	const snapshot = session.getSnapshot()
+	if (snapshot.status !== 'playing') return
+
+	const m = messages[snapshot.locale]
+	void openDialog(GameOverModal, {
+		snapshot,
+		config: activeConfig,
+		ended: true,
+		victoryTitle: m.victory,
+		gameOverTitle: m.gameOver,
+		endedTitle: m.gameEnded,
+		endedNote: m.gameEndedNote,
+		playAgainLabel: m.playAgain,
+		exploreLinkLabel: m.gameOverExploreLink,
+		homeLabel: m.home
+	})
+}
+
 export function getSession(): GameSession | null {
 	return session
 }

@@ -13,6 +13,7 @@
 		resetMapView,
 		selectCountry,
 		selectRandomCountry,
+		showEndGameSummary,
 		submitGuess,
 		updateAutocomplete
 	} from './controller'
@@ -104,6 +105,10 @@
 		void transitionToHome()
 	}
 
+	function onEndQuiz() {
+		showEndGameSummary()
+	}
+
 	$: canPickRandomCountry =
 		$gameSnapshot.status === 'playing' &&
 		$gameSnapshot.progress.correct < $gameSnapshot.progress.total
@@ -166,7 +171,7 @@
 			autocompleteResults={$autocompleteResults}
 			{wrongPulse}
 			on:reset={resetMapView}
-			on:end={onEnd}
+			on:end={onEndQuiz}
 			on:guessInput={(e) => onGuessInput(e.detail)}
 			on:guessPick={(e) => onGuessPick(e.detail)}
 			on:guessClose={onGuessClose}
