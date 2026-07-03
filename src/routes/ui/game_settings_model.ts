@@ -16,6 +16,14 @@ export interface SegmentOption {
 	title?: string
 }
 
+export interface EraPickerOption {
+	id: string
+	label: string
+	hint: string
+	year: number | null
+	active: boolean
+}
+
 export interface TimerSelection {
 	enabled: boolean
 	minutes?: number
@@ -64,12 +72,26 @@ export function buildEraSegmentOptions(
 	currentEraId: string,
 	labels: Record<string, string>
 ): SegmentOption[] {
+	return buildEraPickerOptions(currentEraId, labels, {}).map((option) => ({
+		key: option.id,
+		label: option.label,
+		active: option.active
+	}))
+}
+
+export function buildEraPickerOptions(
+	currentEraId: string,
+	labels: Record<string, string>,
+	hints: Record<string, string>
+): EraPickerOption[] {
 	return MapEraRegistry.listIds().map((id) => {
 		const registration = MapEraRegistry.getRegistration(id)
 		const labelKey = registration?.labelKey as MessageKey | undefined
 		return {
-			key: id,
+			id,
 			label: labelKey ? (labels[labelKey] ?? id) : id,
+			hint: hints[id] ?? '',
+			year: registration?.year ?? null,
 			active: currentEraId === id
 		}
 	})

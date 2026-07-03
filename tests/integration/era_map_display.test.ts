@@ -98,3 +98,54 @@ describe('preww1 map display', () => {
 		45_000
 	)
 })
+
+describe('ce100 map display', () => {
+	let browser: Browser | undefined
+	let baseUrl: string | null
+
+	beforeAll(async () => {
+		browser = await chromium.launch({ headless: true })
+		baseUrl = await resolveBaseUrl(browser)
+	}, 60_000)
+
+	afterAll(async () => {
+		await browser?.close()
+	})
+
+	it(
+		'loads ce100 play map with era styling and expected entity count',
+		async () => {
+			expect(baseUrl, 'Start dev server: pnpm dev').toBeTruthy()
+			if (!baseUrl || !browser) return
+
+			const page = await browser.newPage()
+			try {
+				await page.addInitScript((localeKey) => {
+					localStorage.setItem(localeKey, 'en')
+				}, LOCALE_STORAGE_KEY)
+				await page.goto(`${baseUrl}/play?era=ce100&timer=0&lives=0`)
+				await waitForMap(page)
+				await page.waitForFunction(
+					() =>
+						document.querySelector('[data-testid="play-state"]')?.getAttribute('data-era-id') ===
+						'ce100',
+					{ timeout: 30_000 }
+				)
+
+				const state = await page.evaluate(() => {
+					const playState = document.querySelector('[data-testid="play-state"]')
+					return {
+						eraId: playState?.getAttribute('data-era-id') ?? null,
+						total: playState?.getAttribute('data-total') ?? null
+					}
+				})
+
+				expect(state.eraId).toBe('ce100')
+				expect(Number(state.total)).toBe(34)
+			} finally {
+				await page.close()
+			}
+		},
+		45_000
+	)
+})

@@ -8,9 +8,8 @@
 	export let title: string
 	export let modeHint: string
 	export let eraLabel: string
-	export let eraModernLabel: string
-	export let eraPreWW1Label: string
-	export let eraPreWW1Hint = ''
+	export let eraLabels: Record<string, string> = {}
+	export let eraHints: Record<string, string> = {}
 	export let timerLabel: string
 	export let livesLabel: string
 	export let infiniteLabel: string
@@ -74,9 +73,8 @@
 				{timerMinutes}
 				{maxLives}
 				{eraLabel}
-				{eraModernLabel}
-				{eraPreWW1Label}
-				{eraPreWW1Hint}
+				{eraLabels}
+				{eraHints}
 				{languageLabel}
 				{timerLabel}
 				{livesLabel}

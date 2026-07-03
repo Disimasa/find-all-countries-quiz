@@ -6,6 +6,7 @@
 		activateLobbyMode,
 		activeEraTheme,
 		initMapShell,
+		mapEraSwitching,
 		mapShellReady,
 		mapShellTransitioning,
 		runLobbyTeaserWhenReady,
@@ -21,7 +22,11 @@
 			$page.url.pathname === '/play' ||
 			$page.url.pathname === '/explore') &&
 		!$mapShellTransitioning
-	$: lobbyMapOn = $page.url.pathname === '/' && $mapShellReady && !$mapShellTransitioning
+	$: lobbyMapOn =
+		$page.url.pathname === '/' &&
+		$mapShellReady &&
+		!$mapShellTransitioning &&
+		!$mapEraSwitching
 	$: exploreMapOn = $page.url.pathname === '/explore' && $mapShellReady && !$mapShellTransitioning
 
 	$: if (lobbyMapOn) {

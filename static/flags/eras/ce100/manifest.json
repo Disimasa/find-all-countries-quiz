@@ -1,0 +1,22 @@
+[
+  {
+    "entityId": "han",
+    "file": "han.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Han_dynasty_(Chinese_characters).svg"
+  },
+  {
+    "entityId": "kushan-empire",
+    "file": "kushan-empire.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_kushans.png"
+  },
+  {
+    "entityId": "parthian-empire",
+    "file": "parthian-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Parthian_Empire.svg"
+  },
+  {
+    "entityId": "roman-empire",
+    "file": "roman-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Roman_Empire.svg"
+  }
+]

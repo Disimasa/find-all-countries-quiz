@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..')
-const eraId = 'preww1'
+const eraId = process.argv.find((arg) => arg.startsWith('--era='))?.split('=')[1] ?? 'preww1'
 const flagsDir = path.join(root, 'static/flags/eras', eraId)
 const sourcesPath = path.join(root, 'scripts/era-mappings', `${eraId}_flag_sources.json`)
 const flagIconsDir = path.join(root, 'node_modules/country-flag-icons/3x2')
@@ -31,7 +31,7 @@ async function fetchCommons(url) {
 }
 
 const entities = JSON.parse(
-	fs.readFileSync(path.join(root, 'static/data/eras/preww1/entities.json'), 'utf8')
+	fs.readFileSync(path.join(root, `static/data/eras/${eraId}/entities.json`), 'utf8')
 )
 const sources = JSON.parse(fs.readFileSync(sourcesPath, 'utf8'))
 fs.mkdirSync(flagsDir, { recursive: true })
@@ -70,9 +70,23 @@ for (const [key, group] of groups) {
 	} else {
 		try {
 			await delay(FETCH_DELAY_MS)
-			svg = await fetchCommons(group.source.url)
-			if (!svg.includes('<svg')) throw new Error('not svg')
-			fs.writeFileSync(cacheFile, svg)
+			const response = await fetch(group.source.url, {
+				headers: { 'User-Agent': USER_AGENT }
+			})
+			if (!response.ok) throw new Error(`HTTP ${response.status}`)
+			const contentType = response.headers.get('content-type') ?? ''
+			const buffer = Buffer.from(await response.arrayBuffer())
+			if (contentType.includes('svg') || buffer.toString('utf8', 0, 200).includes('<svg')) {
+				svg = buffer.toString('utf8')
+				fs.writeFileSync(cacheFile, svg)
+			} else if (contentType.includes('image/png')) {
+				fs.writeFileSync(cacheFile.replace(/\.svg$/, '.png'), buffer)
+				svg = null
+				group.assetExt = 'png'
+				group.assetBuffer = buffer
+			} else {
+				throw new Error(`unsupported type: ${contentType}`)
+			}
 			console.log('FETCHED', key.slice(0, 60))
 		} catch (error) {
 			console.log('FAIL', group.ids[0], error.message)
@@ -81,11 +95,15 @@ for (const [key, group] of groups) {
 	}
 
 	for (const id of group.ids) {
-		const out = path.join(flagsDir, `${id}.svg`)
-		fs.writeFileSync(out, svg)
+		const ext = group.assetExt ?? 'svg'
+		const payload = ext === 'png' ? group.assetBuffer : svg
+		if (!payload) continue
+		const fileName = `${id}.${ext}`
+		const out = path.join(flagsDir, fileName)
+		fs.writeFileSync(out, payload)
 		manifest.push({
 			entityId: id,
-			file: `${id}.svg`,
+			file: fileName,
 			source: key
 		})
 	}

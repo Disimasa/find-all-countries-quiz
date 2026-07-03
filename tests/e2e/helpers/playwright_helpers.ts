@@ -14,6 +14,8 @@ const entitiesPath = path.join(root, 'static/data/eras/modern/entities.json')
 const aliasesEnPath = path.join(root, 'static/data/eras/modern/aliases.en.json')
 const preww1EntitiesPath = path.join(root, 'static/data/eras/preww1/entities.json')
 const preww1AliasesEnPath = path.join(root, 'static/data/eras/preww1/aliases.en.json')
+const ce100EntitiesPath = path.join(root, 'static/data/eras/ce100/entities.json')
+const ce100AliasesEnPath = path.join(root, 'static/data/eras/ce100/aliases.en.json')
 
 export type QuizEntity = {
 	id: string
@@ -58,6 +60,23 @@ export function loadPreWW1EnglishAnswers(): Map<string, string> {
 		string[]
 	>
 	const entities = loadPreWW1QuizEntities()
+	const answers = new Map<string, string>()
+	for (const entity of entities) {
+		answers.set(entity.id, aliases[entity.id]?.[0] ?? entity.nameEn)
+	}
+	return answers
+}
+
+export function loadCe100QuizEntities(): QuizEntity[] {
+	return JSON.parse(fs.readFileSync(ce100EntitiesPath, 'utf8')) as QuizEntity[]
+}
+
+export function loadCe100EnglishAnswers(): Map<string, string> {
+	const aliases = JSON.parse(fs.readFileSync(ce100AliasesEnPath, 'utf8')) as Record<
+		string,
+		string[]
+	>
+	const entities = loadCe100QuizEntities()
 	const answers = new Map<string, string>()
 	for (const entity of entities) {
 		answers.set(entity.id, aliases[entity.id]?.[0] ?? entity.nameEn)
@@ -145,6 +164,30 @@ export async function openLobby(page: Page, baseUrl: string): Promise<void> {
 	await page.goto(`${baseUrl}/`)
 	await page.waitForSelector('.maplibregl-canvas', { timeout: 30_000 })
 	await page.getByRole('button', { name: 'New game' }).waitFor({ state: 'visible', timeout: 30_000 })
+}
+
+export async function selectEraOnLobby(page: Page, eraId: string): Promise<void> {
+	const option = page.getByTestId(`era-option-${eraId}`)
+	await option.click()
+	await page.waitForFunction(
+		(id) =>
+			document.querySelector(`[data-testid="era-option-${id}"]`)?.getAttribute('aria-selected') ===
+			'true',
+		eraId,
+		{ timeout: 15_000 }
+	)
+}
+
+export async function waitForLobbyMapEra(page: Page, eraId: string | null): Promise<void> {
+	await page.waitForFunction(
+		(expected) => {
+			const shell = document.querySelector('[data-testid="map-shell"]')
+			const actual = shell?.getAttribute('data-map-era') ?? null
+			return actual === expected
+		},
+		eraId,
+		{ timeout: 30_000 }
+	)
 }
 
 export async function waitForPlaying(page: Page): Promise<void> {

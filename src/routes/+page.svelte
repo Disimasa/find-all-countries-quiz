@@ -28,6 +28,16 @@
 	$: lives = $maxLives
 	$: currentEra = $eraId
 
+	$: eraLabels = {
+		eraModern: $t('eraModern'),
+		eraPreWW1: $t('eraPreWW1'),
+		eraCe100: $t('eraCe100')
+	}
+	$: eraHints = {
+		preww1: $t('eraPreWW1Hint'),
+		ce100: $t('eraCe100Hint')
+	}
+
 	onMount(() => {
 		const saved = getSavedGame()
 		if (saved) {
@@ -79,9 +89,8 @@
 		title={$t('title')}
 		modeHint={$t('modeHint')}
 		eraLabel={$t('era')}
-		eraModernLabel={$t('eraModern')}
-		eraPreWW1Label={$t('eraPreWW1')}
-		eraPreWW1Hint={$t('eraPreWW1Hint')}
+		{eraLabels}
+		{eraHints}
 		timerLabel={$t('timer')}
 		livesLabel={$t('lives')}
 		infiniteLabel={$t('infinite')}

@@ -63,7 +63,7 @@ describe('lobby era switch', () => {
 
 				expect(await getMapEra(page)).toBeNull()
 
-				await page.getByRole('button', { name: '1914' }).click()
+				await page.getByTestId('era-option-preww1').click()
 				await page.waitForFunction(
 					() =>
 						document.querySelector('[data-testid="map-shell"]')?.getAttribute('data-map-era') ===
@@ -71,7 +71,7 @@ describe('lobby era switch', () => {
 					{ timeout: 30_000 }
 				)
 
-				await page.getByRole('button', { name: 'Modern' }).click()
+				await page.getByTestId('era-option-modern').click()
 				await page.waitForFunction(
 					() => !document.querySelector('[data-testid="map-shell"]')?.hasAttribute('data-map-era'),
 					{ timeout: 30_000 }

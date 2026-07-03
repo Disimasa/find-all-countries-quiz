@@ -1,0 +1,210 @@
+[
+  {
+    "id": "alans",
+    "nameEn": "Alans",
+    "nameRu": "Аланы",
+    "region": "Alans"
+  },
+  {
+    "id": "arakan",
+    "nameEn": "Arakan",
+    "nameRu": "Аракан",
+    "region": "Arakan"
+  },
+  {
+    "id": "armenia",
+    "nameEn": "Armenia",
+    "nameRu": "Армения",
+    "region": "Armenia"
+  },
+  {
+    "id": "axum",
+    "nameEn": "Axum",
+    "nameRu": "Аксум",
+    "region": "Axum"
+  },
+  {
+    "id": "blemmyes",
+    "nameEn": "Blemmyes",
+    "nameRu": "Блеммии",
+    "region": "Blemmyes"
+  },
+  {
+    "id": "bosporian-kingdom",
+    "nameEn": "Bosporian Kingdom",
+    "nameRu": "Босфорское царство",
+    "region": "Bosporian Kingdom"
+  },
+  {
+    "id": "dacia",
+    "nameEn": "Dacia",
+    "nameRu": "Дакия",
+    "region": "Dacia"
+  },
+  {
+    "id": "gaya",
+    "nameEn": "Gaya",
+    "nameRu": "Кая",
+    "region": "Gaya"
+  },
+  {
+    "id": "hadramaut",
+    "nameEn": "Hadramaut",
+    "nameRu": "Хадрамаут",
+    "region": "Hadramaut"
+  },
+  {
+    "id": "hainan",
+    "nameEn": "Hainan",
+    "nameRu": "Хайнань",
+    "region": "Hainan"
+  },
+  {
+    "id": "han",
+    "nameEn": "Han",
+    "nameRu": "Хань",
+    "region": "Han",
+    "flagAsset": "han.svg"
+  },
+  {
+    "id": "himyarite-kingdom",
+    "nameEn": "Himyarite Kingdom",
+    "nameRu": "Химьяритское царство",
+    "region": "Himyarite Kingdom"
+  },
+  {
+    "id": "hindu-kingdoms",
+    "nameEn": "Hindu kingdoms",
+    "nameRu": "Индийские царства",
+    "region": "Hindu kingdoms"
+  },
+  {
+    "id": "kalinga",
+    "nameEn": "Kalinga",
+    "nameRu": "Калинга",
+    "region": "Kalinga"
+  },
+  {
+    "id": "koguryo",
+    "nameEn": "Koguryo",
+    "nameRu": "Когурё",
+    "region": "Koguryo"
+  },
+  {
+    "id": "kushan-empire",
+    "nameEn": "Kushan Empire",
+    "nameRu": "Кушанская империя",
+    "region": "Kushan Empire",
+    "flagAsset": "kushan-empire.png"
+  },
+  {
+    "id": "maya-chiefdoms",
+    "nameEn": "Maya chiefdoms and states",
+    "nameRu": "Майя",
+    "region": "Maya chiefdoms and states"
+  },
+  {
+    "id": "meroe",
+    "nameEn": "Meroe",
+    "nameRu": "Мероэ",
+    "region": "Meroe"
+  },
+  {
+    "id": "moche",
+    "nameEn": "Moche",
+    "nameRu": "Моче",
+    "region": "Moche"
+  },
+  {
+    "id": "monte-alban",
+    "nameEn": "Monte Albán",
+    "nameRu": "Монте-Альбан",
+    "region": "Monte Albán"
+  },
+  {
+    "id": "nabatean-kingdom",
+    "nameEn": "Nabatean Kingdom",
+    "nameRu": "Набатейское царство",
+    "region": "Nabatean Kingdom"
+  },
+  {
+    "id": "nazca",
+    "nameEn": "Nazca",
+    "nameRu": "Наска",
+    "region": "Nazca"
+  },
+  {
+    "id": "paekche",
+    "nameEn": "Paekche",
+    "nameRu": "Пэкче",
+    "region": "Paekche"
+  },
+  {
+    "id": "parthian-empire",
+    "nameEn": "Parthian Empire",
+    "nameRu": "Парфянское царство",
+    "region": "Parthian Empire",
+    "flagAsset": "parthian-empire.svg"
+  },
+  {
+    "id": "roman-empire",
+    "nameEn": "Roman Empire",
+    "nameRu": "Римская империя",
+    "region": "Roman Empire",
+    "flagAsset": "roman-empire.svg"
+  },
+  {
+    "id": "saka-kingdom",
+    "nameEn": "Saka Kingdom",
+    "nameRu": "Царство саков",
+    "region": "Saka Kingdom"
+  },
+  {
+    "id": "satavahanihara",
+    "nameEn": "Satavahanihara",
+    "nameRu": "Сатавахана",
+    "region": "Satavahanihara"
+  },
+  {
+    "id": "scythians",
+    "nameEn": "Scythians",
+    "nameRu": "Скифы",
+    "region": "Scythians"
+  },
+  {
+    "id": "silla",
+    "nameEn": "Silla",
+    "nameRu": "Силла",
+    "region": "Silla"
+  },
+  {
+    "id": "simhala",
+    "nameEn": "Simhala",
+    "nameRu": "Симхала",
+    "region": "Simhala"
+  },
+  {
+    "id": "southern-xiongnu",
+    "nameEn": "Southern Xiongnu",
+    "nameRu": "Южные сюнну",
+    "region": "Southern Xiongnu"
+  },
+  {
+    "id": "suren-kingdom",
+    "nameEn": "Suren Kingdom",
+    "nameRu": "Царство Суренов",
+    "region": "Kushan Empire"
+  },
+  {
+    "id": "teotihuacan",
+    "nameEn": "Teotihuacán",
+    "nameRu": "Теотиуакан",
+    "region": "Teotihuacán"
+  },
+  {
+    "id": "yueban",
+    "nameEn": "Yueban",
+    "nameRu": "Юэбань",
+    "region": "Yueban"
+  }
+]

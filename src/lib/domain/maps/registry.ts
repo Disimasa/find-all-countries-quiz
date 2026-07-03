@@ -5,6 +5,8 @@ import { MODERN_ERA_ID } from './modern/constants.ts'
 import { ModernWorldMap } from './modern/map.ts'
 import { PREWW1_ERA_ID } from './preww1/constants.ts'
 import { PreWW1WorldMap } from './preww1/map.ts'
+import { CE100_ERA_ID } from './ce100/constants.ts'
+import { Ce100WorldMap } from './ce100/map.ts'
 
 export interface EraRegistration {
 	readonly id: string
@@ -51,4 +53,13 @@ registerEra({
 	entityType: 'polity',
 	themeProfileId: 'parchment',
 	labelKey: 'eraPreWW1'
+})
+
+registerEra({
+	id: CE100_ERA_ID,
+	factory: () => new Ce100WorldMap(),
+	year: 100,
+	entityType: 'polity',
+	themeProfileId: 'parchment',
+	labelKey: 'eraCe100'
 })

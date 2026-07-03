@@ -64,6 +64,7 @@ let mapShellRootEl: HTMLElement | null = null
 let selectHandler: ((id: string) => void) | null = null
 let lobbyModeActive = false
 let exploreModeActive = false
+let lobbyModeActivationGen = 0
 let unsubReset: (() => void) | null = null
 let initPromise: Promise<void> | null = null
 let mountWaiters: Array<() => void> = []
@@ -95,14 +96,18 @@ function applyEraPresentation(eraId: string): void {
 	activeEraTheme.set(profile)
 }
 
+function cancelPendingLobbyActivation(): void {
+	lobbyModeActivationGen++
+}
+
 async function loadEra(eraId: string): Promise<void> {
 	const era = MapEraRegistry.create(eraId)
 	await era.initialize(new GeoJsonLoader())
 	setSharedMapEra(era)
-	if (renderer?.isReady()) {
-		renderer.swapEra(era)
-	}
 	applyEraPresentation(eraId)
+	if (renderer?.isReady()) {
+		await renderer.swapEra(era)
+	}
 }
 
 export async function switchMapEra(nextEraId: string): Promise<void> {
@@ -111,6 +116,7 @@ export async function switchMapEra(nextEraId: string): Promise<void> {
 	if (current === nextEraId) return
 
 	mapEraSwitching.set(true)
+	stopLobbyTeaser(renderer ?? undefined)
 	try {
 		const saved = loadSavedGame(current)
 		if (saved && saved.eraId !== nextEraId) {
@@ -123,7 +129,7 @@ export async function switchMapEra(nextEraId: string): Promise<void> {
 		if (selectHandler) {
 			lobbyModeActive = false
 			exploreModeActive = false
-			renderer?.activatePlay(selectHandler, get(gameSnapshot))
+			await renderer?.activatePlay(selectHandler, get(gameSnapshot))
 		} else if (exploreModeActive) {
 			await activateExploreMode(getLocale())
 		} else if (lobbyModeActive || get(mapShellReady)) {
@@ -174,7 +180,7 @@ export function setMapSelectHandler(handler: ((id: string) => void) | null): voi
 		exploreModeActive = false
 		stopLobbyTeaser(renderer)
 		const snapshot = get(gameSnapshot)
-		renderer.activatePlay(handler, snapshot)
+		void renderer.activatePlay(handler, snapshot)
 	} else {
 		void activateLobbyMode()
 	}
@@ -191,9 +197,12 @@ function onLobbyCountrySelected(countryId: string): void {
 }
 
 export async function activateLobbyMode(): Promise<void> {
+	const generation = lobbyModeActivationGen
 	if (lobbyModeActive) return
 	exploreModeActive = false
 	const map = await ensureReady()
+	if (generation !== lobbyModeActivationGen) return
+	if (lobbyModeActive) return
 	lobbyModeActive = true
 	map.activateLobby(
 		onLobbyCountrySelected,
@@ -237,6 +246,7 @@ export async function transitionToPlay(
 	if (get(mapShellTransitioning)) return
 
 	const map = await ensureReady()
+	cancelPendingLobbyActivation()
 	mapShellTransitioning.set(true)
 	stopLobbyTeaser(map)
 	lobbyModeActive = false
@@ -255,7 +265,7 @@ export async function transitionToPlay(
 		} else {
 			await startGame(config)
 		}
-		if (selectHandler) map.activatePlay(selectHandler, get(gameSnapshot))
+		if (selectHandler) await map.activatePlay(selectHandler, get(gameSnapshot))
 		if (options?.focusCountryId) {
 			selectCountry(options.focusCountryId)
 			await finishZoomWithUiReveal(map.flyToCountry(options.focusCountryId))
@@ -317,13 +327,14 @@ export async function enterPlayDirect(
 	options?: { resume?: SavedGameProgress }
 ): Promise<void> {
 	const map = await ensureReady()
+	cancelPendingLobbyActivation()
 	stopLobbyTeaser(map)
 	if (options?.resume) {
 		await resumeGame(config, options.resume)
 	} else {
 		await startGame(config)
 	}
-	if (selectHandler) map.activatePlay(selectHandler, get(gameSnapshot))
+	if (selectHandler) await map.activatePlay(selectHandler, get(gameSnapshot))
 	await map.flyToPlayView(0)
 }
 

@@ -314,6 +314,7 @@ let countryIds: string[] = []
 let recentIds: string[] = []
 let recentModes: LobbyTeaserPinMode[] = []
 let running = false
+let teaserEraId: string | null = null
 let mapRef: MapHost | null = null
 
 function pickNextId(): string | null {
@@ -350,6 +351,10 @@ export function startLobbyTeaser(map: MapHost): void {
 
 	const epoch = lobbyTeaserEpoch
 
+	if (running && teaserEraId !== era.id) {
+		stopLobbyTeaser(map)
+	}
+
 	if (running) {
 		ensureTeaserTimerRunning()
 		return
@@ -369,6 +374,7 @@ export function startLobbyTeaser(map: MapHost): void {
 
 	mapRef = map
 	running = true
+	teaserEraId = era.id
 	recentIds = []
 	recentModes = []
 	ensurePickMarkerReady()
@@ -396,6 +402,7 @@ export function stopLobbyTeaser(host?: MapHost): void {
 
 	mapRef = null
 	running = false
+	teaserEraId = null
 	recentIds = []
 	recentModes = []
 }

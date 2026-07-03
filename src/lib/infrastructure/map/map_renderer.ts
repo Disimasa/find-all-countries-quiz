@@ -101,13 +101,13 @@ export class MapRenderer implements MapHost {
 
 	setLobbyPick(id: string | null): void {
 		this.lobbySelectedId = id
-		if (!this.lobbyMode) return
+		if (!this.lobbyMode || !this.hasCountriesSource()) return
 		this.syncLobbyFeatureStates()
 	}
 
 	setLobbyHint(id: string | null): void {
 		this.lobbyHintId = id
-		if (!this.lobbyMode) return
+		if (!this.lobbyMode || !this.hasCountriesSource()) return
 		this.syncLobbyFeatureStates()
 	}
 
@@ -189,7 +189,7 @@ export class MapRenderer implements MapHost {
 		}
 	}
 
-	activatePlay(onSelect: (id: string) => void, snapshot: GameSnapshot): void {
+	activatePlay(onSelect: (id: string) => void, snapshot: GameSnapshot): Promise<void> {
 		this.exploreMode = false
 		this.hideBasemapSymbolLayers()
 		this.lobbyMode = false
@@ -199,7 +199,11 @@ export class MapRenderer implements MapHost {
 		this.onLobbyNavigateEnd = null
 		this.unbindLobbyNavigation()
 		this.setInteractive(true, onSelect)
-		this.updateStyles(snapshot)
+		this.snapshot = snapshot
+		return this.waitForCountriesSourceData().then(() => {
+			if (!this.ready) return
+			this.syncFeatureStates()
+		})
 	}
 
 	setLobbySelection(id: string | null): void {
@@ -261,26 +265,24 @@ export class MapRenderer implements MapHost {
 		this.map?.resize()
 	}
 
-	swapEra(era: BaseMapEra): void {
+	swapEra(era: BaseMapEra): Promise<void> {
 		this.era = era
 		this.hoveredId = null
 		this.flashingId = null
 		this.lobbySelectedId = null
 		this.lobbyHintId = null
 
-		const source = this.map?.getSource(COUNTRIES_SOURCE_ID) as GeoJSONSource | undefined
-		if (source) {
-			source.setData(era.getGeoJson())
+		if (this.map?.getSource(COUNTRIES_SOURCE_ID)) {
+			this.replaceCountryLayers(era.getGeoJson())
+			return this.waitForCountriesSourceData().then(() => {
+				this.applyEraFeatureStatesAfterSwap()
+				this.refreshTheme()
+			})
 		}
 
-		this.initDefaultFeatureStates()
-		if (this.lobbyMode) this.syncLobbyFeatureStates()
-		if (this.exploreMode) {
-			this.syncExploreFeatureStates()
-			this.syncExploreEraLabels()
-		}
-		if (this.snapshot) this.syncFeatureStates()
+		this.applyEraFeatureStatesAfterSwap()
 		this.refreshTheme()
+		return Promise.resolve()
 	}
 
 	refreshTheme(): void {
@@ -399,9 +401,8 @@ export class MapRenderer implements MapHost {
 	}
 
 	updateStyles(snapshot: GameSnapshot): void {
-		if (this.lobbyMode) return
 		this.snapshot = snapshot
-		if (!this.ready) return
+		if (this.lobbyMode || !this.ready || !this.hasCountriesSource()) return
 		this.syncFeatureStates()
 	}
 
@@ -584,11 +585,28 @@ export class MapRenderer implements MapHost {
 		}
 	}
 
+	private replaceCountryLayers(geoJson: FeatureCollection): void {
+		if (!this.map) return
+
+		if (this.map.getLayer(COUNTRIES_LINE_LAYER_ID)) {
+			this.map.removeLayer(COUNTRIES_LINE_LAYER_ID)
+		}
+		if (this.map.getLayer(COUNTRIES_FILL_LAYER_ID)) {
+			this.map.removeLayer(COUNTRIES_FILL_LAYER_ID)
+		}
+		if (this.map.getSource(COUNTRIES_SOURCE_ID)) {
+			this.map.removeSource(COUNTRIES_SOURCE_ID)
+		}
+
+		this.addCountryLayers(geoJson)
+	}
+
 	private addCountryLayers(geoJson: FeatureCollection): void {
 		if (!this.map) return
 
-		const paint = buildCountryPaint(readMapTheme())
-		const borderPaint = buildCountryBorderPaint(readMapTheme())
+		const theme = readMapTheme()
+		const paint = buildCountryPaint(theme)
+		const borderPaint = buildCountryBorderPaint(theme)
 
 		this.map.addSource(COUNTRIES_SOURCE_ID, {
 			type: 'geojson',
@@ -823,8 +841,46 @@ export class MapRenderer implements MapHost {
 		return countryVisual(id, this.snapshot, this.hoveredId)
 	}
 
+	private hasCountriesSource(): boolean {
+		return !!this.map?.getSource(COUNTRIES_SOURCE_ID)
+	}
+
+	private waitForCountriesSourceData(): Promise<void> {
+		if (!this.map || !this.hasCountriesSource()) return Promise.resolve()
+
+		if (this.map.isSourceLoaded(COUNTRIES_SOURCE_ID)) {
+			return Promise.resolve()
+		}
+
+		return new Promise((resolve) => {
+			const map = this.map!
+			const finish = () => {
+				map.off('sourcedata', onSourceData)
+				resolve()
+			}
+			const onSourceData = (event: maplibregl.MapSourceDataEvent) => {
+				if (event.sourceId !== COUNTRIES_SOURCE_ID) return
+				if (!map.isSourceLoaded(COUNTRIES_SOURCE_ID)) return
+				finish()
+			}
+			map.on('sourcedata', onSourceData)
+			window.setTimeout(finish, 3000)
+		})
+	}
+
+	private applyEraFeatureStatesAfterSwap(): void {
+		this.initDefaultFeatureStates()
+		if (this.lobbyMode) this.syncLobbyFeatureStates()
+		if (this.exploreMode) {
+			this.syncExploreFeatureStates()
+			this.syncExploreEraLabels()
+		}
+		if (this.snapshot) this.syncFeatureStates()
+	}
+
 	private setFeatureVisual(id: string, visual: EntityVisualState): void {
-		this.map?.setFeatureState({ source: COUNTRIES_SOURCE_ID, id }, { visual })
+		if (!this.map || !this.hasCountriesSource()) return
+		this.map.setFeatureState({ source: COUNTRIES_SOURCE_ID, id }, { visual })
 	}
 
 	private ensureGuessedTooltip(): maplibregl.Marker {

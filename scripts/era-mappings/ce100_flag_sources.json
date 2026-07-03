@@ -1,0 +1,18 @@
+{
+  "han": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Han_dynasty_(Chinese_characters).svg"
+  },
+  "kushan-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_kushans.png"
+  },
+  "parthian-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Parthian_Empire.svg"
+  },
+  "roman-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Roman_Empire.svg"
+  }
+}

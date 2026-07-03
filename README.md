@@ -20,11 +20,8 @@ Switch between political maps from different periods. Each era has its own borde
 | Era | What you practice |
 | --- | --- |
 | **Modern** | Today’s internationally recognized borders |
-| **1939** | Europe and the world on the eve of the Second World War |
 | **1914** | Europe and the world on the eve of the First World War |
-| **Before the Napoleonic Wars** | States and borders in the late 18th century |
-| **Fall of the Eastern Roman Empire** | The Byzantine world in the empire’s final years before Constantinople fell in 1453 |
-| **Roman Empire at its height** | Provinces and frontiers around the empire’s greatest extent |
+| **100 AD** | Major powers of the ancient world around 100 CE |
 
 Good for learning geography beyond “where things are today”—see how borders used to look.
 
@@ -48,7 +45,7 @@ Progress is saved automatically. Leave mid-game and the lobby will offer **Conti
 
 Some regions are territories or disputed areas. Borders are shown for quiz purposes only.
 
-Historical map borders for the **1914** era are derived from [CShapes 2.0](https://icr.ethz.ch/data/cshapes/) (ETH Zurich). Era-specific flag artwork, where shown, is sourced from [Wikimedia Commons](https://commons.wikimedia.org/) and used under their respective licenses.
+Historical map borders for the **1914** era are derived from [CShapes 2.0](https://icr.ethz.ch/data/cshapes/) (ETH Zurich). The **100 AD** era uses [historical-basemaps](https://github.com/aourednik/historical-basemaps) (GPL-3.0). Era-specific flag artwork, where shown, is sourced from [Wikimedia Commons](https://commons.wikimedia.org/) and used under their respective licenses.
 
 ## Development
 

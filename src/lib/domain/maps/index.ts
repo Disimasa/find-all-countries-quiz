@@ -58,6 +58,8 @@ export {
 } from './registry.ts'
 export { MODERN_ERA_ID } from './modern/constants.ts'
 export { PREWW1_ERA_ID } from './preww1/constants.ts'
+export { CE100_ERA_ID } from './ce100/constants.ts'
 export { BaseMapEra } from './base.ts'
 export { ModernWorldMap } from './modern/map.ts'
 export { PreWW1WorldMap } from './preww1/map.ts'
+export { Ce100WorldMap } from './ce100/map.ts'

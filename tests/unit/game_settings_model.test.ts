@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
 	applyLivesSelection,
 	applyTimerSelection,
+	buildEraPickerOptions,
 	buildLivesSegmentOptions,
 	buildLocaleSegmentOptions,
 	buildTimerSegmentOptions,
@@ -12,6 +13,19 @@ import {
 import { DEFAULT_GAME_SETTINGS } from '@persist'
 
 describe('game_settings_model', () => {
+	it('builds era picker options with hints and active era', () => {
+		const options = buildEraPickerOptions('preww1', { eraModern: 'Modern', eraPreWW1: '1914' }, {
+			preww1: 'Before the Great War'
+		})
+		expect(options.find((option) => option.id === 'preww1')).toMatchObject({
+			label: '1914',
+			hint: 'Before the Great War',
+			year: 1914,
+			active: true
+		})
+		expect(options.find((option) => option.id === 'modern')?.active).toBe(false)
+	})
+
 	it('builds locale segment options with active locale', () => {
 		expect(buildLocaleSegmentOptions('ru')).toEqual([
 			{ key: 'en', label: 'EN', active: false },
