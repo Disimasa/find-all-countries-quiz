@@ -255,6 +255,11 @@ describe('play game flow', () => {
 				expect((await getPlayState(page)).correct).toBe(resumeCount)
 
 				await page.getByRole('button', { name: 'End quiz' }).click()
+				const endModal = page.getByTestId('game-over-modal')
+				await endModal.waitFor({ state: 'visible', timeout: 15_000 })
+				expect(await page.getByTestId('game-over-title').innerText()).toBe('Quiz ended')
+				expect(await endModal.getAttribute('data-outcome')).toBe('ended')
+				await page.getByRole('button', { name: 'Home' }).click()
 				await page.getByRole('button', { name: 'New game' }).waitFor({ state: 'visible', timeout: 15_000 })
 				await page.getByTestId('continue-game').waitFor({ state: 'visible', timeout: 15_000 })
 				await page.getByTestId('continue-game').click()

@@ -4,7 +4,12 @@ import type { BaseMapEra } from '@domain/maps'
 import type { EntityVisualState, GameSnapshot, Locale } from '@domain/entities'
 import { buildCountryBorderPaint, buildCountryPaint, readMapTheme } from '@theme'
 import type { MapHost } from './map_host.ts'
-import { baseCountryVisual, countryVisual, resolveHoverableCountryId } from './hover_state.ts'
+import {
+	baseCountryVisual,
+	countryVisual,
+	resolveGuessedTooltipId,
+	resolveHoverableCountryId
+} from './hover_state.ts'
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import {
@@ -64,6 +69,10 @@ export class MapRenderer implements MapHost {
 	private onSelect: ((id: string) => void) | null = null
 	private snapshot: GameSnapshot | null = null
 	private hoveredId: string | null = null
+	private guessedTooltip: maplibregl.Marker | null = null
+	private guessedTooltipEl: HTMLElement | null = null
+	private tooltipCountryId: string | null = null
+	private tooltipVisible = false
 	private flashingId: string | null = null
 	private flashToken = 0
 	private ready = false
@@ -172,6 +181,7 @@ export class MapRenderer implements MapHost {
 
 		if (!enabled) {
 			this.clearHover()
+			this.hideGuessedTooltip()
 			this.map.getCanvas().style.cursor = ''
 		}
 	}
@@ -210,6 +220,7 @@ export class MapRenderer implements MapHost {
 		this.onLobbyNavigate = onNavigate ?? null
 		this.onLobbyNavigateEnd = onNavigateEnd ?? null
 		this.snapshot = null
+		this.hideGuessedTooltip()
 		this.setInteractive(true, onCountryClick)
 		this.syncLobbyFeatureStates()
 		this.bindLobbyNavigation()
@@ -225,6 +236,7 @@ export class MapRenderer implements MapHost {
 		this.onLobbyNavigateEnd = null
 		this.unbindLobbyNavigation()
 		this.snapshot = null
+		this.hideGuessedTooltip()
 		this.setInteractive(true, () => {})
 		this.syncExploreFeatureStates()
 		this.showBasemapSymbolLayers()
@@ -374,6 +386,11 @@ export class MapRenderer implements MapHost {
 		this.flashToken++
 		this.flashingId = null
 		this.unbindLobbyNavigation()
+		this.guessedTooltip?.remove()
+		this.guessedTooltip = null
+		this.guessedTooltipEl = null
+		this.tooltipCountryId = null
+		this.tooltipVisible = false
 		this.map?.remove()
 		this.map = null
 		this.era = null
@@ -589,11 +606,18 @@ export class MapRenderer implements MapHost {
 
 		this.map.on('mouseout', () => {
 			this.clearHover()
+			this.hideGuessedTooltip()
 			if (this.map) this.map.getCanvas().style.cursor = ''
 		})
 
-		this.map.on('dragstart', () => this.clearHover())
-		this.map.on('zoomstart', () => this.clearHover())
+		this.map.on('dragstart', () => {
+			this.clearHover()
+			this.hideGuessedTooltip()
+		})
+		this.map.on('zoomstart', () => {
+			this.clearHover()
+			this.hideGuessedTooltip()
+		})
 	}
 
 	private updateHoverAtPoint(point: maplibregl.PointLike): void {
@@ -614,6 +638,8 @@ export class MapRenderer implements MapHost {
 			this.updateLobbyHoverAtPoint(id)
 			return
 		}
+
+		this.updateGuessedTooltip(id, point)
 
 		const hoverableId = resolveHoverableCountryId(
 			id,
@@ -724,5 +750,54 @@ export class MapRenderer implements MapHost {
 
 	private setFeatureVisual(id: string, visual: EntityVisualState): void {
 		this.map?.setFeatureState({ source: COUNTRIES_SOURCE_ID, id }, { visual })
+	}
+
+	private ensureGuessedTooltip(): maplibregl.Marker {
+		if (!this.guessedTooltip) {
+			const el = document.createElement('div')
+			el.className =
+				'pointer-events-none select-none whitespace-nowrap rounded-lg border border-success/60 bg-base-100/90 px-2 py-0.5 text-xs font-semibold text-base-content shadow-lg'
+			this.guessedTooltipEl = el
+			this.guessedTooltip = new maplibregl.Marker({
+				element: el,
+				anchor: 'bottom',
+				offset: [0, -12]
+			})
+		}
+		return this.guessedTooltip
+	}
+
+	private updateGuessedTooltip(id: string | null, point: maplibregl.PointLike): void {
+		if (!this.map) return
+
+		const tooltipId = resolveGuessedTooltipId(id, this.snapshot?.guessedIds ?? new Set())
+		if (!tooltipId) {
+			this.hideGuessedTooltip()
+			return
+		}
+
+		const name = this.era?.getDisplayName(tooltipId, this.snapshot?.locale ?? 'en')
+		if (!name) {
+			this.hideGuessedTooltip()
+			return
+		}
+
+		const marker = this.ensureGuessedTooltip()
+		if (this.tooltipCountryId !== tooltipId && this.guessedTooltipEl) {
+			this.guessedTooltipEl.textContent = name
+			this.tooltipCountryId = tooltipId
+		}
+		marker.setLngLat(this.map.unproject(point))
+		if (!this.tooltipVisible) {
+			marker.addTo(this.map)
+			this.tooltipVisible = true
+		}
+	}
+
+	private hideGuessedTooltip(): void {
+		if (!this.tooltipVisible && !this.tooltipCountryId) return
+		this.tooltipCountryId = null
+		this.tooltipVisible = false
+		this.guessedTooltip?.remove()
 	}
 }

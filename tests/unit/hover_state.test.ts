@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
 	baseCountryVisual,
 	countryVisual,
+	resolveGuessedTooltipId,
 	resolveHoverableCountryId
 } from '@infrastructure/map/hover_state'
 
@@ -33,5 +34,11 @@ describe('hover_state', () => {
 
 	it('selected beats hover on same country', () => {
 		expect(countryVisual('FR', snapshot, 'FR')).toBe('selected')
+	})
+
+	it('resolves tooltip id only for guessed countries', () => {
+		expect(resolveGuessedTooltipId('DE', snapshot.guessedIds)).toBe('DE')
+		expect(resolveGuessedTooltipId('PL', snapshot.guessedIds)).toBeNull()
+		expect(resolveGuessedTooltipId(null, snapshot.guessedIds)).toBeNull()
 	})
 })

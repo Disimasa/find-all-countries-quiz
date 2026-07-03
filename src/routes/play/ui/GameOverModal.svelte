@@ -16,11 +16,15 @@
 	export let playAgainLabel: string
 	export let exploreLinkLabel: string
 	export let homeLabel: string
+	export let ended = false
+	export let endedTitle = ''
+	export let endedNote = ''
 
 	let dialog: HTMLDialogElement
 
 	$: summary = buildGameOverSummary(snapshot, config)
 	$: won = snapshot.status === 'won'
+	$: title = ended ? endedTitle : won ? victoryTitle : gameOverTitle
 	$: foundLabel = $t('gameOverFoundCount')
 		.replace('{correct}', String(summary.correct))
 		.replace('{total}', String(summary.total))
@@ -75,7 +79,7 @@
 <dialog
 	bind:this={dialog}
 	data-testid="game-over-modal"
-	data-outcome={snapshot.status}
+	data-outcome={ended ? 'ended' : snapshot.status}
 	class="fixed top-1/2 left-1/2 m-0 w-[min(100vw-2rem,22rem)] -translate-x-1/2 -translate-y-1/2 border-0 bg-transparent p-0 shadow-none backdrop:bg-black/40"
 >
 	<div class="rounded-2xl border border-base-300/80 bg-base-100 p-6 text-center shadow-xl">
@@ -83,7 +87,7 @@
 			data-testid="game-over-title"
 			class="text-xl font-bold text-base-content sm:text-2xl"
 		>
-			{won ? victoryTitle : gameOverTitle}
+			{title}
 		</h2>
 
 		<div class="mt-4 flex justify-center">
@@ -92,7 +96,9 @@
 
 		<p class="mt-3 text-sm font-medium text-base-content">{foundLabel}</p>
 
-		{#if lossLabel}
+		{#if ended && endedNote}
+			<p class="mt-1 text-sm text-base-content/70">{endedNote}</p>
+		{:else if lossLabel}
 			<p class="mt-1 text-sm text-error/90">{lossLabel}</p>
 		{/if}
 
