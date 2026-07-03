@@ -1,0 +1,25 @@
+[data-map-era='preww1'] {
+	--map-country-default: #e8dcc8;
+	--map-country-default-outline: #5c4a3a;
+	--map-country-default-opacity: 0.54;
+	--map-country-default-weight: 0.85;
+	--map-country-hover: #d4c4a8;
+	--map-country-hover-outline: #6b5340;
+	--map-country-hover-opacity: 0.62;
+	--map-country-hover-weight: 1;
+	--map-country-selected: #c9a227;
+	--map-country-selected-outline: #8a6918;
+	--map-country-selected-opacity: 0.88;
+	--map-country-selected-weight: 2.1;
+	--map-country-guessed: #6b8f5e;
+	--map-country-guessed-outline: #3d5c34;
+	--map-country-guessed-opacity: 0.82;
+	--map-country-guessed-weight: 0.75;
+	--map-country-wrong: #c45c4a;
+	--map-country-wrong-outline: #8f3528;
+	--map-country-wrong-opacity: 0.92;
+	--map-country-wrong-weight: 1.5;
+	--map-water: #8fa9b8;
+	--map-waterway: #6d8fa3;
+	--map-waterway-opacity: 0.88;
+}

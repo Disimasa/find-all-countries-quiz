@@ -1,5 +1,5 @@
 import type { GameConfig } from '@domain/entities'
-import { MODERN_ERA_ID } from '@domain/maps'
+import { DEFAULT_ERA_ID, MapEraRegistry } from '@domain/maps'
 import {
 	DEFAULT_GAME_SETTINGS,
 	GAME_SAVE_STORAGE_KEY,
@@ -16,8 +16,14 @@ function clamp(value: number, min: number, max: number): number {
 	return Math.min(max, Math.max(min, value))
 }
 
+function normalizeEraId(eraId: string | undefined): string {
+	if (eraId && MapEraRegistry.isKnown(eraId)) return eraId
+	return DEFAULT_ERA_ID
+}
+
 function normalizeSettings(raw: Partial<GameSettings>): GameSettings {
 	return {
+		eraId: normalizeEraId(raw.eraId),
 		timerEnabled: raw.timerEnabled ?? DEFAULT_GAME_SETTINGS.timerEnabled,
 		livesEnabled: raw.livesEnabled ?? DEFAULT_GAME_SETTINGS.livesEnabled,
 		timerMinutes: clamp(
@@ -56,15 +62,17 @@ export function buildGameConfig(settings: GameSettings): GameConfig {
 	}
 }
 
-export function loadSavedGame(): SavedGame | null {
+export function loadSavedGame(expectedEraId?: string): SavedGame | null {
 	if (!canUseStorage()) return null
 
 	try {
 		const raw = localStorage.getItem(GAME_SAVE_STORAGE_KEY)
 		if (!raw) return null
 		const parsed = JSON.parse(raw) as SavedGame
-		if (parsed.eraId !== MODERN_ERA_ID) return null
+		if (!MapEraRegistry.isKnown(parsed.eraId)) return null
 		if (!parsed.progress) return null
+		const eraId = expectedEraId ?? loadGameSettings().eraId
+		if (parsed.eraId !== eraId) return null
 		return parsed
 	} catch {
 		return null

@@ -1,0 +1,735 @@
+[
+  {
+    "id": "afghanistan",
+    "nameEn": "Afghanistan",
+    "nameRu": "Афганистан"
+  },
+  {
+    "id": "french-algeria",
+    "nameEn": "Algeria",
+    "nameRu": "Французский Алжир"
+  },
+  {
+    "id": "angola",
+    "nameEn": "Angola",
+    "nameRu": "Ангола"
+  },
+  {
+    "id": "argentina",
+    "nameEn": "Argentina",
+    "nameRu": "Аргентина",
+    "flagCode": "AR"
+  },
+  {
+    "id": "australia",
+    "nameEn": "Australia",
+    "nameRu": "Австралия",
+    "flagCode": "AU"
+  },
+  {
+    "id": "austria-hungary",
+    "nameEn": "Austria-Hungary",
+    "nameRu": "Австро-Венгрия"
+  },
+  {
+    "id": "bahamas",
+    "nameEn": "Bahamas",
+    "nameRu": "Багамы"
+  },
+  {
+    "id": "barbados",
+    "nameEn": "Barbados",
+    "nameRu": "Барбадос"
+  },
+  {
+    "id": "belgium",
+    "nameEn": "Belgium",
+    "nameRu": "Бельгия",
+    "flagCode": "BE"
+  },
+  {
+    "id": "belize",
+    "nameEn": "Belize",
+    "nameRu": "Белиз"
+  },
+  {
+    "id": "benin",
+    "nameEn": "Benin",
+    "nameRu": "Бенин"
+  },
+  {
+    "id": "bhutan",
+    "nameEn": "Bhutan",
+    "nameRu": "Бутан"
+  },
+  {
+    "id": "bokhara",
+    "nameEn": "Bokhara",
+    "nameRu": "Бухарский эмират"
+  },
+  {
+    "id": "bolivia",
+    "nameEn": "Bolivia",
+    "nameRu": "Боливия"
+  },
+  {
+    "id": "botswana",
+    "nameEn": "Botswana",
+    "nameRu": "Ботсвана"
+  },
+  {
+    "id": "brazil",
+    "nameEn": "Brazil",
+    "nameRu": "Бразилия",
+    "flagCode": "BR"
+  },
+  {
+    "id": "british-somaliland-somaliland-republic",
+    "nameEn": "British Somaliland (Somaliland Republic)",
+    "nameRu": "Британское Сомали"
+  },
+  {
+    "id": "brunei",
+    "nameEn": "Brunei",
+    "nameRu": "Бруней"
+  },
+  {
+    "id": "bulgaria",
+    "nameEn": "Bulgaria",
+    "nameRu": "Болгария",
+    "flagCode": "BG"
+  },
+  {
+    "id": "cambodia-kampuchea",
+    "nameEn": "Cambodia (Kampuchea)",
+    "nameRu": "Камбоджа"
+  },
+  {
+    "id": "canada",
+    "nameEn": "Canada",
+    "nameRu": "Канада",
+    "flagCode": "CA"
+  },
+  {
+    "id": "cape-verde",
+    "nameEn": "Cape Verde",
+    "nameRu": "Кабо-Верде"
+  },
+  {
+    "id": "central-african-republic",
+    "nameEn": "Central African Republic",
+    "nameRu": "Центральноафриканская Республика"
+  },
+  {
+    "id": "chad",
+    "nameEn": "Chad",
+    "nameRu": "Чад"
+  },
+  {
+    "id": "chile",
+    "nameEn": "Chile",
+    "nameRu": "Чили",
+    "flagCode": "CL"
+  },
+  {
+    "id": "qing-china",
+    "nameEn": "China",
+    "nameRu": "Китай"
+  },
+  {
+    "id": "colombia",
+    "nameEn": "Colombia",
+    "nameRu": "Колумбия"
+  },
+  {
+    "id": "congo",
+    "nameEn": "Congo",
+    "nameRu": "Конго"
+  },
+  {
+    "id": "congo-democratic-republic-of-zaire",
+    "nameEn": "Congo, Democratic Republic of (Zaire)",
+    "nameRu": "Бельгийское Конго"
+  },
+  {
+    "id": "costa-rica",
+    "nameEn": "Costa Rica",
+    "nameRu": "Коста-Рика"
+  },
+  {
+    "id": "cote-d-ivoire",
+    "nameEn": "Cote D'Ivoire",
+    "nameRu": "Кот-д’Ивуар"
+  },
+  {
+    "id": "cuba",
+    "nameEn": "Cuba",
+    "nameRu": "Куба"
+  },
+  {
+    "id": "denmark",
+    "nameEn": "Denmark",
+    "nameRu": "Дания",
+    "flagCode": "DK"
+  },
+  {
+    "id": "djibouti",
+    "nameEn": "Djibouti",
+    "nameRu": "Джибути"
+  },
+  {
+    "id": "dominican-republic",
+    "nameEn": "Dominican Republic",
+    "nameRu": "Доминиканская Республика"
+  },
+  {
+    "id": "east-timor",
+    "nameEn": "East Timor",
+    "nameRu": "Восточный Тимор"
+  },
+  {
+    "id": "ecuador",
+    "nameEn": "Ecuador",
+    "nameRu": "Эквадор"
+  },
+  {
+    "id": "egypt",
+    "nameEn": "Egypt",
+    "nameRu": "Египет"
+  },
+  {
+    "id": "el-salvador",
+    "nameEn": "El Salvador",
+    "nameRu": "Сальвадор"
+  },
+  {
+    "id": "equatorial-guinea",
+    "nameEn": "Equatorial Guinea",
+    "nameRu": "Экваториальная Гвинея"
+  },
+  {
+    "id": "eritrea",
+    "nameEn": "Eritrea",
+    "nameRu": "Эритрея"
+  },
+  {
+    "id": "ethiopia",
+    "nameEn": "Ethiopia",
+    "nameRu": "Эфиопия"
+  },
+  {
+    "id": "federated-malay-states",
+    "nameEn": "Federated Malay States",
+    "nameRu": "Федерация малайских княжеств"
+  },
+  {
+    "id": "fiji",
+    "nameEn": "Fiji",
+    "nameRu": "Фиджи"
+  },
+  {
+    "id": "france",
+    "nameEn": "France",
+    "nameRu": "Франция",
+    "flagCode": "FR"
+  },
+  {
+    "id": "french-guyana",
+    "nameEn": "French Guyana",
+    "nameRu": "Французская Гвиана"
+  },
+  {
+    "id": "french-polynesia",
+    "nameEn": "French Polynesia",
+    "nameRu": "Французская Полинезия"
+  },
+  {
+    "id": "gabon",
+    "nameEn": "Gabon",
+    "nameRu": "Габон"
+  },
+  {
+    "id": "gambia",
+    "nameEn": "Gambia",
+    "nameRu": "Гамбия"
+  },
+  {
+    "id": "german-togoland",
+    "nameEn": "German Togoland",
+    "nameRu": "Немецкое Того"
+  },
+  {
+    "id": "germany-prussia",
+    "nameEn": "Germany (Prussia)",
+    "nameRu": "Германская империя"
+  },
+  {
+    "id": "ghana",
+    "nameEn": "Ghana",
+    "nameRu": "Гана"
+  },
+  {
+    "id": "greece",
+    "nameEn": "Greece",
+    "nameRu": "Греция",
+    "flagCode": "GR"
+  },
+  {
+    "id": "guadeloupe",
+    "nameEn": "Guadeloupe",
+    "nameRu": "Гваделупа"
+  },
+  {
+    "id": "guatemala",
+    "nameEn": "Guatemala",
+    "nameRu": "Гватемала"
+  },
+  {
+    "id": "guinea",
+    "nameEn": "Guinea",
+    "nameRu": "Гвинея"
+  },
+  {
+    "id": "guinea-bissau",
+    "nameEn": "Guinea-Bissau",
+    "nameRu": "Гвинея-Бисау"
+  },
+  {
+    "id": "guyana",
+    "nameEn": "Guyana",
+    "nameRu": "Гайана"
+  },
+  {
+    "id": "haiti",
+    "nameEn": "Haiti",
+    "nameRu": "Гаити"
+  },
+  {
+    "id": "honduras",
+    "nameEn": "Honduras",
+    "nameRu": "Гондурас"
+  },
+  {
+    "id": "british-india",
+    "nameEn": "India",
+    "nameRu": "Британская Индия"
+  },
+  {
+    "id": "dutch-east-indies",
+    "nameEn": "Indonesia",
+    "nameRu": "Голландская Ост-Индия"
+  },
+  {
+    "id": "persia",
+    "nameEn": "Iran (Persia)",
+    "nameRu": "Персия"
+  },
+  {
+    "id": "italian-somaliland",
+    "nameEn": "Italian Somaliland",
+    "nameRu": "Итальянское Сомали"
+  },
+  {
+    "id": "italy",
+    "nameEn": "Italy/Sardinia",
+    "nameRu": "Италия",
+    "flagCode": "IT"
+  },
+  {
+    "id": "jamaica",
+    "nameEn": "Jamaica",
+    "nameRu": "Ямайка"
+  },
+  {
+    "id": "japan",
+    "nameEn": "Japan",
+    "nameRu": "Япония",
+    "flagCode": "JP"
+  },
+  {
+    "id": "kamerun",
+    "nameEn": "Kamerun",
+    "nameRu": "Камерун"
+  },
+  {
+    "id": "kenya",
+    "nameEn": "Kenya",
+    "nameRu": "Кения"
+  },
+  {
+    "id": "khiva",
+    "nameEn": "Khiva",
+    "nameRu": "Хивинское ханство"
+  },
+  {
+    "id": "korea-empire",
+    "nameEn": "Korea",
+    "nameRu": "Корейская империя"
+  },
+  {
+    "id": "laos",
+    "nameEn": "Laos",
+    "nameRu": "Лаос"
+  },
+  {
+    "id": "lesotho",
+    "nameEn": "Lesotho",
+    "nameRu": "Лесото"
+  },
+  {
+    "id": "liberia",
+    "nameEn": "Liberia",
+    "nameRu": "Либерия"
+  },
+  {
+    "id": "libya",
+    "nameEn": "Libya",
+    "nameRu": "Ливия"
+  },
+  {
+    "id": "madagascar-malagasy",
+    "nameEn": "Madagascar (Malagasy)",
+    "nameRu": "Мадагаскар"
+  },
+  {
+    "id": "malawi",
+    "nameEn": "Malawi",
+    "nameRu": "Малави"
+  },
+  {
+    "id": "maldives",
+    "nameEn": "Maldives",
+    "nameRu": "Мальдивы"
+  },
+  {
+    "id": "mali",
+    "nameEn": "Mali",
+    "nameRu": "Мали"
+  },
+  {
+    "id": "malta",
+    "nameEn": "Malta",
+    "nameRu": "Мальта"
+  },
+  {
+    "id": "martinique",
+    "nameEn": "Martinique",
+    "nameRu": "Мартиника"
+  },
+  {
+    "id": "mauritania",
+    "nameEn": "Mauritania",
+    "nameRu": "Мавритания"
+  },
+  {
+    "id": "mauritius",
+    "nameEn": "Mauritius",
+    "nameRu": "Маврикий"
+  },
+  {
+    "id": "mexico",
+    "nameEn": "Mexico",
+    "nameRu": "Мексика",
+    "flagCode": "MX"
+  },
+  {
+    "id": "french-morocco",
+    "nameEn": "Morocco",
+    "nameRu": "Французское Марокко"
+  },
+  {
+    "id": "mozambique",
+    "nameEn": "Mozambique",
+    "nameRu": "Мозамбик"
+  },
+  {
+    "id": "namibia",
+    "nameEn": "Namibia",
+    "nameRu": "Намибия"
+  },
+  {
+    "id": "nepal",
+    "nameEn": "Nepal",
+    "nameRu": "Непал"
+  },
+  {
+    "id": "netherlands",
+    "nameEn": "Netherlands",
+    "nameRu": "Нидерланды",
+    "flagCode": "NL"
+  },
+  {
+    "id": "new-caledonia-and-dependencies",
+    "nameEn": "New Caledonia and Dependencies",
+    "nameRu": "Новая Каледония"
+  },
+  {
+    "id": "new-guinea-german-new-guinea-kaiser-wilhelmsland",
+    "nameEn": "New Guinea (German New Guinea) (Kaiser Wilhelmsland)",
+    "nameRu": "Немецкая Новая Гвинея"
+  },
+  {
+    "id": "new-zealand",
+    "nameEn": "New Zealand",
+    "nameRu": "Новая Зеландия"
+  },
+  {
+    "id": "newfoundland",
+    "nameEn": "Newfoundland",
+    "nameRu": "Ньюфаундленд"
+  },
+  {
+    "id": "nicaragua",
+    "nameEn": "Nicaragua",
+    "nameRu": "Никарагуа"
+  },
+  {
+    "id": "niger",
+    "nameEn": "Niger",
+    "nameRu": "Нигер"
+  },
+  {
+    "id": "nigeria",
+    "nameEn": "Nigeria",
+    "nameRu": "Нигерия"
+  },
+  {
+    "id": "norway",
+    "nameEn": "Norway",
+    "nameRu": "Норвегия",
+    "flagCode": "NO"
+  },
+  {
+    "id": "oman",
+    "nameEn": "Oman",
+    "nameRu": "Оман"
+  },
+  {
+    "id": "panama",
+    "nameEn": "Panama",
+    "nameRu": "Панама"
+  },
+  {
+    "id": "papua",
+    "nameEn": "Papua",
+    "nameRu": "Папуа"
+  },
+  {
+    "id": "paraguay",
+    "nameEn": "Paraguay",
+    "nameRu": "Парагвай"
+  },
+  {
+    "id": "peru",
+    "nameEn": "Peru",
+    "nameRu": "Перу"
+  },
+  {
+    "id": "philippines",
+    "nameEn": "Philippines",
+    "nameRu": "Филиппины"
+  },
+  {
+    "id": "portugal",
+    "nameEn": "Portugal",
+    "nameRu": "Португалия",
+    "flagCode": "PT"
+  },
+  {
+    "id": "reunion",
+    "nameEn": "Reunion",
+    "nameRu": "Реюньон"
+  },
+  {
+    "id": "romania",
+    "nameEn": "Rumania",
+    "nameRu": "Румыния",
+    "flagCode": "RO"
+  },
+  {
+    "id": "russia-soviet-union",
+    "nameEn": "Russia (Soviet Union)",
+    "nameRu": "Российская империя"
+  },
+  {
+    "id": "sabah-north-borneo",
+    "nameEn": "Sabah (North Borneo)",
+    "nameRu": "Сабах"
+  },
+  {
+    "id": "sarawak",
+    "nameEn": "Sarawak",
+    "nameRu": "Саравак"
+  },
+  {
+    "id": "senegal",
+    "nameEn": "Senegal",
+    "nameRu": "Сенегал"
+  },
+  {
+    "id": "serbia",
+    "nameEn": "Serbia",
+    "nameRu": "Сербия",
+    "flagCode": "RS"
+  },
+  {
+    "id": "sierra-leone",
+    "nameEn": "Sierra Leone",
+    "nameRu": "Сьерра-Леоне"
+  },
+  {
+    "id": "solomon-islands",
+    "nameEn": "Solomon Islands",
+    "nameRu": "Соломоновы Острова"
+  },
+  {
+    "id": "union-of-south-africa",
+    "nameEn": "South Africa",
+    "nameRu": "Южно-Африканский Союз"
+  },
+  {
+    "id": "spain",
+    "nameEn": "Spain",
+    "nameRu": "Испания",
+    "flagCode": "ES"
+  },
+  {
+    "id": "spanish-morocco",
+    "nameEn": "Spanish Morocco",
+    "nameRu": "Испанское Марокко"
+  },
+  {
+    "id": "spanish-west-africa",
+    "nameEn": "Spanish West Africa",
+    "nameRu": "Испанская Западная Африка"
+  },
+  {
+    "id": "sri-lanka-ceylon",
+    "nameEn": "Sri Lanka (Ceylon)",
+    "nameRu": "Цейлон"
+  },
+  {
+    "id": "straits-settlements",
+    "nameEn": "Straits Settlements",
+    "nameRu": "Стрейтс-Сеттлментс"
+  },
+  {
+    "id": "sudan",
+    "nameEn": "Sudan",
+    "nameRu": "Судан"
+  },
+  {
+    "id": "surinam",
+    "nameEn": "Surinam",
+    "nameRu": "Суринам"
+  },
+  {
+    "id": "swaziland-eswatini",
+    "nameEn": "Swaziland (Eswatini)",
+    "nameRu": "Свазиленд"
+  },
+  {
+    "id": "sweden",
+    "nameEn": "Sweden",
+    "nameRu": "Швеция",
+    "flagCode": "SE"
+  },
+  {
+    "id": "switzerland",
+    "nameEn": "Switzerland",
+    "nameRu": "Швейцария",
+    "flagCode": "CH"
+  },
+  {
+    "id": "taiwan",
+    "nameEn": "Taiwan",
+    "nameRu": "Тайвань"
+  },
+  {
+    "id": "tanzania-tanganyika",
+    "nameEn": "Tanzania (Tanganyika)",
+    "nameRu": "Танганьика"
+  },
+  {
+    "id": "thailand",
+    "nameEn": "Thailand",
+    "nameRu": "Сиам"
+  },
+  {
+    "id": "tibet",
+    "nameEn": "Tibet",
+    "nameRu": "Тибет"
+  },
+  {
+    "id": "trinidad-and-tobago",
+    "nameEn": "Trinidad and Tobago",
+    "nameRu": "Тринидад и Тобаго"
+  },
+  {
+    "id": "french-tunisia",
+    "nameEn": "Tunisia",
+    "nameRu": "Французский Тунис"
+  },
+  {
+    "id": "turkey-ottoman-empire",
+    "nameEn": "Turkey (Ottoman Empire)",
+    "nameRu": "Османская империя"
+  },
+  {
+    "id": "uganda",
+    "nameEn": "Uganda",
+    "nameRu": "Уганда"
+  },
+  {
+    "id": "unfederated-malay-states",
+    "nameEn": "Unfederated Malay States",
+    "nameRu": "Нефедеративные малайские княжества"
+  },
+  {
+    "id": "united-arab-emirates",
+    "nameEn": "United Arab Emirates",
+    "nameRu": "Объединённые Арабские Эмираты"
+  },
+  {
+    "id": "united-kingdom",
+    "nameEn": "United Kingdom",
+    "nameRu": "Великобритания",
+    "flagCode": "GB"
+  },
+  {
+    "id": "united-states",
+    "nameEn": "United States of America",
+    "nameRu": "Соединённые Штаты Америки",
+    "flagCode": "US"
+  },
+  {
+    "id": "uruguay",
+    "nameEn": "Uruguay",
+    "nameRu": "Уругвай"
+  },
+  {
+    "id": "venezuela",
+    "nameEn": "Venezuela",
+    "nameRu": "Венесуэла"
+  },
+  {
+    "id": "vietnam-annam-cochin-china-tonkin",
+    "nameEn": "Vietnam (Annam/Cochin China/Tonkin)",
+    "nameRu": "Французский Индокитай"
+  },
+  {
+    "id": "zambia",
+    "nameEn": "Zambia",
+    "nameRu": "Замбия"
+  },
+  {
+    "id": "zanzibar",
+    "nameEn": "Zanzibar",
+    "nameRu": "Занзибар"
+  },
+  {
+    "id": "zimbabwe-rhodesia",
+    "nameEn": "Zimbabwe (Rhodesia)",
+    "nameRu": "Родезия"
+  }
+]

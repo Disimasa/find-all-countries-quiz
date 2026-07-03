@@ -48,6 +48,8 @@ Progress is saved automatically. Leave mid-game and the lobby will offer **Conti
 
 Some regions are territories or disputed areas. Borders are shown for quiz purposes only.
 
+Historical map borders for the **1914** era are derived from [CShapes 2.0](https://icr.ethz.ch/data/cshapes/) (ETH Zurich). Era-specific flag artwork, where shown, is sourced from [Wikimedia Commons](https://commons.wikimedia.org/) and used under their respective licenses.
+
 ## Development
 
 ### Requirements

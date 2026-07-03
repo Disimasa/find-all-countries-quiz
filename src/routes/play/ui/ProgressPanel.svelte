@@ -18,6 +18,7 @@
 	export let guessQuery = ''
 	export let autocompleteResults: GeoEntity[] = []
 	export let wrongPulse = 0
+	export let mapEraId = 'modern'
 
 	const dispatch = createEventDispatcher<{
 		reset: void
@@ -91,6 +92,7 @@
 				results={autocompleteResults}
 				query={guessQuery}
 				locale={snapshot.locale}
+				eraId={mapEraId}
 				{wrongPulse}
 				active={!!snapshot.selectedId}
 				selectedId={snapshot.selectedId}

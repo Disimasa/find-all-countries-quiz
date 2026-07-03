@@ -24,3 +24,9 @@ vite.config.ts.timestamp-*
 
 .idea
 .vscode
+
+# Data pipeline cache (CShapes download)
+scripts/.cache
+
+# Flag materialize dedup cache (final SVGs live alongside entity ids)
+static/flags/eras/**/.cache-*.svg

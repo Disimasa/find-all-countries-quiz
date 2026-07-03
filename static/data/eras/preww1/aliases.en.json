@@ -1,0 +1,428 @@
+{
+  "united-states": [
+    "United States of America"
+  ],
+  "canada": [
+    "Canada"
+  ],
+  "newfoundland": [
+    "Newfoundland"
+  ],
+  "bahamas": [
+    "Bahamas"
+  ],
+  "cuba": [
+    "Cuba"
+  ],
+  "haiti": [
+    "Haiti"
+  ],
+  "dominican-republic": [
+    "Dominican Republic"
+  ],
+  "jamaica": [
+    "Jamaica"
+  ],
+  "trinidad-and-tobago": [
+    "Trinidad and Tobago"
+  ],
+  "barbados": [
+    "Barbados"
+  ],
+  "guadeloupe": [
+    "Guadeloupe"
+  ],
+  "martinique": [
+    "Martinique"
+  ],
+  "mexico": [
+    "Mexico"
+  ],
+  "belize": [
+    "Belize"
+  ],
+  "guatemala": [
+    "Guatemala"
+  ],
+  "honduras": [
+    "Honduras"
+  ],
+  "el-salvador": [
+    "El Salvador"
+  ],
+  "nicaragua": [
+    "Nicaragua"
+  ],
+  "costa-rica": [
+    "Costa Rica"
+  ],
+  "panama": [
+    "Panama"
+  ],
+  "colombia": [
+    "Colombia"
+  ],
+  "venezuela": [
+    "Venezuela"
+  ],
+  "guyana": [
+    "Guyana"
+  ],
+  "surinam": [
+    "Surinam"
+  ],
+  "french-guyana": [
+    "French Guyana"
+  ],
+  "ecuador": [
+    "Ecuador"
+  ],
+  "peru": [
+    "Peru"
+  ],
+  "brazil": [
+    "Brazil"
+  ],
+  "bolivia": [
+    "Bolivia"
+  ],
+  "paraguay": [
+    "Paraguay"
+  ],
+  "chile": [
+    "Chile"
+  ],
+  "argentina": [
+    "Argentina"
+  ],
+  "uruguay": [
+    "Uruguay"
+  ],
+  "united-kingdom": [
+    "United Kingdom"
+  ],
+  "netherlands": [
+    "Netherlands"
+  ],
+  "belgium": [
+    "Belgium"
+  ],
+  "france": [
+    "France"
+  ],
+  "switzerland": [
+    "Switzerland"
+  ],
+  "spain": [
+    "Spain"
+  ],
+  "portugal": [
+    "Portugal"
+  ],
+  "germany-prussia": [
+    "Germany (Prussia)"
+  ],
+  "austria-hungary": [
+    "Austria-Hungary"
+  ],
+  "italy": [
+    "Italy/Sardinia"
+  ],
+  "malta": [
+    "Malta"
+  ],
+  "serbia": [
+    "Serbia"
+  ],
+  "greece": [
+    "Greece"
+  ],
+  "bulgaria": [
+    "Bulgaria"
+  ],
+  "romania": [
+    "Rumania"
+  ],
+  "russia-soviet-union": [
+    "Russia (Soviet Union)"
+  ],
+  "sweden": [
+    "Sweden"
+  ],
+  "norway": [
+    "Norway"
+  ],
+  "denmark": [
+    "Denmark"
+  ],
+  "cape-verde": [
+    "Cape Verde"
+  ],
+  "guinea-bissau": [
+    "Guinea-Bissau"
+  ],
+  "equatorial-guinea": [
+    "Equatorial Guinea"
+  ],
+  "gambia": [
+    "Gambia"
+  ],
+  "mali": [
+    "Mali"
+  ],
+  "senegal": [
+    "Senegal"
+  ],
+  "benin": [
+    "Benin"
+  ],
+  "mauritania": [
+    "Mauritania"
+  ],
+  "niger": [
+    "Niger"
+  ],
+  "cote-d-ivoire": [
+    "Cote D'Ivoire"
+  ],
+  "guinea": [
+    "Guinea"
+  ],
+  "liberia": [
+    "Liberia"
+  ],
+  "sierra-leone": [
+    "Sierra Leone"
+  ],
+  "ghana": [
+    "Ghana"
+  ],
+  "german-togoland": [
+    "German Togoland"
+  ],
+  "kamerun": [
+    "Kamerun"
+  ],
+  "nigeria": [
+    "Nigeria"
+  ],
+  "gabon": [
+    "Gabon"
+  ],
+  "central-african-republic": [
+    "Central African Republic"
+  ],
+  "chad": [
+    "Chad"
+  ],
+  "congo": [
+    "Congo"
+  ],
+  "congo-democratic-republic-of-zaire": [
+    "Congo, Democratic Republic of (Zaire)"
+  ],
+  "uganda": [
+    "Uganda"
+  ],
+  "kenya": [
+    "Kenya"
+  ],
+  "tanzania-tanganyika": [
+    "Tanzania (Tanganyika)"
+  ],
+  "zanzibar": [
+    "Zanzibar"
+  ],
+  "british-somaliland-somaliland-republic": [
+    "British Somaliland (Somaliland Republic)"
+  ],
+  "djibouti": [
+    "Djibouti"
+  ],
+  "ethiopia": [
+    "Ethiopia"
+  ],
+  "eritrea": [
+    "Eritrea"
+  ],
+  "angola": [
+    "Angola"
+  ],
+  "mozambique": [
+    "Mozambique"
+  ],
+  "zambia": [
+    "Zambia"
+  ],
+  "zimbabwe-rhodesia": [
+    "Zimbabwe (Rhodesia)"
+  ],
+  "malawi": [
+    "Malawi"
+  ],
+  "union-of-south-africa": [
+    "South Africa"
+  ],
+  "namibia": [
+    "Namibia"
+  ],
+  "lesotho": [
+    "Lesotho"
+  ],
+  "botswana": [
+    "Botswana"
+  ],
+  "swaziland-eswatini": [
+    "Swaziland (Eswatini)"
+  ],
+  "madagascar-malagasy": [
+    "Madagascar (Malagasy)"
+  ],
+  "reunion": [
+    "Reunion"
+  ],
+  "mauritius": [
+    "Mauritius"
+  ],
+  "french-morocco": [
+    "Morocco"
+  ],
+  "spanish-morocco": [
+    "Spanish Morocco"
+  ],
+  "spanish-west-africa": [
+    "Spanish West Africa"
+  ],
+  "french-algeria": [
+    "Algeria"
+  ],
+  "french-tunisia": [
+    "Tunisia"
+  ],
+  "libya": [
+    "Libya"
+  ],
+  "sudan": [
+    "Sudan"
+  ],
+  "persia": [
+    "Iran (Persia)"
+  ],
+  "turkey-ottoman-empire": [
+    "Turkey (Ottoman Empire)"
+  ],
+  "egypt": [
+    "Egypt"
+  ],
+  "united-arab-emirates": [
+    "United Arab Emirates"
+  ],
+  "oman": [
+    "Oman"
+  ],
+  "afghanistan": [
+    "Afghanistan"
+  ],
+  "qing-china": [
+    "China"
+  ],
+  "tibet": [
+    "Tibet"
+  ],
+  "taiwan": [
+    "Taiwan"
+  ],
+  "korea-empire": [
+    "Korea"
+  ],
+  "japan": [
+    "Japan"
+  ],
+  "british-india": [
+    "India"
+  ],
+  "bhutan": [
+    "Bhutan"
+  ],
+  "sri-lanka-ceylon": [
+    "Sri Lanka (Ceylon)"
+  ],
+  "maldives": [
+    "Maldives"
+  ],
+  "nepal": [
+    "Nepal"
+  ],
+  "thailand": [
+    "Thailand"
+  ],
+  "cambodia-kampuchea": [
+    "Cambodia (Kampuchea)"
+  ],
+  "laos": [
+    "Laos"
+  ],
+  "vietnam-annam-cochin-china-tonkin": [
+    "Vietnam (Annam/Cochin China/Tonkin)"
+  ],
+  "federated-malay-states": [
+    "Federated Malay States"
+  ],
+  "unfederated-malay-states": [
+    "Unfederated Malay States"
+  ],
+  "sabah-north-borneo": [
+    "Sabah (North Borneo)"
+  ],
+  "sarawak": [
+    "Sarawak"
+  ],
+  "straits-settlements": [
+    "Straits Settlements"
+  ],
+  "brunei": [
+    "Brunei"
+  ],
+  "philippines": [
+    "Philippines"
+  ],
+  "dutch-east-indies": [
+    "Indonesia"
+  ],
+  "east-timor": [
+    "East Timor"
+  ],
+  "australia": [
+    "Australia"
+  ],
+  "papua": [
+    "Papua"
+  ],
+  "new-guinea-german-new-guinea-kaiser-wilhelmsland": [
+    "New Guinea (German New Guinea) (Kaiser Wilhelmsland)"
+  ],
+  "new-zealand": [
+    "New Zealand"
+  ],
+  "new-caledonia-and-dependencies": [
+    "New Caledonia and Dependencies"
+  ],
+  "solomon-islands": [
+    "Solomon Islands"
+  ],
+  "fiji": [
+    "Fiji"
+  ],
+  "french-polynesia": [
+    "French Polynesia"
+  ],
+  "italian-somaliland": [
+    "Italian Somaliland"
+  ],
+  "bokhara": [
+    "Bokhara"
+  ],
+  "khiva": [
+    "Khiva"
+  ]
+}

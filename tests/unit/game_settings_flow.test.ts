@@ -55,6 +55,7 @@ describe('game settings flow', () => {
 
 	it('lets query params override stored on/off flags but keep stored durations', () => {
 		saveGameSettings({
+			eraId: 'modern',
 			timerEnabled: true,
 			livesEnabled: true,
 			timerMinutes: 15,

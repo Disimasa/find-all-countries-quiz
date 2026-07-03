@@ -24,6 +24,7 @@ describe('parseConfig', () => {
 
 	it('reads custom timerMinutes and maxLives from stored settings', () => {
 		saveGameSettings({
+			eraId: 'modern',
 			timerEnabled: true,
 			livesEnabled: true,
 			timerMinutes: 45,
@@ -37,6 +38,7 @@ describe('parseConfig', () => {
 
 	it('keeps stored durations when query only toggles timer off', () => {
 		saveGameSettings({
+			eraId: 'modern',
 			timerEnabled: true,
 			livesEnabled: true,
 			timerMinutes: 15,
@@ -53,6 +55,7 @@ describe('parseConfig', () => {
 
 	it('keeps stored durations when query only toggles lives off', () => {
 		saveGameSettings({
+			eraId: 'modern',
 			timerEnabled: true,
 			livesEnabled: true,
 			timerMinutes: 60,
@@ -69,6 +72,7 @@ describe('parseConfig', () => {
 
 	it('falls back to stored on/off flags when query params are absent', () => {
 		saveGameSettings({
+			eraId: 'modern',
 			timerEnabled: false,
 			livesEnabled: false,
 			timerMinutes: 30,

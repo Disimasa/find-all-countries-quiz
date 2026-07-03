@@ -13,7 +13,9 @@ import {
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import {
-	buildExploreCountryTextField,
+	buildExploreEraLabelsCollection,
+	EXPLORE_ERA_LABELS_LAYER_ID,
+	EXPLORE_ERA_LABELS_SOURCE_ID,
 	isBasemapCountryLabelLayerId
 } from './explore_country_labels.ts'
 import { lobbyCountryVisual, lobbyHoverableCountryId } from './lobby_feature_state.ts'
@@ -150,6 +152,7 @@ export class MapRenderer implements MapHost {
 			this.hideBasemapOverlays()
 			applyBasemapTheme(this.map)
 			this.addCountryLayers(era.getGeoJson())
+			this.addExploreEraLabelLayer()
 			this.bindInteractions()
 			this.initDefaultFeatureStates()
 			this.ready = true
@@ -237,6 +240,7 @@ export class MapRenderer implements MapHost {
 		this.unbindLobbyNavigation()
 		this.snapshot = null
 		this.hideGuessedTooltip()
+		this.clearHover()
 		this.setInteractive(true, () => {})
 		this.syncExploreFeatureStates()
 		this.showBasemapSymbolLayers()
@@ -246,7 +250,7 @@ export class MapRenderer implements MapHost {
 	updateExploreLabels(locale: Locale): void {
 		if (!this.exploreMode) return
 		this.exploreLocale = locale
-		this.applyExploreCountryLabelFields()
+		this.syncExploreEraLabels()
 	}
 
 	isReady(): boolean {
@@ -255,6 +259,50 @@ export class MapRenderer implements MapHost {
 
 	resize(): void {
 		this.map?.resize()
+	}
+
+	swapEra(era: BaseMapEra): void {
+		this.era = era
+		this.hoveredId = null
+		this.flashingId = null
+		this.lobbySelectedId = null
+		this.lobbyHintId = null
+
+		const source = this.map?.getSource(COUNTRIES_SOURCE_ID) as GeoJSONSource | undefined
+		if (source) {
+			source.setData(era.getGeoJson())
+		}
+
+		this.initDefaultFeatureStates()
+		if (this.lobbyMode) this.syncLobbyFeatureStates()
+		if (this.exploreMode) {
+			this.syncExploreFeatureStates()
+			this.syncExploreEraLabels()
+		}
+		if (this.snapshot) this.syncFeatureStates()
+		this.refreshTheme()
+	}
+
+	refreshTheme(): void {
+		if (!this.map) return
+		applyBasemapTheme(this.map)
+		const theme = readMapTheme()
+		const paint = buildCountryPaint(theme)
+		const borderPaint = buildCountryBorderPaint(theme)
+		if (this.map.getLayer(COUNTRIES_FILL_LAYER_ID)) {
+			this.map.setPaintProperty(COUNTRIES_FILL_LAYER_ID, 'fill-color', paint.fillColor)
+			this.map.setPaintProperty(COUNTRIES_FILL_LAYER_ID, 'fill-opacity', paint.fillOpacity)
+			this.map.setPaintProperty(
+				COUNTRIES_FILL_LAYER_ID,
+				'fill-outline-color',
+				paint.fillOutlineColor
+			)
+		}
+		if (this.map.getLayer(COUNTRIES_LINE_LAYER_ID)) {
+			this.map.setPaintProperty(COUNTRIES_LINE_LAYER_ID, 'line-color', borderPaint.lineColor)
+			this.map.setPaintProperty(COUNTRIES_LINE_LAYER_ID, 'line-width', borderPaint.lineWidth)
+			this.map.setPaintProperty(COUNTRIES_LINE_LAYER_ID, 'line-opacity', borderPaint.lineOpacity)
+		}
 	}
 
 	flyToWideView(duration = MAP_TRANSITION_OUT_MS): Promise<void> {
@@ -492,33 +540,24 @@ export class MapRenderer implements MapHost {
 
 	private showBasemapSymbolLayers(): void {
 		if (!this.map) return
-		const textField = buildExploreCountryTextField(this.exploreLocale)
 		for (const layer of this.map.getStyle().layers ?? []) {
 			if (layer.type !== 'symbol' || !this.map.getLayer(layer.id)) continue
-			const isCountryLabel = isBasemapCountryLabelLayerId(layer.id)
-			this.map.setLayoutProperty(layer.id, 'visibility', isCountryLabel ? 'visible' : 'none')
-			if (isCountryLabel) {
-				this.map.setLayoutProperty(layer.id, 'text-field', textField)
+			if (isBasemapCountryLabelLayerId(layer.id)) {
+				this.map.setLayoutProperty(layer.id, 'visibility', 'none')
 			}
 		}
-		this.raiseBasemapCountryLabelLayers()
-	}
-
-	private applyExploreCountryLabelFields(): void {
-		if (!this.map) return
-		const textField = buildExploreCountryTextField(this.exploreLocale)
-		for (const layer of this.map.getStyle().layers ?? []) {
-			if (!isBasemapCountryLabelLayerId(layer.id) || !this.map.getLayer(layer.id)) continue
-			this.map.setLayoutProperty(layer.id, 'text-field', textField)
+		this.syncExploreEraLabels()
+		if (this.map.getLayer(EXPLORE_ERA_LABELS_LAYER_ID)) {
+			this.map.setLayoutProperty(EXPLORE_ERA_LABELS_LAYER_ID, 'visibility', 'visible')
+			this.map.moveLayer(EXPLORE_ERA_LABELS_LAYER_ID)
 		}
 	}
 
-	private raiseBasemapCountryLabelLayers(): void {
-		if (!this.map) return
-		for (const layer of this.map.getStyle().layers ?? []) {
-			if (!isBasemapCountryLabelLayerId(layer.id) || !this.map.getLayer(layer.id)) continue
-			this.map.moveLayer(layer.id)
-		}
+	private syncExploreEraLabels(): void {
+		if (!this.map || !this.era) return
+		const source = this.map.getSource(EXPLORE_ERA_LABELS_SOURCE_ID) as GeoJSONSource | undefined
+		if (!source) return
+		source.setData(buildExploreEraLabelsCollection(this.era, this.exploreLocale))
 	}
 
 	private hideBasemapBoundaries(): void {
@@ -533,9 +572,15 @@ export class MapRenderer implements MapHost {
 	private setBasemapSymbolLayersVisible(visible: boolean): void {
 		if (!this.map) return
 		for (const layer of this.map.getStyle().layers ?? []) {
-			if (layer.type === 'symbol') {
-				this.map.setLayoutProperty(layer.id, 'visibility', visible ? 'visible' : 'none')
-			}
+			if (layer.type !== 'symbol' || layer.id === EXPLORE_ERA_LABELS_LAYER_ID) continue
+			this.map.setLayoutProperty(layer.id, 'visibility', visible ? 'visible' : 'none')
+		}
+		if (this.map.getLayer(EXPLORE_ERA_LABELS_LAYER_ID)) {
+			this.map.setLayoutProperty(
+				EXPLORE_ERA_LABELS_LAYER_ID,
+				'visibility',
+				visible && this.exploreMode ? 'visible' : 'none'
+			)
 		}
 	}
 
@@ -548,7 +593,7 @@ export class MapRenderer implements MapHost {
 		this.map.addSource(COUNTRIES_SOURCE_ID, {
 			type: 'geojson',
 			data: geoJson,
-			promoteId: COUNTRY_ID_PROPERTY
+			promoteId: this.era?.getFeatureIdProperty() ?? COUNTRY_ID_PROPERTY
 		})
 
 		this.map.addLayer({
@@ -571,6 +616,35 @@ export class MapRenderer implements MapHost {
 				'line-color': borderPaint.lineColor,
 				'line-width': borderPaint.lineWidth,
 				'line-opacity': borderPaint.lineOpacity
+			}
+		})
+	}
+
+	private addExploreEraLabelLayer(): void {
+		if (!this.map || !this.era) return
+
+		this.map.addSource(EXPLORE_ERA_LABELS_SOURCE_ID, {
+			type: 'geojson',
+			data: buildExploreEraLabelsCollection(this.era, this.exploreLocale)
+		})
+
+		this.map.addLayer({
+			id: EXPLORE_ERA_LABELS_LAYER_ID,
+			type: 'symbol',
+			source: EXPLORE_ERA_LABELS_SOURCE_ID,
+			layout: {
+				'text-field': ['get', 'label'],
+				'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+				'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9, 4, 12, 6, 14],
+				'text-max-width': 9,
+				'text-letter-spacing': 0.02,
+				'text-allow-overlap': false,
+				visibility: 'none'
+			},
+			paint: {
+				'text-color': '#3d3630',
+				'text-halo-color': 'rgba(255, 248, 235, 0.88)',
+				'text-halo-width': 1.25
 			}
 		})
 	}
@@ -646,9 +720,10 @@ export class MapRenderer implements MapHost {
 			this.snapshot?.guessedIds ?? new Set(),
 			this.snapshot?.selectedId ?? null
 		)
+		const guessedTooltipId = resolveGuessedTooltipId(id, this.snapshot?.guessedIds ?? new Set())
 
 		if (hoverableId === this.hoveredId) {
-			this.map.getCanvas().style.cursor = hoverableId ? 'pointer' : ''
+			this.map.getCanvas().style.cursor = hoverableId || guessedTooltipId ? 'pointer' : ''
 			return
 		}
 
@@ -661,7 +736,7 @@ export class MapRenderer implements MapHost {
 			return
 		}
 
-		this.map.getCanvas().style.cursor = ''
+		this.map.getCanvas().style.cursor = guessedTooltipId ? 'default' : ''
 	}
 
 	private updateLobbyHoverAtPoint(id: string | null): void {

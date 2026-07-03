@@ -3,10 +3,14 @@
 	import GameSettingsEditor from './GameSettingsEditor.svelte'
 	import type { Locale } from '@domain/entities'
 	import IconPlay from '~icons/lucide/play'
-	import { mapShellTransitioning } from '../map_shell'
+	import { activeEraTheme, mapEraSwitching, mapShellTransitioning } from '../map_shell'
 
 	export let title: string
 	export let modeHint: string
+	export let eraLabel: string
+	export let eraModernLabel: string
+	export let eraPreWW1Label: string
+	export let eraPreWW1Hint = ''
 	export let timerLabel: string
 	export let livesLabel: string
 	export let infiniteLabel: string
@@ -14,6 +18,7 @@
 	export let startLabel: string
 	export let continueLabel = ''
 	export let disclaimer: string
+	export let currentEraId: string
 	export let timerOn: boolean
 	export let livesOn: boolean
 	export let timerMinutes: number
@@ -23,10 +28,14 @@
 	const dispatch = createEventDispatcher<{
 		start: void
 		continue: void
+		eraSelect: string
 		timerSelect: { enabled: boolean; minutes?: number }
 		livesSelect: { enabled: boolean; count?: number }
 		localeSelect: Locale
 	}>()
+
+	$: settingsDisabled = $mapShellTransitioning || $mapEraSwitching
+	$: lobbyPanelTint = $activeEraTheme.decorations.lobbyPanelTint
 </script>
 
 <div
@@ -53,20 +62,28 @@
 		</section>
 
 		<section
-			class="flex flex-col gap-2 rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md"
+			class="flex flex-col gap-2 rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md transition-colors duration-500"
+			style:background-color={lobbyPanelTint ? `${lobbyPanelTint}cc` : undefined}
 		>
 			<GameSettingsEditor
-				disabled={$mapShellTransitioning}
+				disabled={settingsDisabled}
 				{currentLocale}
+				{currentEraId}
 				{timerOn}
 				{livesOn}
 				{timerMinutes}
 				{maxLives}
+				{eraLabel}
+				{eraModernLabel}
+				{eraPreWW1Label}
+				{eraPreWW1Hint}
 				{languageLabel}
 				{timerLabel}
 				{livesLabel}
 				{infiniteLabel}
+				{lobbyPanelTint}
 				on:localeSelect={(event) => dispatch('localeSelect', event.detail)}
+				on:eraSelect={(event) => dispatch('eraSelect', event.detail)}
 				on:timerSelect={(event) => dispatch('timerSelect', event.detail)}
 				on:livesSelect={(event) => dispatch('livesSelect', event.detail)}
 			/>
@@ -76,7 +93,7 @@
 					type="button"
 					data-testid="continue-game"
 					class="btn btn-primary rounded-lg mt-1 w-full gap-2"
-					disabled={$mapShellTransitioning}
+					disabled={settingsDisabled}
 					on:click={() => dispatch('continue')}
 				>
 					<IconPlay class="size-4" />
@@ -85,7 +102,7 @@
 				<button
 					type="button"
 					class="btn btn-outline w-full rounded-lg border-primary/45 text-primary hover:border-primary hover:bg-primary/10 hover:text-primary"
-					disabled={$mapShellTransitioning}
+					disabled={settingsDisabled}
 					on:click={() => dispatch('start')}
 				>
 					{startLabel}
@@ -94,7 +111,7 @@
 				<button
 					type="button"
 					class="btn btn-primary rounded-lg mt-1 w-full gap-2"
-					disabled={$mapShellTransitioning}
+					disabled={settingsDisabled}
 					on:click={() => dispatch('start')}
 				>
 					<IconPlay class="size-4" />

@@ -27,9 +27,25 @@ export abstract class BaseMapEra {
 		this.geoJson = this.filterGeoJson(this.geoJson)
 	}
 
-	protected abstract getGeoJsonPath(): string
-	protected abstract getEntitiesPath(): string
-	protected abstract getAliasesPath(locale: Locale): string
+	getFeatureIdProperty(): string {
+		return 'entity_id'
+	}
+
+	protected eraDataPath(file: string): string {
+		return `/data/eras/${this.id}/${file}`
+	}
+
+	protected getGeoJsonPath(): string {
+		return this.eraDataPath('boundaries.geojson')
+	}
+
+	protected getEntitiesPath(): string {
+		return this.eraDataPath('entities.json')
+	}
+
+	protected getAliasesPath(locale: Locale): string {
+		return this.eraDataPath(`aliases.${locale}.json`)
+	}
 
 	protected abstract resolveEntityId(feature: Feature): string | null
 
@@ -51,7 +67,8 @@ export abstract class BaseMapEra {
 				id: item.id,
 				names: { en: item.nameEn, ru: item.nameRu },
 				region: item.region,
-				flagCode: item.flagCode
+				flagCode: item.flagCode,
+				flagAsset: item.flagAsset
 			})
 		}
 		return map
@@ -101,6 +118,11 @@ export abstract class BaseMapEra {
 	}
 
 	getEntityIdFromFeature(feature: Feature): string | null {
-		return this.resolveEntityId(feature)
+		const fromProps = this.resolveEntityId(feature)
+		if (fromProps) return fromProps
+		const rawId = feature.id
+		if (typeof rawId === 'string' && rawId) return rawId
+		if (typeof rawId === 'number') return String(rawId)
+		return null
 	}
 }

@@ -1,5 +1,6 @@
 import { get, writable } from 'svelte/store'
 import type { GameConfig } from '@domain/entities'
+import { DEFAULT_ERA_ID } from '@domain/maps'
 import { locale, setLocale, type MessageKey } from '@i18n'
 import type { Locale } from '@domain/entities'
 import {
@@ -13,6 +14,7 @@ import {
 
 const initialSettings = loadGameSettings()
 
+export const eraId = writable(initialSettings.eraId ?? DEFAULT_ERA_ID)
 export const timerEnabled = writable(initialSettings.timerEnabled)
 export const livesEnabled = writable(initialSettings.livesEnabled)
 export const timerMinutes = writable(initialSettings.timerMinutes)
@@ -22,6 +24,7 @@ let settingsPersistReady = false
 
 function getCurrentSettings(): GameSettings {
 	return {
+		eraId: get(eraId),
 		timerEnabled: get(timerEnabled),
 		livesEnabled: get(livesEnabled),
 		timerMinutes: get(timerMinutes),
@@ -33,7 +36,7 @@ function persistSettings(): void {
 	saveGameSettings(getCurrentSettings())
 }
 
-for (const store of [timerEnabled, livesEnabled, timerMinutes, maxLives]) {
+for (const store of [eraId, timerEnabled, livesEnabled, timerMinutes, maxLives]) {
 	store.subscribe(() => {
 		if (!settingsPersistReady) return
 		persistSettings()
@@ -47,7 +50,7 @@ export function getGameConfig(): GameConfig {
 }
 
 export function getSavedGame(): SavedGame | null {
-	return loadSavedGame()
+	return loadSavedGame(get(eraId))
 }
 
 export function toggleLocale(): void {
@@ -59,6 +62,8 @@ export function buildPlayHref(): string {
 	const params = new URLSearchParams()
 	if (!get(timerEnabled)) params.set('timer', '0')
 	if (!get(livesEnabled)) params.set('lives', '0')
+	const currentEraId = get(eraId)
+	if (currentEraId !== DEFAULT_ERA_ID) params.set('era', currentEraId)
 	const query = params.toString()
 	return query ? `/play?${query}` : '/play'
 }

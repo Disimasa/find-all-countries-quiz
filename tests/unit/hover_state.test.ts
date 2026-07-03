@@ -27,6 +27,11 @@ describe('hover_state', () => {
 		expect(countryVisual('PL', snapshot, null)).toBe('default')
 	})
 
+	it('keeps guessed visual when hovered', () => {
+		expect(countryVisual('DE', snapshot, 'DE')).toBe('guessed')
+		expect(countryVisual('DE', snapshot, null)).toBe('guessed')
+	})
+
 	it('keeps selected visual when hover clears', () => {
 		expect(baseCountryVisual('FR', snapshot)).toBe('selected')
 		expect(countryVisual('FR', snapshot, null)).toBe('selected')

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { PREWW1_ERA_ID } from '@domain/maps'
 import { getFlagIconUrl } from '@shared/flag_icon_url'
 
 describe('flag_icon_url', () => {
@@ -10,6 +11,15 @@ describe('flag_icon_url', () => {
 	it('maps synthetic territories to display codes', () => {
 		expect(getFlagIconUrl('SYN_NORTHERN_CYPRUS', 'SYN_NORTHERN_CYPRUS')).toBeTruthy()
 		expect(getFlagIconUrl('SYN_SOMALILAND', 'SYN_SOMALILAND')).toBeTruthy()
+	})
+
+	it('returns static paths for era flag assets', () => {
+		expect(
+			getFlagIconUrl({
+				eraId: PREWW1_ERA_ID,
+				entityId: 'russia-soviet-union'
+			})
+		).toBe('/flags/eras/preww1/russia-soviet-union.svg')
 	})
 
 	it('returns null for unknown entities', () => {

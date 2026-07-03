@@ -12,6 +12,8 @@ const CANDIDATE_PORTS = [5174, 5173, 4173]
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
 const entitiesPath = path.join(root, 'static/data/eras/modern/entities.json')
 const aliasesEnPath = path.join(root, 'static/data/eras/modern/aliases.en.json')
+const preww1EntitiesPath = path.join(root, 'static/data/eras/preww1/entities.json')
+const preww1AliasesEnPath = path.join(root, 'static/data/eras/preww1/aliases.en.json')
 
 export type QuizEntity = {
 	id: string
@@ -36,9 +38,26 @@ export function loadQuizEntities(): QuizEntity[] {
 	return JSON.parse(fs.readFileSync(entitiesPath, 'utf8')) as QuizEntity[]
 }
 
+export function loadPreWW1QuizEntities(): QuizEntity[] {
+	return JSON.parse(fs.readFileSync(preww1EntitiesPath, 'utf8')) as QuizEntity[]
+}
+
 export function loadEnglishAnswers(): Map<string, string> {
 	const aliases = JSON.parse(fs.readFileSync(aliasesEnPath, 'utf8')) as Record<string, string[]>
 	const entities = loadQuizEntities()
+	const answers = new Map<string, string>()
+	for (const entity of entities) {
+		answers.set(entity.id, aliases[entity.id]?.[0] ?? entity.nameEn)
+	}
+	return answers
+}
+
+export function loadPreWW1EnglishAnswers(): Map<string, string> {
+	const aliases = JSON.parse(fs.readFileSync(preww1AliasesEnPath, 'utf8')) as Record<
+		string,
+		string[]
+	>
+	const entities = loadPreWW1QuizEntities()
 	const answers = new Map<string, string>()
 	for (const entity of entities) {
 		answers.set(entity.id, aliases[entity.id]?.[0] ?? entity.nameEn)
@@ -70,6 +89,7 @@ export async function seedPlayStorage(
 		livesEnabled: boolean
 		timerMinutes?: number
 		maxLives?: number
+		eraId?: string
 	},
 	options: {
 		locale?: Locale
@@ -78,11 +98,12 @@ export async function seedPlayStorage(
 ): Promise<void> {
 	const locale = options.locale ?? 'en'
 	const savedGame = options.savedGame ?? null
+	const eraId = settings.eraId ?? MODERN_ERA_ID
 
 	await page.addInitScript(
 		({ localeKey, settingsKey, saveKey, gameSettings, localeValue, savePayload, eraId }) => {
 			localStorage.setItem(localeKey, localeValue)
-			localStorage.setItem(settingsKey, JSON.stringify(gameSettings))
+			localStorage.setItem(settingsKey, JSON.stringify({ ...gameSettings, eraId }))
 			if (savePayload) {
 				localStorage.setItem(
 					saveKey,
@@ -106,9 +127,10 @@ export async function seedPlayStorage(
 			localeKey: LOCALE_STORAGE_KEY,
 			settingsKey: GAME_SETTINGS_STORAGE_KEY,
 			saveKey: GAME_SAVE_STORAGE_KEY,
-			eraId: MODERN_ERA_ID,
+			eraId,
 			localeValue: locale,
 			gameSettings: {
+				eraId,
 				timerMinutes: settings.timerMinutes ?? 30,
 				maxLives: settings.maxLives ?? 3,
 				timerEnabled: settings.timerEnabled,

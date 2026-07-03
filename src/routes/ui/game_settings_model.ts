@@ -1,5 +1,7 @@
 import type { Locale } from '@domain/entities'
+import { MapEraRegistry } from '@domain/maps'
 import { TIMER_MINUTE_PRESETS } from '@domain/session/constants'
+import type { MessageKey } from '@i18n'
 import type { GameSettings } from '@persist'
 
 export const SETTINGS_INFINITE_KEY = 'infinite'
@@ -51,6 +53,26 @@ export function applyLivesSelection(settings: GameSettings, selection: LivesSele
 		livesEnabled: selection.enabled,
 		maxLives: selection.count ?? settings.maxLives
 	}
+}
+
+export function applyEraSelection(settings: GameSettings, eraId: string): GameSettings {
+	if (!MapEraRegistry.isKnown(eraId)) return settings
+	return { ...settings, eraId }
+}
+
+export function buildEraSegmentOptions(
+	currentEraId: string,
+	labels: Record<string, string>
+): SegmentOption[] {
+	return MapEraRegistry.listIds().map((id) => {
+		const registration = MapEraRegistry.getRegistration(id)
+		const labelKey = registration?.labelKey as MessageKey | undefined
+		return {
+			key: id,
+			label: labelKey ? (labels[labelKey] ?? id) : id,
+			active: currentEraId === id
+		}
+	})
 }
 
 export function buildLocaleSegmentOptions(currentLocale: Locale): SegmentOption[] {

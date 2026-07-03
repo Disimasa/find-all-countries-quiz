@@ -1,3 +1,4 @@
+import { DEFAULT_ERA_ID } from '@domain/maps'
 import {
 	DEFAULT_MAX_LIVES,
 	DEFAULT_TIMER_MINUTES,
@@ -11,6 +12,7 @@ export const GAME_SETTINGS_STORAGE_KEY = 'quiz-game-settings'
 export const GAME_SAVE_STORAGE_KEY = 'quiz-game-save'
 
 export const DEFAULT_GAME_SETTINGS = {
+	eraId: DEFAULT_ERA_ID,
 	timerEnabled: true,
 	livesEnabled: true,
 	timerMinutes: DEFAULT_TIMER_MINUTES,

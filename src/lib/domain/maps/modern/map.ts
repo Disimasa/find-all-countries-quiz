@@ -7,16 +7,8 @@ export class ModernWorldMap extends BaseMapEra {
 	readonly year = null
 	readonly entityType = 'country' as const
 
-	protected getGeoJsonPath(): string {
-		return '/data/eras/modern/boundaries.geojson'
-	}
-
-	protected getEntitiesPath(): string {
-		return '/data/eras/modern/entities.json'
-	}
-
-	protected getAliasesPath(locale: 'en' | 'ru'): string {
-		return `/data/eras/modern/aliases.${locale}.json`
+	getFeatureIdProperty(): string {
+		return 'ISO_A2'
 	}
 
 	protected resolveEntityId(feature: Feature): string | null {

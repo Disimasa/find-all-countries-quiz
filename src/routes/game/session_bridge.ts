@@ -33,7 +33,7 @@ function persistSnapshot(snapshot: GameSnapshot): void {
 	}
 
 	saveGame({
-		eraId: MODERN_ERA_ID,
+		eraId: getSharedMapEra()?.id ?? MODERN_ERA_ID,
 		config: activeConfig,
 		progress,
 		savedAt: Date.now()

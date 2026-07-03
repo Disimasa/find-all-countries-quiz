@@ -3,6 +3,7 @@
 	import { Circle } from 'svelte-loading-spinners'
 	import {
 		buildPlayHref,
+		eraId,
 		getSavedGame,
 		livesEnabled,
 		maxLives,
@@ -10,7 +11,7 @@
 		timerMinutes
 	} from './controller'
 	import { warmupPlay } from './play/controller'
-	import { mapShellReady, transitionToPlay, transitionToPlayResume } from './map_shell'
+	import { mapShellReady, switchMapEra, transitionToPlay, transitionToPlayResume } from './map_shell'
 	import { locale, setLocale, t } from '@i18n'
 	import StartScreen from './ui/StartScreen.svelte'
 
@@ -18,16 +19,19 @@
 	let livesOn = true
 	let minutes = 30
 	let lives = 3
+	let currentEra = 'modern'
 	let continueLabel = ''
 
 	$: timerOn = $timerEnabled
 	$: livesOn = $livesEnabled
 	$: minutes = $timerMinutes
 	$: lives = $maxLives
+	$: currentEra = $eraId
 
 	onMount(() => {
 		const saved = getSavedGame()
 		if (saved) {
+			eraId.set(saved.eraId)
 			timerEnabled.set(saved.config.timerEnabled)
 			livesEnabled.set(saved.config.livesEnabled)
 			timerMinutes.set(Math.round(saved.config.timerSeconds / 60))
@@ -52,14 +56,21 @@
 			.replace('{total}', String(saved.progress.total))
 	}
 
-	$: $locale, updateContinueLabel()
+	$: $locale, $eraId, updateContinueLabel()
 
 	function handleStart() {
 		void transitionToPlay(buildPlayHref())
 	}
 
 	function handleContinue() {
-		void transitionToPlayResume('/play')
+		void transitionToPlayResume(buildPlayHref())
+	}
+
+	async function handleEraSelect(nextEraId: string) {
+		if (nextEraId === $eraId) return
+		eraId.set(nextEraId)
+		await switchMapEra(nextEraId)
+		updateContinueLabel()
 	}
 </script>
 
@@ -67,6 +78,10 @@
 	<StartScreen
 		title={$t('title')}
 		modeHint={$t('modeHint')}
+		eraLabel={$t('era')}
+		eraModernLabel={$t('eraModern')}
+		eraPreWW1Label={$t('eraPreWW1')}
+		eraPreWW1Hint={$t('eraPreWW1Hint')}
 		timerLabel={$t('timer')}
 		livesLabel={$t('lives')}
 		infiniteLabel={$t('infinite')}
@@ -74,6 +89,7 @@
 		startLabel={$t('start')}
 		{continueLabel}
 		disclaimer={$t('disclaimer')}
+		currentEraId={currentEra}
 		{timerOn}
 		{livesOn}
 		timerMinutes={minutes}
@@ -81,6 +97,7 @@
 		currentLocale={$locale}
 		on:start={handleStart}
 		on:continue={handleContinue}
+		on:eraSelect={(event) => void handleEraSelect(event.detail)}
 		on:timerSelect={(event) => {
 			timerEnabled.set(event.detail.enabled)
 			if (event.detail.minutes != null) timerMinutes.set(event.detail.minutes)

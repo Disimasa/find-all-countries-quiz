@@ -12,6 +12,7 @@
 	export let results: GeoEntity[] = []
 	export let query = ''
 	export let locale: Locale
+	export let eraId = 'modern'
 	export let wrongPulse = 0
 	export let active = false
 	export let selectedId: string | null = null
@@ -169,7 +170,7 @@
 							on:mouseenter={() => (highlightIndex = index)}
 							on:click={() => dispatch('pick', entity.id)}
 						>
-							<FlagIcon entityId={entity.id} flagCode={entity.flagCode} />
+							<FlagIcon entityId={entity.id} flagCode={entity.flagCode} flagAsset={entity.flagAsset} {eraId} />
 							<span class="min-w-0 truncate">{entity.names[locale]}</span>
 						</button>
 					</li>

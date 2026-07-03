@@ -1,6 +1,7 @@
 import type { GameConfig } from '@domain/entities'
 
 export interface GameSettings {
+	eraId: string
 	timerEnabled: boolean
 	livesEnabled: boolean
 	timerMinutes: number

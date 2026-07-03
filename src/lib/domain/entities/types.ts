@@ -16,6 +16,7 @@ export interface GeoEntity {
 	readonly names: LocalizedNames
 	readonly region?: string
 	readonly flagCode?: string
+	readonly flagAsset?: string
 }
 
 export interface EntityMetaRaw {
@@ -24,6 +25,7 @@ export interface EntityMetaRaw {
 	nameRu: string
 	region?: string
 	flagCode?: string
+	flagAsset?: string
 }
 
 export interface GameConfig {

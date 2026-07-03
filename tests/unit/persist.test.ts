@@ -26,8 +26,15 @@ describe('persist', () => {
 	})
 
 	it('persists and loads game settings', () => {
-		saveGameSettings({ timerEnabled: false, livesEnabled: true, timerMinutes: 45, maxLives: 5 })
+		saveGameSettings({
+			eraId: 'modern',
+			timerEnabled: false,
+			livesEnabled: true,
+			timerMinutes: 45,
+			maxLives: 5
+		})
 		expect(loadGameSettings()).toEqual({
+			eraId: 'modern',
 			timerEnabled: false,
 			livesEnabled: true,
 			timerMinutes: 45,
@@ -36,8 +43,15 @@ describe('persist', () => {
 	})
 
 	it('clamps invalid settings on load', () => {
-		saveGameSettings({ timerEnabled: true, livesEnabled: true, timerMinutes: 999, maxLives: 99 })
+		saveGameSettings({
+			eraId: 'modern',
+			timerEnabled: true,
+			livesEnabled: true,
+			timerMinutes: 999,
+			maxLives: 99
+		})
 		expect(loadGameSettings()).toEqual({
+			eraId: 'modern',
 			timerEnabled: true,
 			livesEnabled: true,
 			timerMinutes: 120,
@@ -47,6 +61,7 @@ describe('persist', () => {
 
 	it('builds config from settings', () => {
 		const config = buildGameConfig({
+			eraId: 'modern',
 			timerEnabled: false,
 			livesEnabled: false,
 			timerMinutes: 15,
@@ -61,6 +76,7 @@ describe('persist', () => {
 	it('maps timerMinutes to timerSeconds for custom durations', () => {
 		expect(
 			buildGameConfig({
+				eraId: 'modern',
 				timerEnabled: true,
 				livesEnabled: true,
 				timerMinutes: 60,
@@ -76,6 +92,7 @@ describe('persist', () => {
 
 	it('preserves maxLives from settings', () => {
 		const config = buildGameConfig({
+			eraId: 'modern',
 			timerEnabled: true,
 			livesEnabled: true,
 			timerMinutes: 10,
@@ -89,6 +106,7 @@ describe('persist', () => {
 		saveGame({
 			eraId: 'modern',
 			config: buildGameConfig({
+				eraId: 'modern',
 				timerEnabled: true,
 				livesEnabled: true,
 				timerMinutes: 30,
@@ -103,15 +121,37 @@ describe('persist', () => {
 			savedAt: Date.now()
 		})
 
-		const saved = loadSavedGame()
+		const saved = loadSavedGame('modern')
 		expect(saved?.progress.guessedIds).toEqual(['DE', 'FR'])
 		expect(saved?.progress.total).toBe(195)
+	})
+
+	it('returns null when saved era mismatches expected era', () => {
+		saveGame({
+			eraId: 'preww1',
+			config: buildGameConfig({
+				eraId: 'preww1',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['germany-prussia'],
+				livesRemaining: 3,
+				timeRemaining: null,
+				total: 142
+			},
+			savedAt: Date.now()
+		})
+		expect(loadSavedGame('modern')).toBeNull()
 	})
 
 	it('clears saved game', () => {
 		saveGame({
 			eraId: 'modern',
 			config: buildGameConfig({
+				eraId: 'modern',
 				timerEnabled: true,
 				livesEnabled: true,
 				timerMinutes: 30,
@@ -126,6 +166,6 @@ describe('persist', () => {
 			savedAt: Date.now()
 		})
 		clearSavedGame()
-		expect(loadSavedGame()).toBeNull()
+		expect(loadSavedGame('modern')).toBeNull()
 	})
 })

@@ -1,27 +1,63 @@
+import type { MapEraDescriptor } from '@domain/entities'
 import type { BaseMapEra } from './base.ts'
-import { MODERN_ERA_ID } from './modern/constants.ts'
-import { ModernWorldMap } from './modern/map.ts'
-
-const eras = new Map<string, () => BaseMapEra>()
+import {
+	DEFAULT_ERA_ID,
+	getEraRegistration,
+	listEraRegistrations,
+	registerEra,
+	resolveThemeProfileId,
+	type EraRegistration
+} from './registry.ts'
 
 export class MapEraRegistry {
-	static register(id: string, factory: () => BaseMapEra): void {
-		eras.set(id, factory)
+	static register(meta: EraRegistration): void {
+		registerEra(meta)
 	}
 
 	static create(id: string): BaseMapEra {
-		const factory = eras.get(id)
-		if (!factory) throw new Error(`Unknown map era: ${id}`)
-		return factory()
+		const registration = getEraRegistration(id)
+		if (!registration) throw new Error(`Unknown map era: ${id}`)
+		return registration.factory()
 	}
 
+	static listIds(): string[] {
+		return listEraRegistrations().map((era) => era.id)
+	}
+
+	/** @deprecated Use listIds() */
 	static list(): string[] {
-		return [...eras.keys()]
+		return MapEraRegistry.listIds()
+	}
+
+	static listDescriptors(): MapEraDescriptor[] {
+		return listEraRegistrations().map((registration) => ({
+			id: registration.id,
+			year: registration.year,
+			entityType: registration.entityType
+		}))
+	}
+
+	static isKnown(id: string): boolean {
+		return getEraRegistration(id) !== undefined
+	}
+
+	static getRegistration(id: string): EraRegistration | undefined {
+		return getEraRegistration(id)
+	}
+
+	static resolveThemeProfileId(eraId: string): string {
+		return resolveThemeProfileId(eraId)
 	}
 }
 
-MapEraRegistry.register(MODERN_ERA_ID, () => new ModernWorldMap())
-
+export {
+	DEFAULT_ERA_ID,
+	registerEra,
+	resolveThemeProfileId,
+	type EraRegistration
+} from './registry.ts'
 export { MODERN_ERA_ID } from './modern/constants.ts'
+export { PREWW1_ERA_ID } from './preww1/constants.ts'
 export { BaseMapEra } from './base.ts'
 export { ModernWorldMap } from './modern/map.ts'
+export { PreWW1WorldMap } from './preww1/map.ts'

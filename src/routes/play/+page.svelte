@@ -20,6 +20,9 @@
 	import { isRandomCountryHotkey } from './hotkeys'
 	import { locale, t } from '@i18n'
 	import { loadSavedGame } from '@persist'
+	import { getSharedMapEra } from '../map_era.ts'
+	import { parseEraId } from './parse_config.ts'
+	import { eraId as eraIdStore } from '../controller'
 	import {
 		enterPlayDirect,
 		focusMapOnCountry,
@@ -27,6 +30,7 @@
 		mapShellReady,
 		mapShellTransitioning,
 		setMapSelectHandler,
+		switchMapEra,
 		transitionToHome,
 		updateMapStyles
 	} from '../map_shell'
@@ -37,14 +41,38 @@
 	onMount(() => {
 		setMapSelectHandler(onSelect)
 
-		if (!$mapShellTransitioning && !getSession()) {
-			const saved = loadSavedGame()
+		const startSession = async () => {
+			if (get(mapShellTransitioning) || getSession()) return
+
+			const settingsEraId = parseEraId($page.url.search)
+			if (settingsEraId !== get(eraIdStore)) {
+				eraIdStore.set(settingsEraId)
+			}
+
+			const mapEraId = getSharedMapEra()?.id
+			if (mapEraId && mapEraId !== settingsEraId) {
+				await switchMapEra(settingsEraId)
+			}
+
+			if (getSession()) return
+
+			const saved = loadSavedGame(settingsEraId)
 			if (saved) {
-				void enterPlayDirect(saved.config, { resume: saved.progress })
+				await enterPlayDirect(saved.config, { resume: saved.progress })
 			} else {
 				const config = parseConfig($page.url.search)
-				void enterPlayDirect(config)
+				await enterPlayDirect(config)
 			}
+		}
+
+		if (get(mapShellReady)) {
+			void startSession()
+		} else {
+			const unsub = mapShellReady.subscribe((ready) => {
+				if (!ready) return
+				unsub()
+				void startSession()
+			})
 		}
 
 		const onKeydown = (event: KeyboardEvent) => {
@@ -112,6 +140,7 @@
 	$: canPickRandomCountry =
 		$gameSnapshot.status === 'playing' &&
 		$gameSnapshot.progress.correct < $gameSnapshot.progress.total
+	$: mapEraId = $eraIdStore
 	$: session = ($gameSnapshot.status, getSession())
 	$: mapLoading =
 		($gameSnapshot.status === 'loading' || !$mapShellReady) && !$mapShellTransitioning
@@ -126,6 +155,8 @@
 	data-status={$gameSnapshot.status}
 	data-selected-id={$gameSnapshot.selectedId ?? ''}
 	data-correct={$gameSnapshot.progress.correct}
+	data-total={$gameSnapshot.progress.total}
+	data-era-id={mapEraId}
 	data-lives={$gameSnapshot.stats.lives}
 	data-max-lives={$gameSnapshot.stats.maxLives}
 	data-lives-enabled={$gameSnapshot.stats.livesEnabled}
@@ -166,6 +197,7 @@
 	>
 		<ProgressPanel
 			snapshot={$gameSnapshot}
+			mapEraId={mapEraId}
 			{canPickRandomCountry}
 			{guessQuery}
 			autocompleteResults={$autocompleteResults}
