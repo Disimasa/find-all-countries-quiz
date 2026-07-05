@@ -147,6 +147,29 @@ describe('persist', () => {
 		expect(loadSavedGame('modern')).toBeNull()
 	})
 
+	it('retains save for original era while another era is selected in lobby', () => {
+		saveGame({
+			eraId: 'modern',
+			config: buildGameConfig({
+				eraId: 'modern',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['DE', 'FR'],
+				livesRemaining: 2,
+				timeRemaining: 900,
+				total: 195
+			},
+			savedAt: Date.now()
+		})
+
+		expect(loadSavedGame('preww1')).toBeNull()
+		expect(loadSavedGame('modern')?.progress.guessedIds).toEqual(['DE', 'FR'])
+	})
+
 	it('clears saved game', () => {
 		saveGame({
 			eraId: 'modern',

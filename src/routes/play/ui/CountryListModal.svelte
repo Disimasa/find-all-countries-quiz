@@ -51,7 +51,7 @@
 		<ul class="min-h-0 flex-1 overflow-y-auto overscroll-y-contain p-2">
 			{#each entities as entity (entity.id)}
 				{@const guessed = guessedSet.has(entity.id)}
-				<li>
+				<li class="country-list-item">
 					{#if guessed}
 						<button
 							type="button"
@@ -92,3 +92,10 @@
 		</ul>
 	</div>
 </dialog>
+
+<style>
+	.country-list-item {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 3.25rem;
+	}
+</style>
