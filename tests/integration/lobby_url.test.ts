@@ -1,7 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { chromium, type Browser, type Page } from 'playwright'
 import { LOCALE_STORAGE_KEY } from '@i18n/constants'
-import { GAME_SETTINGS_STORAGE_KEY } from '@persist/constants'
 
 const CANDIDATE_PORTS = [5174, 5173, 4173]
 
@@ -23,12 +22,20 @@ async function resolveBaseUrl(browser: Browser): Promise<string | null> {
 }
 
 async function waitForLobbyReady(page: Page) {
-	await page.waitForSelector('.maplibregl-canvas', { timeout: 30_000 })
+	await page.getByTestId('lobby-loading').waitFor({ state: 'detached', timeout: 30_000 })
 	await page.getByRole('button', { name: 'New game' }).waitFor({ state: 'visible', timeout: 30_000 })
 }
 
 async function getMapEra(page: Page): Promise<string | null> {
 	return page.getByTestId('map-shell').getAttribute('data-map-era')
+}
+
+function collectPageErrors(page: Page): string[] {
+	const errors: string[] = []
+	page.on('pageerror', (error) => {
+		errors.push(error.message)
+	})
+	return errors
 }
 
 describe('lobby URL sync', () => {
@@ -51,21 +58,46 @@ describe('lobby URL sync', () => {
 			if (!baseUrl || !browser) return
 
 			const page = await browser.newPage()
+			const errors = collectPageErrors(page)
 			try {
-				await page.addInitScript(
-					({ localeKey, settingsKey }) => {
-						localStorage.setItem(localeKey, 'en')
-						localStorage.removeItem(settingsKey)
-					},
-					{ localeKey: LOCALE_STORAGE_KEY, settingsKey: GAME_SETTINGS_STORAGE_KEY }
-				)
+				await page.addInitScript((localeKey) => {
+					localStorage.setItem(localeKey, 'en')
+				}, LOCALE_STORAGE_KEY)
 
 				await page.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' })
 				await waitForLobbyReady(page)
 
+				expect(errors.some((message) => message.includes('Cannot call replaceState'))).toBe(
+					false
+				)
 				expect(page.url()).toContain('timer=30')
 				expect(page.url()).toContain('lives=3')
 				expect(await getMapEra(page)).toBeNull()
+			} finally {
+				await page.close()
+			}
+		},
+		60_000
+	)
+
+	it(
+		'canonicalizes partial lobby URL after load',
+		async () => {
+			expect(baseUrl, 'Start dev server: pnpm dev').toBeTruthy()
+			if (!baseUrl || !browser) return
+
+			const page = await browser.newPage()
+			try {
+				await page.addInitScript((localeKey) => {
+					localStorage.setItem(localeKey, 'en')
+				}, LOCALE_STORAGE_KEY)
+
+				await page.goto(`${baseUrl}/?era=ce1300`, { waitUntil: 'domcontentloaded' })
+				await waitForLobbyReady(page)
+
+				expect(page.url()).toContain('era=ce1300')
+				expect(page.url()).toContain('timer=30')
+				expect(page.url()).toContain('lives=3')
 			} finally {
 				await page.close()
 			}

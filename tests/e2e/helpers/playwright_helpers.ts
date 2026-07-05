@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { type Browser, type Page } from 'playwright'
 import type { Locale } from '@domain/entities'
 import { MODERN_ERA_ID } from '@domain/maps'
-import { GAME_SETTINGS_STORAGE_KEY, gameSaveStorageKey } from '@persist/constants'
+import { gameSaveStorageKey } from '@persist/constants'
 import { LOCALE_STORAGE_KEY } from '@i18n/constants'
 
 const CANDIDATE_PORTS = [5174, 5173, 4173]
@@ -139,9 +139,8 @@ export async function seedPlayStorage(
 	const eraId = settings.eraId ?? MODERN_ERA_ID
 
 	await page.addInitScript(
-		({ localeKey, settingsKey, saveKey, gameSettings, localeValue, savePayload, eraId }) => {
+		({ localeKey, saveKey, localeValue, savePayload, eraId }) => {
 			localStorage.setItem(localeKey, localeValue)
-			localStorage.setItem(settingsKey, JSON.stringify({ ...gameSettings, eraId }))
 			if (savePayload) {
 				localStorage.setItem(
 					saveKey,
@@ -163,17 +162,9 @@ export async function seedPlayStorage(
 		},
 		{
 			localeKey: LOCALE_STORAGE_KEY,
-			settingsKey: GAME_SETTINGS_STORAGE_KEY,
 			saveKey: gameSaveStorageKey(eraId),
 			eraId,
 			localeValue: locale,
-			gameSettings: {
-				eraId,
-				timerMinutes: settings.timerMinutes ?? 30,
-				maxLives: settings.maxLives ?? 3,
-				timerEnabled: settings.timerEnabled,
-				livesEnabled: settings.livesEnabled
-			},
 			savePayload: savedGame
 		}
 	)

@@ -8,9 +8,6 @@ import {
 	MIN_TIMER_MINUTES
 } from '@domain/session/constants'
 
-export const GAME_SETTINGS_STORAGE_KEY = 'quiz-game-settings'
-/** @deprecated Legacy single-slot key; migrated to {@link gameSaveStorageKey}. */
-export const GAME_SAVE_STORAGE_KEY = 'quiz-game-save'
 export const GAME_SAVE_STORAGE_PREFIX = 'quiz-game-save:'
 
 export function gameSaveStorageKey(eraId: string): string {

@@ -2,10 +2,9 @@ import { describe, expect, it, beforeEach, vi } from 'vitest'
 import {
 	buildGameConfig,
 	clearSavedGame,
-	loadGameSettings,
 	loadSavedGame,
-	saveGame,
-	saveGameSettings
+	normalizeGameSettings,
+	saveGame
 } from '@persist'
 
 describe('persist', () => {
@@ -25,15 +24,16 @@ describe('persist', () => {
 		clearSavedGame()
 	})
 
-	it('persists and loads game settings', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: false,
-			livesEnabled: true,
-			timerMinutes: 45,
-			maxLives: 5
-		})
-		expect(loadGameSettings()).toEqual({
+	it('normalizes and clamps game settings', () => {
+		expect(
+			normalizeGameSettings({
+				eraId: 'modern',
+				timerEnabled: false,
+				livesEnabled: true,
+				timerMinutes: 45,
+				maxLives: 5
+			})
+		).toEqual({
 			eraId: 'modern',
 			timerEnabled: false,
 			livesEnabled: true,
@@ -42,15 +42,16 @@ describe('persist', () => {
 		})
 	})
 
-	it('clamps invalid settings on load', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: true,
-			livesEnabled: true,
-			timerMinutes: 999,
-			maxLives: 99
-		})
-		expect(loadGameSettings()).toEqual({
+	it('clamps invalid settings on normalize', () => {
+		expect(
+			normalizeGameSettings({
+				eraId: 'modern',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 999,
+				maxLives: 99
+			})
+		).toEqual({
 			eraId: 'modern',
 			timerEnabled: true,
 			livesEnabled: true,
@@ -295,31 +296,6 @@ describe('persist', () => {
 		clearSavedGame()
 		expect(loadSavedGame('modern')).toBeNull()
 		expect(loadSavedGame('ce1300')).toBeNull()
-	})
-
-	it('migrates legacy single-key save on load', () => {
-		const legacy = {
-			eraId: 'modern',
-			config: buildGameConfig({
-				eraId: 'modern',
-				timerEnabled: true,
-				livesEnabled: true,
-				timerMinutes: 30,
-				maxLives: 3
-			}),
-			progress: {
-				guessedIds: ['DE'],
-				livesRemaining: 3,
-				timeRemaining: null,
-				total: 195
-			},
-			savedAt: Date.now()
-		}
-		localStorage.setItem('quiz-game-save', JSON.stringify(legacy))
-
-		expect(loadSavedGame('modern')?.progress.guessedIds).toEqual(['DE'])
-		expect(localStorage.getItem('quiz-game-save')).toBeNull()
-		expect(localStorage.getItem('quiz-game-save:modern')).toBeTruthy()
 	})
 
 	it('clears saved game', () => {

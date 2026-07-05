@@ -2,8 +2,6 @@ import type { GameConfig } from '@domain/entities'
 import { DEFAULT_ERA_ID, MapEraRegistry } from '@domain/maps'
 import {
 	DEFAULT_GAME_SETTINGS,
-	GAME_SAVE_STORAGE_KEY,
-	GAME_SETTINGS_STORAGE_KEY,
 	gameSaveStorageKey,
 	MAX_LIVES_LIMIT,
 	MAX_TIMER_MINUTES,
@@ -89,39 +87,6 @@ function parseSavedGame(raw: string): SavedGame | null {
 	}
 }
 
-function readLegacySave(): SavedGame | null {
-	if (!canUseStorage()) return null
-
-	const raw = localStorage.getItem(GAME_SAVE_STORAGE_KEY)
-	if (!raw) return null
-	return parseSavedGame(raw)
-}
-
-function migrateLegacySave(eraId: string): SavedGame | null {
-	const legacy = readLegacySave()
-	if (!legacy || legacy.eraId !== eraId) return null
-
-	saveGame(legacy)
-	return legacy
-}
-
-export function loadGameSettings(): GameSettings {
-	if (!canUseStorage()) return { ...DEFAULT_GAME_SETTINGS }
-
-	try {
-		const raw = localStorage.getItem(GAME_SETTINGS_STORAGE_KEY)
-		if (!raw) return { ...DEFAULT_GAME_SETTINGS }
-		return normalizeGameSettings(JSON.parse(raw) as Partial<GameSettings>)
-	} catch {
-		return { ...DEFAULT_GAME_SETTINGS }
-	}
-}
-
-export function saveGameSettings(settings: GameSettings): void {
-	if (!canUseStorage()) return
-	localStorage.setItem(GAME_SETTINGS_STORAGE_KEY, JSON.stringify(normalizeGameSettings(settings)))
-}
-
 export function buildGameConfig(settings: GameSettings): GameConfig {
 	const normalized = normalizeGameSettings(settings)
 	return {
@@ -132,16 +97,12 @@ export function buildGameConfig(settings: GameSettings): GameConfig {
 	}
 }
 
-export function loadSavedGame(expectedEraId?: string): SavedGame | null {
+export function loadSavedGame(eraId: string): SavedGame | null {
 	if (!canUseStorage()) return null
-
-	const eraId = expectedEraId ?? loadGameSettings().eraId
 
 	try {
 		const raw = localStorage.getItem(gameSaveStorageKey(eraId))
-		if (raw) return parseSavedGame(raw)
-
-		return migrateLegacySave(eraId)
+		return raw ? parseSavedGame(raw) : null
 	} catch {
 		return null
 	}
@@ -150,7 +111,6 @@ export function loadSavedGame(expectedEraId?: string): SavedGame | null {
 export function saveGame(save: SavedGame): void {
 	if (!canUseStorage()) return
 	localStorage.setItem(gameSaveStorageKey(save.eraId), JSON.stringify(save))
-	localStorage.removeItem(GAME_SAVE_STORAGE_KEY)
 }
 
 export function clearSavedGame(eraId?: string): void {
@@ -158,12 +118,9 @@ export function clearSavedGame(eraId?: string): void {
 
 	if (eraId) {
 		localStorage.removeItem(gameSaveStorageKey(eraId))
-		const legacy = readLegacySave()
-		if (legacy?.eraId === eraId) localStorage.removeItem(GAME_SAVE_STORAGE_KEY)
 		return
 	}
 
-	localStorage.removeItem(GAME_SAVE_STORAGE_KEY)
 	for (const id of MapEraRegistry.listIds()) {
 		localStorage.removeItem(gameSaveStorageKey(id))
 	}

@@ -35,6 +35,11 @@ export function isLobbySearchInSync(search: string, settings: GameSettings): boo
 	return search === getLobbySearchForSettings(settings)
 }
 
+/** True when inbound navigation carries game settings in the query string. */
+export function hasLobbySettingsInUrl(search: string): boolean {
+	return parseGameSettingsSearch(search) != null
+}
+
 export function buildPlayHrefFromSettings(settings: GameSettings): string {
 	const query = encodeGameSettingsParams(settings).toString()
 	return query ? `/play?${query}` : '/play'
@@ -84,14 +89,8 @@ export function parseGameSettingsSearch(search: string): Partial<GameSettings> |
 	return Object.keys(settings).length > 0 ? settings : null
 }
 
-export function resolveLobbySettingsFromSearch(search: string): GameSettings {
-	const fromUrl = parseGameSettingsSearch(search)
-	if (!fromUrl) return { ...DEFAULT_GAME_SETTINGS }
-	return mergeGameSettings(DEFAULT_GAME_SETTINGS, fromUrl)
-}
-
-/** Play: URL params merged over defaults (share link / refresh). */
-export function resolvePlaySettingsFromSearch(search: string): GameSettings {
+/** URL query merged over defaults (lobby and play). */
+export function resolveSettingsFromSearch(search: string): GameSettings {
 	const fromUrl = parseGameSettingsSearch(search)
 	if (!fromUrl) return { ...DEFAULT_GAME_SETTINGS }
 	return mergeGameSettings(DEFAULT_GAME_SETTINGS, fromUrl)
@@ -104,7 +103,8 @@ export function resolveInitialGameSettings(
 	if (!location) return { ...DEFAULT_GAME_SETTINGS }
 
 	const { pathname, search } = location
-	if (pathname === '/') return resolveLobbySettingsFromSearch(search)
-	if (pathname === '/play') return resolvePlaySettingsFromSearch(search)
+	if (pathname === '/' || pathname === '/play') {
+		return resolveSettingsFromSearch(search)
+	}
 	return { ...DEFAULT_GAME_SETTINGS }
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import { onMount, tick } from 'svelte'
 	import { get } from 'svelte/store'
-	import { afterNavigate, replaceState } from '$app/navigation'
+	import { afterNavigate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { Circle } from 'svelte-loading-spinners'
 	import {
@@ -15,11 +15,17 @@
 		timerEnabled,
 		timerMinutes
 	} from './controller'
-	import { lobbyHrefForSettings, lobbyUrlNeedsUpdate, readLobbySettings } from './lobby_url.ts'
+	import {
+		buildLobbyShareHref,
+		hasLobbySettingsInUrl,
+		isLobbySearchInSync,
+		resolveSettingsFromSearch
+	} from './game_settings_url.ts'
 	import { copyShareLink } from './play/share_game_link'
 	import { warmupPlay } from './play/controller'
 	import { getSharedMapEra } from './map_era.ts'
 	import { isLobbyEraSelectionRedundant } from './lobby_era_selection.ts'
+	import { safeReplaceState } from './safe_replace_state.ts'
 	import { mapShellReady, switchMapEra, transitionToPlay, transitionToPlayResume } from './map_shell'
 	import { locale, setLocale, t } from '@i18n'
 	import StartScreen from './ui/StartScreen.svelte'
@@ -31,7 +37,7 @@
 	let currentEra = 'modern'
 	let continueLabel = ''
 	let shareCopied = false
-	let lobbyReady = false
+	let canSyncLobbyUrl = false
 
 	$: timerOn = $timerEnabled
 	$: livesOn = $livesEnabled
@@ -52,7 +58,7 @@
 	}
 
 	async function applyLobbyFromUrl(search: string): Promise<void> {
-		const settings = readLobbySettings(search)
+		const settings = resolveSettingsFromSearch(search)
 		applyGameSettings(settings)
 		const mapEra = getSharedMapEra()?.id
 		if (settings.eraId !== mapEra) {
@@ -60,36 +66,55 @@
 		}
 	}
 
-	function pushLobbyUrl(): void {
-		if (!lobbyReady || get(page).url.pathname !== '/') return
+	async function pushLobbyUrl(): Promise<void> {
+		if (get(page).url.pathname !== '/') return
 
 		const settings = getGameSettings()
 		const search = get(page).url.search
-		if (!lobbyUrlNeedsUpdate(search, settings)) return
+		if (isLobbySearchInSync(search, settings)) return
 
-		replaceState(lobbyHrefForSettings(settings), {})
+		await safeReplaceState(buildLobbyShareHref(settings), {})
+	}
+
+	/** Safe to call once the lobby page is mounted; waits for SvelteKit router. */
+	async function reconcileLobbyUrl(search: string): Promise<void> {
+		if (isLobbySearchInSync(search, getGameSettings())) return
+
+		if (hasLobbySettingsInUrl(search)) {
+			await applyLobbyFromUrl(search)
+		}
+
+		const settings = getGameSettings()
+		if (!isLobbySearchInSync(search, settings)) {
+			await safeReplaceState(buildLobbyShareHref(settings), {})
+		}
 	}
 
 	onMount(() => {
-		void applyLobbyFromUrl(get(page).url.search).then(() => {
-			lobbyReady = true
-			pushLobbyUrl()
-		})
+		canSyncLobbyUrl = true
+		void (async () => {
+			await tick()
+			if (get(page).url.pathname === '/') {
+				await reconcileLobbyUrl(get(page).url.search)
+			}
+		})()
+
+		const mapEra = getSharedMapEra()?.id
+		if (get(eraId) !== mapEra) {
+			void switchMapEra(get(eraId))
+		}
 
 		updateContinueLabel()
 		warmupPlay()
 		const unsubReady = mapShellReady.subscribe((ready) => {
-			if (ready) {
-				pushLobbyUrl()
-				warmupPlay()
-			}
+			if (ready) warmupPlay()
 		})
 		return unsubReady
 	})
 
 	afterNavigate(({ to }) => {
-		if (!lobbyReady || !to || to.url.pathname !== '/') return
-		void applyLobbyFromUrl(to.url.search)
+		if (!canSyncLobbyUrl || !to || to.url.pathname !== '/') return
+		void reconcileLobbyUrl(to.url.search)
 	})
 
 	function updateContinueLabel() {
@@ -117,20 +142,20 @@
 		if (isLobbyEraSelectionRedundant(nextEraId, $eraId, getSharedMapEra()?.id)) return
 		eraId.set(nextEraId)
 		await switchMapEra(nextEraId)
-		pushLobbyUrl()
+		void pushLobbyUrl()
 		updateContinueLabel()
 	}
 
 	function handleTimerSelect(event: CustomEvent<{ enabled: boolean; minutes?: number }>) {
 		timerEnabled.set(event.detail.enabled)
 		if (event.detail.minutes != null) timerMinutes.set(event.detail.minutes)
-		pushLobbyUrl()
+		void pushLobbyUrl()
 	}
 
 	function handleLivesSelect(event: CustomEvent<{ enabled: boolean; count?: number }>) {
 		livesEnabled.set(event.detail.enabled)
 		if (event.detail.count != null) maxLives.set(event.detail.count)
-		pushLobbyUrl()
+		void pushLobbyUrl()
 	}
 
 	async function handleShare() {
@@ -181,6 +206,7 @@
 	/>
 {:else}
 	<div
+		data-testid="lobby-loading"
 		class="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center gap-3"
 		aria-busy="true"
 		aria-live="polite"

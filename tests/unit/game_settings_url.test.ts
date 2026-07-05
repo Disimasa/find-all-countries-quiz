@@ -20,11 +20,11 @@ import {
 	buildPlayHrefFromSettings,
 	encodeGameSettingsParams,
 	getLobbySearchForSettings,
+	hasLobbySettingsInUrl,
 	isLobbySearchInSync,
 	parseGameSettingsSearch,
 	resolveInitialGameSettings,
-	resolveLobbySettingsFromSearch,
-	resolvePlaySettingsFromSearch
+	resolveSettingsFromSearch
 } from '../../src/routes/game_settings_url.ts'
 
 describe('game_settings_url', () => {
@@ -105,15 +105,15 @@ describe('game_settings_url', () => {
 		})
 	})
 
-	it('resolveLobbySettingsFromSearch uses defaults for omitted params', () => {
-		expect(resolveLobbySettingsFromSearch('?era=ce1300')).toEqual({
+	it('resolveSettingsFromSearch uses defaults for omitted params', () => {
+		expect(resolveSettingsFromSearch('?era=ce1300')).toEqual({
 			...DEFAULT_GAME_SETTINGS,
 			eraId: CE1300_ERA_ID
 		})
 	})
 
-	it('resolvePlaySettingsFromSearch uses defaults for omitted params', () => {
-		expect(resolvePlaySettingsFromSearch('?era=ce1300&timer=60&lives=5')).toEqual({
+	it('resolveSettingsFromSearch merges full query', () => {
+		expect(resolveSettingsFromSearch('?era=ce1300&timer=60&lives=5')).toEqual({
 			eraId: CE1300_ERA_ID,
 			timerEnabled: true,
 			timerMinutes: 60,
@@ -238,6 +238,20 @@ describe('share settings integration', () => {
 				maxLives: 1
 			})
 		).toBe(true)
+	})
+
+	it('hasLobbySettingsInUrl is false for bare lobby path', () => {
+		expect(hasLobbySettingsInUrl('')).toBe(false)
+	})
+
+	it('hasLobbySettingsInUrl is true when any game param is present', () => {
+		expect(hasLobbySettingsInUrl('?era=ce1300')).toBe(true)
+		expect(hasLobbySettingsInUrl('?timer=30&lives=3')).toBe(true)
+	})
+
+	it('bare lobby search is not in sync and needs canonical push', () => {
+		expect(isLobbySearchInSync('', DEFAULT_GAME_SETTINGS)).toBe(false)
+		expect(hasLobbySettingsInUrl('')).toBe(false)
 	})
 
 	it('getGameSettings reflects current lobby stores', () => {
