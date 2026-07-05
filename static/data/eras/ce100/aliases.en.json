@@ -1,39 +1,75 @@
 {
-  "meroe": [
-    "Meroe",
-    "Kingdom of Kush",
-    "Kush"
+  "alans": [
+    "Alans",
+    "Alania"
   ],
-  "saka-kingdom": [
-    "Saka Kingdom"
+  "arakan": [
+    "Arakan"
   ],
-  "satavahanihara": [
-    "Satavahanihara",
-    "Satavahana dynasty"
+  "armenia": [
+    "Armenia"
+  ],
+  "axum": [
+    "Axum",
+    "Kingdom of Aksum",
+    "Aksum"
+  ],
+  "blemmyes": [
+    "Blemmyes",
+    "Blemmye kingdom"
+  ],
+  "bosporian-kingdom": [
+    "Bosporian Kingdom",
+    "Bosporus",
+    "Cimmerian Bosporus"
+  ],
+  "dacia": [
+    "Dacia",
+    "Dacians"
+  ],
+  "gaya": [
+    "Gaya"
   ],
   "hadramaut": [
     "Hadramaut"
+  ],
+  "hainan": [
+    "Hainan"
+  ],
+  "han": [
+    "Han",
+    "Han China",
+    "Han dynasty"
   ],
   "himyarite-kingdom": [
     "Himyarite Kingdom",
     "Himyar"
   ],
   "hindu-kingdoms": [
-    "Hindu kingdoms",
-    "Indian kingdoms"
+    "Hindu kingdoms"
   ],
-  "hainan": [
-    "Hainan"
+  "kalinga": [
+    "Kalinga",
+    "Kalinga kingdom"
   ],
-  "simhala": [
-    "Simhala",
-    "Sri Lanka",
-    "Ceylon"
+  "koguryo": [
+    "Koguryo",
+    "Goguryeo",
+    "Koguryeo"
+  ],
+  "kushan-empire": [
+    "Kushan Empire",
+    "Kushan"
   ],
   "maya-chiefdoms": [
     "Maya chiefdoms and states",
     "Maya",
     "Maya states"
+  ],
+  "meroe": [
+    "Meroe",
+    "Kingdom of Kush",
+    "Kush"
   ],
   "moche": [
     "Moche",
@@ -42,38 +78,20 @@
   ],
   "monte-alban": [
     "Monte Albán",
-    "Monte Alban",
-    "Zapotec"
+    "Monte Alban"
   ],
-  "axum": [
-    "Axum",
-    "Kingdom of Aksum",
-    "Aksum"
+  "nabatean-kingdom": [
+    "Nabatean Kingdom",
+    "Nabataea",
+    "Nabateans"
   ],
-  "suren-kingdom": [
-    "Suren Kingdom",
-    "Suren",
-    "House of Suren"
+  "nazca": [
+    "Nazca",
+    "Nasca"
   ],
-  "kalinga": [
-    "Kalinga",
-    "Kalinga kingdom"
-  ],
-  "teotihuacan": [
-    "Teotihuacán",
-    "Teotihuacan"
-  ],
-  "dacia": [
-    "Dacia",
-    "Dacians"
-  ],
-  "armenia": [
-    "Armenia"
-  ],
-  "bosporian-kingdom": [
-    "Bosporian Kingdom",
-    "Bosporus",
-    "Cimmerian Bosporus"
+  "paekche": [
+    "Paekche",
+    "Baekje"
   ],
   "parthian-empire": [
     "Parthian Empire",
@@ -84,59 +102,37 @@
     "Rome",
     "Imperium Romanum"
   ],
-  "southern-xiongnu": [
-    "Southern Xiongnu",
-    "Xiongnu"
+  "saka-kingdom": [
+    "Saka Kingdom"
   ],
-  "yueban": [
-    "Yueban"
-  ],
-  "han": [
-    "Han",
-    "Han China",
-    "Han dynasty"
-  ],
-  "blemmyes": [
-    "Blemmyes",
-    "Blemmye kingdom"
-  ],
-  "nazca": [
-    "Nazca",
-    "Nasca"
-  ],
-  "silla": [
-    "Silla"
-  ],
-  "alans": [
-    "Alans",
-    "Alania"
-  ],
-  "kushan-empire": [
-    "Kushan Empire",
-    "Kushan"
+  "satavahanihara": [
+    "Satavahanihara",
+    "Satavahana dynasty"
   ],
   "scythians": [
     "Scythians",
     "Scythia"
   ],
-  "paekche": [
-    "Paekche",
-    "Baekje"
+  "silla": [
+    "Silla"
   ],
-  "gaya": [
-    "Gaya"
+  "simhala": [
+    "Simhala"
   ],
-  "koguryo": [
-    "Koguryo",
-    "Goguryeo",
-    "Koguryeo"
+  "southern-xiongnu": [
+    "Southern Xiongnu",
+    "Xiongnu"
   ],
-  "arakan": [
-    "Arakan"
+  "suren-kingdom": [
+    "Suren Kingdom",
+    "Suren",
+    "House of Suren"
   ],
-  "nabatean-kingdom": [
-    "Nabatean Kingdom",
-    "Nabataea",
-    "Nabateans"
+  "teotihuacan": [
+    "Teotihuacán",
+    "Teotihuacan"
+  ],
+  "yueban": [
+    "Yueban"
   ]
 }

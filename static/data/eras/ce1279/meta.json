@@ -1,0 +1,12 @@
+{
+  "eraId": "ce1279",
+  "snapshotYear": 1279,
+  "entityCount": 60,
+  "source": "historical-basemaps",
+  "sourceUrl": "https://github.com/aourednik/historical-basemaps",
+  "rejectedSources": [
+    "CShapes 2.0 (starts 1886 — no 1279 snapshot)",
+    "Cliopatria (CC BY 4.0; historical-basemaps has dedicated world_1279.geojson)",
+    "OpenHistoricalMap (no complete global snapshot for 1279)"
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "eraId": "ce1300",
+  "snapshotYear": 1300,
+  "source": "hybrid:historical-basemaps+cliopatria",
+  "cliopatria": {
+    "add": [
+      {
+        "name": "Tver",
+        "id": "tver"
+      },
+      {
+        "name": "Pskov Republic",
+        "id": "pskov"
+      },
+      {
+        "name": "Principality of Smolensk",
+        "id": "smolensk"
+      },
+      {
+        "name": "Principality of Vladimir-Suzdal",
+        "id": "vladimir-suzdal"
+      },
+      {
+        "name": "Galicia-Volhynia",
+        "id": "galicia-volhynia"
+      },
+      {
+        "name": "Principality of Ryazan",
+        "id": "ryazan",
+        "fromYear": 1099,
+        "toYear": 1226,
+        "displayName": "Ryazan"
+      },
+      {
+        "name": "Banate of Bosnia",
+        "id": "bosnia"
+      },
+      {
+        "name": "Majapahit",
+        "id": "majapahit"
+      },
+      {
+        "name": "Republic of Genoa",
+        "id": "genoa"
+      },
+      {
+        "name": "Republic of Florence",
+        "id": "florence"
+      },
+      {
+        "name": "Swiss Confederation",
+        "id": "swiss-confederation"
+      },
+      {
+        "name": "Principality of Polotsk",
+        "id": "polotsk",
+        "source": "manual"
+      },
+      {
+        "name": "Principality of Chernigov",
+        "id": "chernigov",
+        "source": "manual"
+      },
+      {
+        "name": "Principality of Polotsk",
+        "id": "polotsk",
+        "source": "manual"
+      },
+      {
+        "name": "Principality of Chernigov",
+        "id": "chernigov",
+        "source": "manual"
+      }
+    ]
+  },
+  "clipParents": [
+    {
+      "targetId": "novgorod",
+      "subtractIds": [
+        "pskov",
+        "tver",
+        "smolensk",
+        "vladimir-suzdal"
+      ]
+    },
+    {
+      "targetId": "moscow",
+      "subtractIds": [
+        "vladimir-suzdal"
+      ]
+    },
+    {
+      "targetId": "lithuania",
+      "subtractIds": [
+        "galicia-volhynia"
+      ]
+    }
+  ],
+  "clipGoldenHorde": {
+    "targetId": "golden-horde",
+    "subtractIds": [
+      "moscow",
+      "novgorod",
+      "ryazan",
+      "tver",
+      "pskov",
+      "smolensk",
+      "vladimir-suzdal",
+      "galicia-volhynia",
+      "polotsk",
+      "chernigov"
+    ]
+  }
+}

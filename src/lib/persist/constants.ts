@@ -9,7 +9,13 @@ import {
 } from '@domain/session/constants'
 
 export const GAME_SETTINGS_STORAGE_KEY = 'quiz-game-settings'
+/** @deprecated Legacy single-slot key; migrated to {@link gameSaveStorageKey}. */
 export const GAME_SAVE_STORAGE_KEY = 'quiz-game-save'
+export const GAME_SAVE_STORAGE_PREFIX = 'quiz-game-save:'
+
+export function gameSaveStorageKey(eraId: string): string {
+	return `${GAME_SAVE_STORAGE_PREFIX}${eraId}`
+}
 
 export const DEFAULT_GAME_SETTINGS = {
 	eraId: DEFAULT_ERA_ID,

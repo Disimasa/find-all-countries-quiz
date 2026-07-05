@@ -10,148 +10,8 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
   },
   {
-    "entityId": "benin",
-    "file": "benin.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "cambodia-kampuchea",
-    "file": "cambodia-kampuchea.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "central-african-republic",
-    "file": "central-african-republic.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "chad",
-    "file": "chad.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "congo",
-    "file": "congo.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "cote-d-ivoire",
-    "file": "cote-d-ivoire.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "djibouti",
-    "file": "djibouti.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "french-guyana",
-    "file": "french-guyana.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "french-polynesia",
-    "file": "french-polynesia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "gabon",
-    "file": "gabon.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "guadeloupe",
-    "file": "guadeloupe.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "guinea",
-    "file": "guinea.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "laos",
-    "file": "laos.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "madagascar-malagasy",
-    "file": "madagascar-malagasy.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "mali",
-    "file": "mali.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "martinique",
-    "file": "martinique.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "mauritania",
-    "file": "mauritania.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "french-morocco",
-    "file": "french-morocco.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "new-caledonia-and-dependencies",
-    "file": "new-caledonia-and-dependencies.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "niger",
-    "file": "niger.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "reunion",
-    "file": "reunion.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "senegal",
-    "file": "senegal.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "french-tunisia",
-    "file": "french-tunisia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
-    "entityId": "vietnam-annam-cochin-china-tonkin",
-    "file": "vietnam-annam-cochin-china-tonkin.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
-  },
-  {
     "entityId": "angola",
     "file": "angola.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
-  },
-  {
-    "entityId": "cape-verde",
-    "file": "cape-verde.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
-  },
-  {
-    "entityId": "east-timor",
-    "file": "east-timor.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
-  },
-  {
-    "entityId": "guinea-bissau",
-    "file": "guinea-bissau.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
-  },
-  {
-    "entityId": "mozambique",
-    "file": "mozambique.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
   },
   {
@@ -162,11 +22,6 @@
   {
     "entityId": "australia",
     "file": "australia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Australia.svg"
-  },
-  {
-    "entityId": "papua",
-    "file": "papua.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Australia.svg"
   },
   {
@@ -185,184 +40,24 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
-    "entityId": "belize",
-    "file": "belize.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "bhutan",
-    "file": "bhutan.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "botswana",
-    "file": "botswana.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "british-somaliland-somaliland-republic",
-    "file": "british-somaliland-somaliland-republic.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "brunei",
-    "file": "brunei.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "canada",
-    "file": "canada.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "federated-malay-states",
-    "file": "federated-malay-states.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "fiji",
-    "file": "fiji.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "gambia",
-    "file": "gambia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "ghana",
-    "file": "ghana.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "guyana",
-    "file": "guyana.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "jamaica",
-    "file": "jamaica.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "kenya",
-    "file": "kenya.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "lesotho",
-    "file": "lesotho.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "malawi",
-    "file": "malawi.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "maldives",
-    "file": "maldives.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "malta",
-    "file": "malta.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "mauritius",
-    "file": "mauritius.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "nigeria",
-    "file": "nigeria.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "sabah-north-borneo",
-    "file": "sabah-north-borneo.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "sarawak",
-    "file": "sarawak.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "sierra-leone",
-    "file": "sierra-leone.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "solomon-islands",
-    "file": "solomon-islands.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "sri-lanka-ceylon",
-    "file": "sri-lanka-ceylon.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "straits-settlements",
-    "file": "straits-settlements.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "sudan",
-    "file": "sudan.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "swaziland-eswatini",
-    "file": "swaziland-eswatini.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "trinidad-and-tobago",
-    "file": "trinidad-and-tobago.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "uganda",
-    "file": "uganda.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "unfederated-malay-states",
-    "file": "unfederated-malay-states.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "united-arab-emirates",
-    "file": "united-arab-emirates.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "zambia",
-    "file": "zambia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "zanzibar",
-    "file": "zanzibar.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
-    "entityId": "zimbabwe-rhodesia",
-    "file": "zimbabwe-rhodesia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
-  },
-  {
     "entityId": "belgium",
     "file": "belgium.svg",
     "source": "iso:BE"
   },
   {
-    "entityId": "congo-democratic-republic-of-zaire",
-    "file": "congo-democratic-republic-of-zaire.svg",
-    "source": "iso:BE"
+    "entityId": "belize",
+    "file": "belize.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "benin",
+    "file": "benin.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "bhutan",
+    "file": "bhutan.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
     "entityId": "bokhara",
@@ -375,14 +70,54 @@
     "source": "iso:BO"
   },
   {
+    "entityId": "botswana",
+    "file": "botswana.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "brazil",
     "file": "brazil.svg",
     "source": "iso:BR"
   },
   {
+    "entityId": "british-somaliland-somaliland-republic",
+    "file": "british-somaliland-somaliland-republic.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "brunei",
+    "file": "brunei.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "bulgaria",
     "file": "bulgaria.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Bulgaria.svg"
+  },
+  {
+    "entityId": "cambodia-kampuchea",
+    "file": "cambodia-kampuchea.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "canada",
+    "file": "canada.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "cape-verde",
+    "file": "cape-verde.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
+  },
+  {
+    "entityId": "central-african-republic",
+    "file": "central-african-republic.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "chad",
+    "file": "chad.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
   },
   {
     "entityId": "chile",
@@ -400,9 +135,24 @@
     "source": "iso:CO"
   },
   {
+    "entityId": "congo",
+    "file": "congo.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "congo-democratic-republic-of-zaire",
+    "file": "congo-democratic-republic-of-zaire.svg",
+    "source": "iso:BE"
+  },
+  {
     "entityId": "costa-rica",
     "file": "costa-rica.svg",
     "source": "iso:CR"
+  },
+  {
+    "entityId": "cote-d-ivoire",
+    "file": "cote-d-ivoire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
   },
   {
     "entityId": "cuba",
@@ -415,9 +165,19 @@
     "source": "iso:DK"
   },
   {
+    "entityId": "djibouti",
+    "file": "djibouti.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
     "entityId": "dominican-republic",
     "file": "dominican-republic.svg",
     "source": "iso:DO"
+  },
+  {
+    "entityId": "east-timor",
+    "file": "east-timor.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
   },
   {
     "entityId": "ecuador",
@@ -440,38 +200,8 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain_(1785%E2%80%931873,_1875%E2%80%931931).svg"
   },
   {
-    "entityId": "spain",
-    "file": "spain.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain_(1785%E2%80%931873,_1875%E2%80%931931).svg"
-  },
-  {
-    "entityId": "spanish-morocco",
-    "file": "spanish-morocco.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain_(1785%E2%80%931873,_1875%E2%80%931931).svg"
-  },
-  {
-    "entityId": "spanish-west-africa",
-    "file": "spanish-west-africa.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain_(1785%E2%80%931873,_1875%E2%80%931931).svg"
-  },
-  {
     "entityId": "eritrea",
     "file": "eritrea.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Italy_(1861-1946)_crowned.svg"
-  },
-  {
-    "entityId": "italian-somaliland",
-    "file": "italian-somaliland.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Italy_(1861-1946)_crowned.svg"
-  },
-  {
-    "entityId": "italy",
-    "file": "italy.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Italy_(1861-1946)_crowned.svg"
-  },
-  {
-    "entityId": "libya",
-    "file": "libya.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Italy_(1861-1946)_crowned.svg"
   },
   {
@@ -480,9 +210,39 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Ethiopia_(1897%E2%80%931974).svg"
   },
   {
+    "entityId": "federated-malay-states",
+    "file": "federated-malay-states.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "fiji",
+    "file": "fiji.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "france",
     "file": "france.svg",
     "source": "iso:FR"
+  },
+  {
+    "entityId": "french-guyana",
+    "file": "french-guyana.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "french-polynesia",
+    "file": "french-polynesia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "gabon",
+    "file": "gabon.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "gambia",
+    "file": "gambia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
     "entityId": "german-togoland",
@@ -495,19 +255,9 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Germany_(1867%E2%80%931918).svg"
   },
   {
-    "entityId": "kamerun",
-    "file": "kamerun.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Germany_(1867%E2%80%931918).svg"
-  },
-  {
-    "entityId": "namibia",
-    "file": "namibia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Germany_(1867%E2%80%931918).svg"
-  },
-  {
-    "entityId": "new-guinea-german-new-guinea-kaiser-wilhelmsland",
-    "file": "new-guinea-german-new-guinea-kaiser-wilhelmsland.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Germany_(1867%E2%80%931918).svg"
+    "entityId": "ghana",
+    "file": "ghana.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
     "entityId": "greece",
@@ -515,9 +265,29 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Greece.svg"
   },
   {
+    "entityId": "guadeloupe",
+    "file": "guadeloupe.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
     "entityId": "guatemala",
     "file": "guatemala.svg",
     "source": "iso:GT"
+  },
+  {
+    "entityId": "guinea",
+    "file": "guinea.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "guinea-bissau",
+    "file": "guinea-bissau.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
+  },
+  {
+    "entityId": "guyana",
+    "file": "guyana.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
     "entityId": "haiti",
@@ -540,14 +310,24 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_Netherlands.svg"
   },
   {
-    "entityId": "surinam",
-    "file": "surinam.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_Netherlands.svg"
-  },
-  {
     "entityId": "persia",
     "file": "persia.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/State_flag_of_Persia_(1907%E2%80%931933).svg"
+  },
+  {
+    "entityId": "italian-somaliland",
+    "file": "italian-somaliland.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Italy_(1861-1946)_crowned.svg"
+  },
+  {
+    "entityId": "italy",
+    "file": "italy.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Italy_(1861-1946)_crowned.svg"
+  },
+  {
+    "entityId": "jamaica",
+    "file": "jamaica.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
     "entityId": "japan",
@@ -555,9 +335,14 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Japan_(1870%E2%80%931999).svg"
   },
   {
-    "entityId": "taiwan",
-    "file": "taiwan.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Japan_(1870%E2%80%931999).svg"
+    "entityId": "kamerun",
+    "file": "kamerun.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Germany_(1867%E2%80%931918).svg"
+  },
+  {
+    "entityId": "kenya",
+    "file": "kenya.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
     "entityId": "khiva",
@@ -570,14 +355,84 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Korea_(1882%E2%80%931910).svg"
   },
   {
+    "entityId": "laos",
+    "file": "laos.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "lesotho",
+    "file": "lesotho.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "liberia",
     "file": "liberia.svg",
     "source": "iso:LR"
   },
   {
+    "entityId": "libya",
+    "file": "libya.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Italy_(1861-1946)_crowned.svg"
+  },
+  {
+    "entityId": "madagascar-malagasy",
+    "file": "madagascar-malagasy.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "malawi",
+    "file": "malawi.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "maldives",
+    "file": "maldives.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "mali",
+    "file": "mali.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "malta",
+    "file": "malta.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "martinique",
+    "file": "martinique.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "mauritania",
+    "file": "mauritania.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "mauritius",
+    "file": "mauritius.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "mexico",
     "file": "mexico.svg",
     "source": "iso:MX"
+  },
+  {
+    "entityId": "french-morocco",
+    "file": "french-morocco.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "mozambique",
+    "file": "mozambique.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Portugal.svg"
+  },
+  {
+    "entityId": "namibia",
+    "file": "namibia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Germany_(1867%E2%80%931918).svg"
   },
   {
     "entityId": "nepal",
@@ -588,6 +443,16 @@
     "entityId": "netherlands",
     "file": "netherlands.svg",
     "source": "iso:NL"
+  },
+  {
+    "entityId": "new-caledonia-and-dependencies",
+    "file": "new-caledonia-and-dependencies.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "new-guinea-german-new-guinea-kaiser-wilhelmsland",
+    "file": "new-guinea-german-new-guinea-kaiser-wilhelmsland.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Germany_(1867%E2%80%931918).svg"
   },
   {
     "entityId": "new-zealand",
@@ -605,6 +470,16 @@
     "source": "iso:NI"
   },
   {
+    "entityId": "niger",
+    "file": "niger.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "nigeria",
+    "file": "nigeria.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "norway",
     "file": "norway.svg",
     "source": "iso:NO"
@@ -618,6 +493,11 @@
     "entityId": "panama",
     "file": "panama.svg",
     "source": "iso:PA"
+  },
+  {
+    "entityId": "papua",
+    "file": "papua.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Australia.svg"
   },
   {
     "entityId": "paraguay",
@@ -635,14 +515,14 @@
     "source": "iso:US"
   },
   {
-    "entityId": "united-states",
-    "file": "united-states.svg",
-    "source": "iso:US"
-  },
-  {
     "entityId": "portugal",
     "file": "portugal.svg",
     "source": "iso:PT"
+  },
+  {
+    "entityId": "reunion",
+    "file": "reunion.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
   },
   {
     "entityId": "romania",
@@ -655,14 +535,79 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Russia_(1914-1917).svg"
   },
   {
+    "entityId": "sabah-north-borneo",
+    "file": "sabah-north-borneo.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "sarawak",
+    "file": "sarawak.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "senegal",
+    "file": "senegal.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
     "entityId": "serbia",
     "file": "serbia.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Serbia_(1882-1918).svg"
   },
   {
+    "entityId": "sierra-leone",
+    "file": "sierra-leone.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "solomon-islands",
+    "file": "solomon-islands.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "union-of-south-africa",
     "file": "union-of-south-africa.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Red_Ensign_of_South_Africa_(1912%E2%80%931951).svg"
+  },
+  {
+    "entityId": "spain",
+    "file": "spain.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain_(1785%E2%80%931873,_1875%E2%80%931931).svg"
+  },
+  {
+    "entityId": "spanish-morocco",
+    "file": "spanish-morocco.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain_(1785%E2%80%931873,_1875%E2%80%931931).svg"
+  },
+  {
+    "entityId": "spanish-west-africa",
+    "file": "spanish-west-africa.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Spain_(1785%E2%80%931873,_1875%E2%80%931931).svg"
+  },
+  {
+    "entityId": "sri-lanka-ceylon",
+    "file": "sri-lanka-ceylon.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "straits-settlements",
+    "file": "straits-settlements.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "sudan",
+    "file": "sudan.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "surinam",
+    "file": "surinam.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_Netherlands.svg"
+  },
+  {
+    "entityId": "swaziland-eswatini",
+    "file": "swaziland-eswatini.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   },
   {
     "entityId": "sweden",
@@ -673,6 +618,11 @@
     "entityId": "switzerland",
     "file": "switzerland.svg",
     "source": "iso:CH"
+  },
+  {
+    "entityId": "taiwan",
+    "file": "taiwan.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Japan_(1870%E2%80%931999).svg"
   },
   {
     "entityId": "tanzania-tanganyika",
@@ -690,14 +640,44 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Tibet.svg"
   },
   {
+    "entityId": "trinidad-and-tobago",
+    "file": "trinidad-and-tobago.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "french-tunisia",
+    "file": "french-tunisia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
     "entityId": "turkey-ottoman-empire",
     "file": "turkey-ottoman-empire.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_Ottoman_Empire_(1844%E2%80%931922).svg"
   },
   {
+    "entityId": "uganda",
+    "file": "uganda.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "unfederated-malay-states",
+    "file": "unfederated-malay-states.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "united-arab-emirates",
+    "file": "united-arab-emirates.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
     "entityId": "united-kingdom",
     "file": "united-kingdom.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_United_Kingdom_(1-2).svg"
+  },
+  {
+    "entityId": "united-states",
+    "file": "united-states.svg",
+    "source": "iso:US"
   },
   {
     "entityId": "uruguay",
@@ -708,5 +688,25 @@
     "entityId": "venezuela",
     "file": "venezuela.svg",
     "source": "iso:VE"
+  },
+  {
+    "entityId": "vietnam-annam-cochin-china-tonkin",
+    "file": "vietnam-annam-cochin-china-tonkin.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_France.svg"
+  },
+  {
+    "entityId": "zambia",
+    "file": "zambia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "zanzibar",
+    "file": "zanzibar.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
+  },
+  {
+    "entityId": "zimbabwe-rhodesia",
+    "file": "zimbabwe-rhodesia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Civil_Ensign_of_the_United_Kingdom.svg"
   }
 ]

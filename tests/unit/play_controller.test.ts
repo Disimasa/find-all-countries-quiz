@@ -16,6 +16,14 @@ describe('parseConfig', () => {
 		expect(config.maxLives).toBe(3)
 	})
 
+	it('reads timer and lives values from query', () => {
+		const config = parseConfig('?era=ce1300&timer=45&lives=5')
+		expect(config.timerEnabled).toBe(true)
+		expect(config.timerSeconds).toBe(2700)
+		expect(config.livesEnabled).toBe(true)
+		expect(config.maxLives).toBe(5)
+	})
+
 	it('disables options from query', () => {
 		const config = parseConfig('?timer=0&lives=0')
 		expect(config.timerEnabled).toBe(false)

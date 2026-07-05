@@ -159,3 +159,8 @@ input[type='reset']:disabled,
 .maplibregl-ctrl-attrib.maplibregl-compact:not([open]) .maplibregl-ctrl-attrib-inner {
 	display: none !important;
 }
+
+/* Follows opaque pixels of the flag asset, not the layout box. */
+.flag-icon {
+	filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.16)) drop-shadow(0 3px 7px rgb(0 0 0 / 0.1));
+}

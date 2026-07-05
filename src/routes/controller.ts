@@ -11,6 +11,7 @@ import {
 	type GameSettings,
 	type SavedGame
 } from '@persist'
+import { buildLobbyShareHref as buildLobbyShareHrefFromSettings, buildPlayHrefFromSettings } from './game_settings_url.ts'
 
 const initialSettings = loadGameSettings()
 
@@ -58,14 +59,20 @@ export function toggleLocale(): void {
 	setLocale(next)
 }
 
+export function applyGameSettings(partial: Partial<GameSettings>): void {
+	if (partial.eraId != null) eraId.set(partial.eraId)
+	if (partial.timerEnabled != null) timerEnabled.set(partial.timerEnabled)
+	if (partial.livesEnabled != null) livesEnabled.set(partial.livesEnabled)
+	if (partial.timerMinutes != null) timerMinutes.set(partial.timerMinutes)
+	if (partial.maxLives != null) maxLives.set(partial.maxLives)
+}
+
 export function buildPlayHref(): string {
-	const params = new URLSearchParams()
-	if (!get(timerEnabled)) params.set('timer', '0')
-	if (!get(livesEnabled)) params.set('lives', '0')
-	const currentEraId = get(eraId)
-	if (currentEraId !== DEFAULT_ERA_ID) params.set('era', currentEraId)
-	const query = params.toString()
-	return query ? `/play?${query}` : '/play'
+	return buildPlayHrefFromSettings(getCurrentSettings())
+}
+
+export function buildLobbyShareHref(): string {
+	return buildLobbyShareHrefFromSettings(getCurrentSettings())
 }
 
 export type { MessageKey }

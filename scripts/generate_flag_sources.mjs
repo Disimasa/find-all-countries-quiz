@@ -20,6 +20,9 @@ function parseCuratedEntry(entry) {
 	if (entry.startsWith('commons:')) {
 		return { type: 'commons', url: commonsUrl(entry.slice(8)) }
 	}
+	if (entry.startsWith('timemap:')) {
+		return { type: 'timemap', file: entry.slice(8) }
+	}
 	if (entry.startsWith('iso:')) {
 		return { type: 'iso', code: entry.slice(4) }
 	}
@@ -46,10 +49,11 @@ fs.mkdirSync(mappingDir, { recursive: true })
 fs.writeFileSync(outPath, JSON.stringify(sources, null, 2))
 
 const commonsCount = Object.values(sources).filter((s) => s.type === 'commons').length
+const timemapCount = Object.values(sources).filter((s) => s.type === 'timemap').length
 const isoCount = Object.values(sources).filter((s) => s.type === 'iso').length
 
 console.log(
-	`Flag sources: ${Object.keys(sources).length}/${entities.length} (${commonsCount} commons, ${isoCount} iso)`
+	`Flag sources: ${Object.keys(sources).length}/${entities.length} (${commonsCount} commons, ${timemapCount} timemap, ${isoCount} iso)`
 )
 if (unresolved.length) {
 	console.log(`Unresolved (${unresolved.length}): ${unresolved.join(', ')}`)

@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import {
+	basemapSymbolLayerVisibility,
 	buildExploreCountryTextField,
 	buildExploreEraLabelsCollection,
+	editorBasemapSymbolLayerVisibility,
+	isBasemapCityLabelLayerId,
 	isBasemapCountryLabelLayerId
 } from '@infrastructure/map/explore_country_labels'
 import { createStubMapEra, STUB_ENTITIES } from './helpers/stub_map_era'
@@ -23,6 +26,47 @@ describe('buildExploreCountryTextField', () => {
 			['get', 'name_en'],
 			['get', 'name']
 		])
+	})
+})
+
+describe('basemapSymbolLayerVisibility', () => {
+	it('shows only country label layers', () => {
+		expect(basemapSymbolLayerVisibility('label_country_1')).toBe('visible')
+		expect(basemapSymbolLayerVisibility('label_country_2')).toBe('visible')
+		expect(basemapSymbolLayerVisibility('label_city')).toBe('none')
+		expect(basemapSymbolLayerVisibility('label_city_capital')).toBe('none')
+		expect(basemapSymbolLayerVisibility('label_town')).toBe('none')
+		expect(basemapSymbolLayerVisibility('explore-era-labels')).toBe('none')
+		expect(basemapSymbolLayerVisibility('editor-era-labels')).toBe('none')
+	})
+})
+
+describe('isBasemapCityLabelLayerId', () => {
+	it('matches OpenFreeMap city label layers', () => {
+		expect(isBasemapCityLabelLayerId('label_city')).toBe(true)
+		expect(isBasemapCityLabelLayerId('label_city_capital')).toBe(true)
+		expect(isBasemapCityLabelLayerId('label_town')).toBe(true)
+		expect(isBasemapCityLabelLayerId('label_village')).toBe(true)
+	})
+
+	it('ignores country and highway labels', () => {
+		expect(isBasemapCityLabelLayerId('label_country_1')).toBe(false)
+		expect(isBasemapCityLabelLayerId('highway-name-major')).toBe(false)
+		expect(isBasemapCityLabelLayerId('label_state')).toBe(false)
+	})
+})
+
+describe('editorBasemapSymbolLayerVisibility', () => {
+	it('hides all basemap symbols by default', () => {
+		expect(editorBasemapSymbolLayerVisibility('label_city', false)).toBe('none')
+		expect(editorBasemapSymbolLayerVisibility('label_country_1', false)).toBe('none')
+	})
+
+	it('shows only city layers when enabled', () => {
+		expect(editorBasemapSymbolLayerVisibility('label_city', true)).toBe('visible')
+		expect(editorBasemapSymbolLayerVisibility('label_town', true)).toBe('visible')
+		expect(editorBasemapSymbolLayerVisibility('label_country_1', true)).toBe('none')
+		expect(editorBasemapSymbolLayerVisibility('editor-era-labels', true)).toBe('none')
 	})
 })
 

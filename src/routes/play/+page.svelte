@@ -15,7 +15,8 @@
 		selectRandomCountry,
 		showEndGameSummary,
 		submitGuess,
-		updateAutocomplete
+		updateAutocomplete,
+		openCountryList
 	} from './controller'
 	import { isRandomCountryHotkey } from './hotkeys'
 	import { locale, t } from '@i18n'
@@ -129,6 +130,12 @@
 		focusMapOnCountry(id)
 	}
 
+	async function onCountryList() {
+		const id = await openCountryList()
+		if (!id || !$gameSnapshot.guessedIds.has(id)) return
+		focusMapOnCountry(id)
+	}
+
 	function onEnd() {
 		void transitionToHome()
 	}
@@ -208,6 +215,7 @@
 			on:guessPick={(e) => onGuessPick(e.detail)}
 			on:guessClose={onGuessClose}
 			on:randomCountry={onRandomCountry}
+			on:countryList={onCountryList}
 		/>
 	</div>
 </div>

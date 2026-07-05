@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 	import type { GameSnapshot, GeoEntity } from '@domain/entities'
+	import { MapEraRegistry } from '@domain/maps'
 	import { t } from '@i18n'
 	import GuessDialog from './GuessDialog.svelte'
+	import { formatPlayEraLabel } from '../era_display.ts'
 	import { formatTime } from '../controller'
 	import IconCircleCheck from '~icons/lucide/circle-check'
 	import IconMap from '~icons/lucide/map'
@@ -12,6 +14,7 @@
 	import IconRotateCcw from '~icons/lucide/rotate-ccw'
 	import IconLogOut from '~icons/lucide/log-out'
 	import IconShuffle from '~icons/lucide/shuffle'
+	import IconList from '~icons/lucide/list'
 
 	export let snapshot: GameSnapshot
 	export let canPickRandomCountry = false
@@ -27,6 +30,7 @@
 		guessPick: string
 		guessClose: void
 		randomCountry: void
+		countryList: void
 	}>()
 
 	$: remaining = snapshot.progress.total - snapshot.progress.correct
@@ -79,6 +83,9 @@
 			bgClass: 'bg-sky-500/10'
 		}
 	] as const
+
+	$: eraRegistration = MapEraRegistry.getRegistration(mapEraId)
+	$: eraDisplayName = formatPlayEraLabel(mapEraId, eraRegistration, $t)
 </script>
 
 <aside
@@ -119,6 +126,16 @@
 						F2
 					</kbd>
 				</button>
+				<button
+					type="button"
+					data-testid="country-list"
+					class="mt-0.5 flex w-full items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium text-base-content/55 transition-colors hover:bg-base-200/80 hover:text-base-content"
+					class:max-md:hidden={!!snapshot.selectedId}
+					on:click={() => dispatch('countryList')}
+				>
+					<IconList class="size-3 shrink-0" />
+					<span>{$t('countryList')}</span>
+				</button>
 			{/if}
 		</div>
 
@@ -153,6 +170,9 @@
 		<!-- Desktop: progress + stat cards -->
 		<div class="hidden shrink-0 flex-col gap-3 md:flex">
 			<div class="flex flex-col gap-1.5 p-1">
+				<p class="text-center text-[11px] font-semibold tracking-wide text-base-content/60">
+					{eraDisplayName}
+				</p>
 				<div class="flex items-baseline justify-between gap-2 text-xs">
 					<span class="font-semibold text-xs">{$t('progress')}</span>
 					<span class="font-semibold tabular-nums text-emerald-500">{progressPercent}%</span>

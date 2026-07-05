@@ -22,6 +22,7 @@ Switch between political maps from different periods. Each era has its own borde
 | **Modern** | Today’s internationally recognized borders |
 | **1914** | Europe and the world on the eve of the First World War |
 | **100 AD** | Major powers of the ancient world around 100 CE |
+| **1279** | The Mongol uluses and the late medieval world |
 
 Good for learning geography beyond “where things are today”—see how borders used to look.
 
@@ -45,7 +46,7 @@ Progress is saved automatically. Leave mid-game and the lobby will offer **Conti
 
 Some regions are territories or disputed areas. Borders are shown for quiz purposes only.
 
-Historical map borders for the **1914** era are derived from [CShapes 2.0](https://icr.ethz.ch/data/cshapes/) (ETH Zurich). The **100 AD** era uses [historical-basemaps](https://github.com/aourednik/historical-basemaps) (GPL-3.0). Era-specific flag artwork, where shown, is sourced from [Wikimedia Commons](https://commons.wikimedia.org/) and used under their respective licenses.
+Historical map borders for the **1914** era are derived from [CShapes 2.0](https://icr.ethz.ch/data/cshapes/) (ETH Zurich). The **100 AD** and **1279** eras use [historical-basemaps](https://github.com/aourednik/historical-basemaps) (GPL-3.0). Era-specific flag artwork, where shown, is sourced from [Wikimedia Commons](https://commons.wikimedia.org/) and used under their respective licenses.
 
 ## Development
 

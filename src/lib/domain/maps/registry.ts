@@ -7,6 +7,8 @@ import { PREWW1_ERA_ID } from './preww1/constants.ts'
 import { PreWW1WorldMap } from './preww1/map.ts'
 import { CE100_ERA_ID } from './ce100/constants.ts'
 import { Ce100WorldMap } from './ce100/map.ts'
+import { CE1300_ERA_ID } from './ce1300/constants.ts'
+import { Ce1300WorldMap } from './ce1300/map.ts'
 
 export interface EraRegistration {
 	readonly id: string
@@ -30,7 +32,11 @@ export function getEraRegistration(id: string): EraRegistration | undefined {
 }
 
 export function listEraRegistrations(): EraRegistration[] {
-	return [...registrations.values()]
+	return [...registrations.values()].sort((a, b) => eraSortYear(b) - eraSortYear(a))
+}
+
+function eraSortYear(era: EraRegistration): number {
+	return era.year ?? Number.POSITIVE_INFINITY
 }
 
 export function resolveThemeProfileId(eraId: string): string {
@@ -62,4 +68,13 @@ registerEra({
 	entityType: 'polity',
 	themeProfileId: 'parchment',
 	labelKey: 'eraCe100'
+})
+
+registerEra({
+	id: CE1300_ERA_ID,
+	factory: () => new Ce1300WorldMap(),
+	year: 1300,
+	entityType: 'polity',
+	themeProfileId: 'parchment',
+	labelKey: 'eraCe1300'
 })

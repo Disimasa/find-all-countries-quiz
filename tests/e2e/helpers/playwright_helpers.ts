@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { type Browser, type Page } from 'playwright'
 import type { Locale } from '@domain/entities'
 import { MODERN_ERA_ID } from '@domain/maps'
-import { GAME_SAVE_STORAGE_KEY, GAME_SETTINGS_STORAGE_KEY } from '@persist/constants'
+import { GAME_SETTINGS_STORAGE_KEY, gameSaveStorageKey } from '@persist/constants'
 import { LOCALE_STORAGE_KEY } from '@i18n/constants'
 
 const CANDIDATE_PORTS = [5174, 5173, 4173]
@@ -16,6 +16,8 @@ const preww1EntitiesPath = path.join(root, 'static/data/eras/preww1/entities.jso
 const preww1AliasesEnPath = path.join(root, 'static/data/eras/preww1/aliases.en.json')
 const ce100EntitiesPath = path.join(root, 'static/data/eras/ce100/entities.json')
 const ce100AliasesEnPath = path.join(root, 'static/data/eras/ce100/aliases.en.json')
+const ce1300EntitiesPath = path.join(root, 'static/data/eras/ce1300/entities.json')
+const ce1300AliasesEnPath = path.join(root, 'static/data/eras/ce1300/aliases.en.json')
 
 export type QuizEntity = {
 	id: string
@@ -84,6 +86,23 @@ export function loadCe100EnglishAnswers(): Map<string, string> {
 	return answers
 }
 
+export function loadCe1300QuizEntities(): QuizEntity[] {
+	return JSON.parse(fs.readFileSync(ce1300EntitiesPath, 'utf8')) as QuizEntity[]
+}
+
+export function loadCe1300EnglishAnswers(): Map<string, string> {
+	const aliases = JSON.parse(fs.readFileSync(ce1300AliasesEnPath, 'utf8')) as Record<
+		string,
+		string[]
+	>
+	const entities = loadCe1300QuizEntities()
+	const answers = new Map<string, string>()
+	for (const entity of entities) {
+		answers.set(entity.id, aliases[entity.id]?.[0] ?? entity.nameEn)
+	}
+	return answers
+}
+
 export async function resolveBaseUrl(browser: Browser): Promise<string | null> {
 	for (const port of CANDIDATE_PORTS) {
 		const url = `http://localhost:${port}`
@@ -145,7 +164,7 @@ export async function seedPlayStorage(
 		{
 			localeKey: LOCALE_STORAGE_KEY,
 			settingsKey: GAME_SETTINGS_STORAGE_KEY,
-			saveKey: GAME_SAVE_STORAGE_KEY,
+			saveKey: gameSaveStorageKey(eraId),
 			eraId,
 			localeValue: locale,
 			gameSettings: {

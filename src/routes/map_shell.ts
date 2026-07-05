@@ -16,7 +16,6 @@ import {
 } from './game/session_bridge'
 import {
 	buildGameConfig,
-	clearSavedGame,
 	loadGameSettings,
 	loadSavedGame,
 	type SavedGameProgress
@@ -118,12 +117,6 @@ export async function switchMapEra(nextEraId: string): Promise<void> {
 	mapEraSwitching.set(true)
 	stopLobbyTeaser(renderer ?? undefined)
 	try {
-		const saved = loadSavedGame(current)
-		if (saved && saved.eraId !== nextEraId) {
-			destroyGame()
-			clearSavedGame()
-		}
-
 		await loadEra(nextEraId)
 
 		if (selectHandler) {

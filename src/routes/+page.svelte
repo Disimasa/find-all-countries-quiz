@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
+	import { get } from 'svelte/store'
+	import { goto } from '$app/navigation'
+	import { page } from '$app/stores'
 	import { Circle } from 'svelte-loading-spinners'
 	import {
+		applyGameSettings,
+		buildLobbyShareHref,
 		buildPlayHref,
 		eraId,
 		getSavedGame,
@@ -10,6 +15,8 @@
 		timerEnabled,
 		timerMinutes
 	} from './controller'
+	import { getLobbySearchForSettings, isLobbySearchInSync, parseGameSettingsSearch } from './game_settings_url'
+	import { copyShareLink } from './play/share_game_link'
 	import { warmupPlay } from './play/controller'
 	import { mapShellReady, switchMapEra, transitionToPlay, transitionToPlayResume } from './map_shell'
 	import { locale, setLocale, t } from '@i18n'
@@ -21,6 +28,9 @@
 	let lives = 3
 	let currentEra = 'modern'
 	let continueLabel = ''
+	let shareCopied = false
+	let lobbyUrlReady = false
+	let syncedLobbySearch: string | null = null
 
 	$: timerOn = $timerEnabled
 	$: livesOn = $livesEnabled
@@ -31,22 +41,77 @@
 	$: eraLabels = {
 		eraModern: $t('eraModern'),
 		eraPreWW1: $t('eraPreWW1'),
-		eraCe100: $t('eraCe100')
+		eraCe100: $t('eraCe100'),
+		eraCe1300: $t('eraCe1300')
 	}
 	$: eraHints = {
 		preww1: $t('eraPreWW1Hint'),
-		ce100: $t('eraCe100Hint')
+		ce100: $t('eraCe100Hint'),
+		ce1300: $t('eraCe1300Hint')
+	}
+
+	async function syncLobbyUrl(): Promise<void> {
+		if (!lobbyUrlReady || get(page).url.pathname !== '/') return
+
+		const settings = {
+			eraId: get(eraId),
+			timerEnabled: get(timerEnabled),
+			livesEnabled: get(livesEnabled),
+			timerMinutes: get(timerMinutes),
+			maxLives: get(maxLives)
+		}
+
+		if (isLobbySearchInSync(get(page).url.search, settings)) {
+			syncedLobbySearch = get(page).url.search
+			return
+		}
+
+		syncedLobbySearch = getLobbySearchForSettings(settings)
+		await goto(buildLobbyShareHref(), { replaceState: true, keepFocus: true, noScroll: true })
+	}
+
+	$: if (lobbyUrlReady && $mapShellReady) {
+		$eraId
+		$timerEnabled
+		$livesEnabled
+		$timerMinutes
+		$maxLives
+		void syncLobbyUrl()
+	}
+
+	$: if (lobbyUrlReady && $page.url.pathname === '/') {
+		const search = $page.url.search
+		if (search !== syncedLobbySearch) {
+			const fromUrl = parseGameSettingsSearch(search)
+			if (fromUrl) {
+				applyGameSettings(fromUrl)
+				if (fromUrl.eraId && fromUrl.eraId !== $eraId) {
+					void switchMapEra(fromUrl.eraId)
+				}
+				syncedLobbySearch = search
+			}
+		}
 	}
 
 	onMount(() => {
-		const saved = getSavedGame()
-		if (saved) {
-			eraId.set(saved.eraId)
-			timerEnabled.set(saved.config.timerEnabled)
-			livesEnabled.set(saved.config.livesEnabled)
-			timerMinutes.set(Math.round(saved.config.timerSeconds / 60))
-			maxLives.set(saved.config.maxLives)
+		const initialSearch = get(page).url.search
+		const fromUrl = parseGameSettingsSearch(initialSearch)
+		if (fromUrl) {
+			applyGameSettings(fromUrl)
+			if (fromUrl.eraId) void switchMapEra(fromUrl.eraId)
+			syncedLobbySearch = initialSearch
+		} else {
+			const saved = getSavedGame()
+			if (saved) {
+				eraId.set(saved.eraId)
+				timerEnabled.set(saved.config.timerEnabled)
+				livesEnabled.set(saved.config.livesEnabled)
+				timerMinutes.set(Math.round(saved.config.timerSeconds / 60))
+				maxLives.set(saved.config.maxLives)
+			}
 		}
+
+		lobbyUrlReady = true
 		updateContinueLabel()
 		warmupPlay()
 		const unsubReady = mapShellReady.subscribe((ready) => {
@@ -82,6 +147,19 @@
 		await switchMapEra(nextEraId)
 		updateContinueLabel()
 	}
+
+	async function handleShare() {
+		const copied = await copyShareLink(window.location.href)
+		if (!copied) {
+			window.prompt(window.location.href)
+			return
+		}
+
+		shareCopied = true
+		window.setTimeout(() => {
+			shareCopied = false
+		}, 2000)
+	}
 </script>
 
 {#if $mapShellReady}
@@ -96,6 +174,10 @@
 		infiniteLabel={$t('infinite')}
 		languageLabel={$t('language')}
 		startLabel={$t('start')}
+		shareLabel={$t('shareGame')}
+		shareCopiedLabel={$t('shareGameCopied')}
+		shareHint={$t('shareGameHint')}
+		{shareCopied}
 		{continueLabel}
 		disclaimer={$t('disclaimer')}
 		currentEraId={currentEra}
@@ -106,6 +188,7 @@
 		currentLocale={$locale}
 		on:start={handleStart}
 		on:continue={handleContinue}
+		on:share={handleShare}
 		on:eraSelect={(event) => void handleEraSelect(event.detail)}
 		on:timerSelect={(event) => {
 			timerEnabled.set(event.detail.enabled)

@@ -22,7 +22,7 @@ describe('era switch on lobby', () => {
 	})
 
 	it(
-		'switches between modern, 1914, and 100 AD maps on the lobby',
+		'switches between modern, 1914, 100 AD, and 1300 maps on the lobby',
 		async () => {
 			expect(baseUrl, 'Start dev server: pnpm dev').toBeTruthy()
 			if (!baseUrl || !browser) return
@@ -39,6 +39,9 @@ describe('era switch on lobby', () => {
 
 				await selectEraOnLobby(page, 'ce100')
 				await waitForLobbyMapEra(page, 'ce100')
+
+				await selectEraOnLobby(page, 'ce1300')
+				await waitForLobbyMapEra(page, 'ce1300')
 
 				await selectEraOnLobby(page, 'preww1')
 				await waitForLobbyMapEra(page, 'preww1')

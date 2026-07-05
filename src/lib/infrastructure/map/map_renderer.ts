@@ -13,6 +13,7 @@ import {
 import { expandFeatureBounds, featureBounds } from './country_centroid.ts'
 import { applyBasemapTheme, prepareBasemapStyle } from './basemap_theme.ts'
 import {
+	buildEraMapLabelLayerOptions,
 	buildExploreEraLabelsCollection,
 	EXPLORE_ERA_LABELS_LAYER_ID,
 	EXPLORE_ERA_LABELS_SOURCE_ID,
@@ -646,24 +647,16 @@ export class MapRenderer implements MapHost {
 			data: buildExploreEraLabelsCollection(this.era, this.exploreLocale)
 		})
 
+		const labelLayer = buildEraMapLabelLayerOptions()
 		this.map.addLayer({
 			id: EXPLORE_ERA_LABELS_LAYER_ID,
 			type: 'symbol',
 			source: EXPLORE_ERA_LABELS_SOURCE_ID,
 			layout: {
-				'text-field': ['get', 'label'],
-				'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
-				'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9, 4, 12, 6, 14],
-				'text-max-width': 9,
-				'text-letter-spacing': 0.02,
-				'text-allow-overlap': false,
+				...labelLayer.layout,
 				visibility: 'none'
 			},
-			paint: {
-				'text-color': '#3d3630',
-				'text-halo-color': 'rgba(255, 248, 235, 0.88)',
-				'text-halo-width': 1.25
-			}
+			paint: labelLayer.paint
 		})
 	}
 

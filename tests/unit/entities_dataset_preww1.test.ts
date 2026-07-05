@@ -85,6 +85,78 @@ describe('preww1 entities dataset', () => {
 		expect(ids).toContain('russia-soviet-union')
 	})
 
+	it('uses era-appropriate English names, not CShapes anachronisms', () => {
+		const byId = Object.fromEntries(entities.map((entity) => [entity.id, entity.nameEn]))
+		expect(byId['russia-soviet-union']).toBe('Russian Empire')
+		expect(byId['germany-prussia']).toBe('German Empire')
+		expect(byId['turkey-ottoman-empire']).toBe('Ottoman Empire')
+		expect(byId['persia']).toBe('Persia')
+
+		const anachronisms = entities
+			.map((entity) => entity.nameEn)
+			.filter((name) => /Soviet Union|Ottoman Empire\)|Prussia\)|\(Zaire\)|\(Eswatini\)/.test(name))
+		expect(anachronisms).toEqual([])
+	})
+
+	it('keeps aliases.en.json aligned with canonical English names', () => {
+		const aliasesEn = JSON.parse(
+			fs.readFileSync(path.join(dataDir, 'aliases.en.json'), 'utf8')
+		) as Record<string, string[]>
+
+		for (const entity of entities) {
+			expect(aliasesEn[entity.id]?.[0], entity.id).toBe(entity.nameEn)
+		}
+	})
+
+	it('does not accept modern country names as cheat aliases for renamed polities', () => {
+		const aliasesEn = JSON.parse(
+			fs.readFileSync(path.join(dataDir, 'aliases.en.json'), 'utf8')
+		) as Record<string, string[]>
+		const aliasesRu = JSON.parse(
+			fs.readFileSync(path.join(dataDir, 'aliases.ru.json'), 'utf8')
+		) as Record<string, string[]>
+
+		const normalize = (value: string) => value.trim().toLowerCase()
+
+		const bannedEn: Record<string, string[]> = {
+			persia: ['iran'],
+			thailand: ['thailand'],
+			'sri-lanka-ceylon': ['sri lanka'],
+			'dutch-east-indies': ['indonesia'],
+			'british-india': ['india'],
+			'vietnam-annam-cochin-china-tonkin': ['vietnam'],
+			'zimbabwe-rhodesia': ['zimbabwe'],
+			'tanzania-tanganyika': ['tanzania'],
+			'swaziland-eswatini': ['eswatini']
+		}
+
+		const bannedRu: Record<string, string[]> = {
+			persia: ['иран'],
+			thailand: ['таиланд'],
+			'sri-lanka-ceylon': ['шри-ланка'],
+			'dutch-east-indies': ['индонезия'],
+			'british-india': ['индия'],
+			'vietnam-annam-cochin-china-tonkin': ['вьетнам'],
+			'zimbabwe-rhodesia': ['зимбабве'],
+			'tanzania-tanganyika': ['танзания'],
+			'swaziland-eswatini': ['эсватини']
+		}
+
+		for (const [entityId, banned] of Object.entries(bannedEn)) {
+			const aliases = aliasesEn[entityId] ?? []
+			for (const cheat of banned) {
+				expect(aliases.map(normalize), `${entityId} EN`).not.toContain(cheat)
+			}
+		}
+
+		for (const [entityId, banned] of Object.entries(bannedRu)) {
+			const aliases = aliasesRu[entityId] ?? []
+			for (const cheat of banned) {
+				expect(aliases.map(normalize), `${entityId} RU`).not.toContain(cheat)
+			}
+		}
+	})
+
 	it('provides Russian names for every entity', () => {
 		const untranslated = entities.filter((entity) => entity.nameRu === entity.nameEn)
 		expect(untranslated.map((entity) => entity.id)).toEqual([])

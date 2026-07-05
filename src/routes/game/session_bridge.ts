@@ -7,6 +7,8 @@ import { getLocale, messages } from '@i18n'
 import { clearSavedGame, saveGame, type SavedGameProgress } from '@persist'
 import { getSharedMapEra } from '../map_era.ts'
 import GameOverModal from '../play/ui/GameOverModal.svelte'
+import CountryListModal from '../play/ui/CountryListModal.svelte'
+import { sortEntitiesAlphabetically } from '../play/country_list.ts'
 
 export const gameSnapshot = writable<GameSnapshot>(EMPTY_SNAPSHOT)
 export const autocompleteResults = writable<GeoEntity[]>([])
@@ -21,7 +23,7 @@ function persistSnapshot(snapshot: GameSnapshot): void {
 	if (!activeConfig) return
 
 	if (snapshot.status !== 'playing') {
-		clearSavedGame()
+		clearSavedGame(getSharedMapEra()?.id ?? MODERN_ERA_ID)
 		return
 	}
 
@@ -54,11 +56,14 @@ function bindSession(nextSession: GameSession, config: GameConfig): void {
 			void openDialog(GameOverModal, {
 				snapshot,
 				config,
+				eraId: getSharedMapEra()?.id ?? MODERN_ERA_ID,
 				victoryTitle: m.victory,
 				gameOverTitle: m.gameOver,
 				playAgainLabel: m.playAgain,
 				exploreLinkLabel: m.gameOverExploreLink,
-				homeLabel: m.home
+				homeLabel: m.home,
+				shareLabel: m.shareGameOver,
+				shareCopiedLabel: m.shareGameCopied
 			})
 		}
 	})
@@ -66,7 +71,7 @@ function bindSession(nextSession: GameSession, config: GameConfig): void {
 
 export async function startGame(config: GameConfig, resume?: SavedGameProgress): Promise<void> {
 	destroyGame()
-	if (!resume) clearSavedGame()
+	if (!resume) clearSavedGame(getSharedMapEra()?.id ?? MODERN_ERA_ID)
 
 	const era = getSharedMapEra()
 	const nextSession = GameSessionFactory.create({ config, era: era ?? undefined })
@@ -149,17 +154,38 @@ export function showEndGameSummary(): void {
 	void openDialog(GameOverModal, {
 		snapshot,
 		config: activeConfig,
+		eraId: getSharedMapEra()?.id ?? MODERN_ERA_ID,
 		ended: true,
 		victoryTitle: m.victory,
 		gameOverTitle: m.gameOver,
 		endedTitle: m.gameEnded,
-		endedNote: m.gameEndedNote,
 		playAgainLabel: m.playAgain,
 		exploreLinkLabel: m.gameOverExploreLink,
-		homeLabel: m.home
+		homeLabel: m.home,
+		shareLabel: m.shareGameOver,
+		shareCopiedLabel: m.shareGameCopied
 	}).then(reenableGameOverModal, reenableGameOverModal)
 }
 
 export function getSession(): GameSession | null {
 	return session
+}
+
+export function openCountryList(): Promise<string | null> {
+	if (!session) return Promise.resolve(null)
+
+	const snapshot = session.getSnapshot()
+	if (snapshot.status !== 'playing') return Promise.resolve(null)
+
+	const m = messages[snapshot.locale]
+	const entities = sortEntitiesAlphabetically(session.getEra().getAllEntities(), snapshot.locale)
+
+	return openDialog<string | null>(CountryListModal, {
+		entities,
+		locale: snapshot.locale,
+		guessedIds: [...snapshot.guessedIds],
+		eraId: session.getEra().id,
+		title: m.countryList,
+		closeLabel: m.closeLabel
+	})
 }

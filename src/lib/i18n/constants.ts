@@ -20,6 +20,9 @@ export const messages = {
 		eraPreWW1Hint: 'The world on the eve of the First World War',
 		eraCe100: '100 AD',
 		eraCe100Hint: 'Major powers of the ancient world around 100 CE',
+		eraCe1300: '1300',
+		eraCe1300Hint: 'The Mongol uluses, Rus principalities, and the late medieval world',
+		eraYearAd: '{year} AD',
 		loading: 'Loading map…',
 		correct: 'Correct',
 		remaining: 'Remaining',
@@ -31,6 +34,7 @@ export const messages = {
 		selectCountryHint: 'Click a country',
 		randomCountry: 'Random country',
 		randomCountryHint: 'Pick a random country you have not found yet (F2)',
+		countryList: 'Country list',
 		guessTitle: 'Identify country',
 		submit: 'Check',
 		resetView: 'Reset view',
@@ -38,7 +42,6 @@ export const messages = {
 		gameOver: 'Game Over',
 		victory: 'You found them all!',
 		gameEnded: 'Quiz ended',
-		gameEndedNote: 'You ended the quiz. Here is how far you got.',
 		gameOverFoundCount: 'Found {correct} of {total}',
 		gameOverNoMistakes: 'No mistakes',
 		gameOverMistakes: '{n} mistakes',
@@ -61,7 +64,12 @@ export const messages = {
 		errorTitle: 'Something went wrong',
 		errorHint: 'The page failed to load. You can go back and try again.',
 		errorHome: 'Back to home',
-		exploreTitle: 'Explore map'
+		exploreTitle: 'Explore map',
+		shareGame: 'Share game',
+		shareGameHint: 'Copy a link with the current map and rules',
+		shareGameCopied: 'Link copied',
+		shareGameOver: 'Challenge a friend',
+		shareGameOverHint: 'Same map and rules'
 	},
 	ru: {
 		title: 'Найди все страны',
@@ -79,6 +87,9 @@ export const messages = {
 		eraPreWW1Hint: 'Мир накануне Первой мировой войны',
 		eraCe100: '100 н.э.',
 		eraCe100Hint: 'Крупные державы древнего мира около 100 года н.э.',
+		eraCe1300: '1300',
+		eraCe1300Hint: 'Улусы Монгольской империи, русские княжества и позднее Средневековье',
+		eraYearAd: '{year} год нашей эры',
 		loading: 'Загрузка карты…',
 		correct: 'Угадано',
 		remaining: 'Осталось',
@@ -90,6 +101,7 @@ export const messages = {
 		selectCountryHint: 'Нажмите на страну',
 		randomCountry: 'Случайная страна',
 		randomCountryHint: 'Выбрать случайную неотгаданную страну (F2)',
+		countryList: 'Список стран',
 		guessTitle: 'Угадай страну',
 		submit: 'Проверить',
 		resetView: 'Сбросить вид',
@@ -97,7 +109,6 @@ export const messages = {
 		gameOver: 'Игра окончена',
 		victory: 'Вы нашли все страны!',
 		gameEnded: 'Квиз завершён',
-		gameEndedNote: 'Вы завершили квиз. Вот ваш результат.',
 		gameOverFoundCount: 'Найдено {correct} из {total}',
 		gameOverNoMistakes: 'Без ошибок',
 		gameOverMistakes: 'Ошибок: {n}',
@@ -120,6 +131,11 @@ export const messages = {
 		errorTitle: 'Что-то пошло не так',
 		errorHint: 'Страница не загрузилась. Вернитесь на главную и попробуйте снова.',
 		errorHome: 'На главную',
-		exploreTitle: 'Карта для изучения'
+		exploreTitle: 'Карта для изучения',
+		shareGame: 'Поделиться',
+		shareGameHint: 'Скопировать ссылку с текущей картой и правилами',
+		shareGameCopied: 'Ссылка скопирована',
+		shareGameOver: 'Бросить вызов другу',
+		shareGameOverHint: 'Та же карта и те же правила'
 	}
 } as const satisfies Record<Locale, Record<string, string>>
