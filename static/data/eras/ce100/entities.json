@@ -9,7 +9,8 @@
     "id": "arakan",
     "nameEn": "Arakan",
     "nameRu": "Аракан",
-    "region": "Arakan"
+    "region": "Arakan",
+    "flagAsset": "arakan.png"
   },
   {
     "id": "armenia",
@@ -27,7 +28,8 @@
     "id": "blemmyes",
     "nameEn": "Blemmyes",
     "nameRu": "Блеммии",
-    "region": "Blemmyes"
+    "region": "Blemmyes",
+    "flagAsset": "blemmyes.png"
   },
   {
     "id": "bosporian-kingdom",
@@ -39,13 +41,15 @@
     "id": "dacia",
     "nameEn": "Dacia",
     "nameRu": "Дакия",
-    "region": "Dacia"
+    "region": "Dacia",
+    "flagAsset": "dacia.png"
   },
   {
     "id": "gaya",
     "nameEn": "Gaya",
     "nameRu": "Кая",
-    "region": "Gaya"
+    "region": "Gaya",
+    "flagAsset": "gaya.png"
   },
   {
     "id": "hadramaut",
@@ -63,8 +67,7 @@
     "id": "han",
     "nameEn": "Han",
     "nameRu": "Хань",
-    "region": "Han",
-    "flagAsset": "han.svg"
+    "region": "Han"
   },
   {
     "id": "himyarite-kingdom",
@@ -82,13 +85,15 @@
     "id": "kalinga",
     "nameEn": "Kalinga",
     "nameRu": "Калинга",
-    "region": "Kalinga"
+    "region": "Kalinga",
+    "flagAsset": "kalinga.png"
   },
   {
     "id": "koguryo",
     "nameEn": "Koguryo",
     "nameRu": "Когурё",
-    "region": "Koguryo"
+    "region": "Koguryo",
+    "flagAsset": "koguryo.png"
   },
   {
     "id": "kushan-empire",
@@ -107,7 +112,8 @@
     "id": "meroe",
     "nameEn": "Meroe",
     "nameRu": "Мероэ",
-    "region": "Meroe"
+    "region": "Meroe",
+    "flagAsset": "meroe.png"
   },
   {
     "id": "moche",
@@ -119,7 +125,8 @@
     "id": "monte-alban",
     "nameEn": "Monte Albán",
     "nameRu": "Монте-Альбан",
-    "region": "Monte Albán"
+    "region": "Monte Albán",
+    "flagAsset": "monte-alban.png"
   },
   {
     "id": "nabatean-kingdom",
@@ -137,27 +144,27 @@
     "id": "paekche",
     "nameEn": "Paekche",
     "nameRu": "Пэкче",
-    "region": "Paekche"
+    "region": "Paekche",
+    "flagAsset": "paekche.png"
   },
   {
     "id": "parthian-empire",
     "nameEn": "Parthian Empire",
     "nameRu": "Парфянское царство",
-    "region": "Parthian Empire",
-    "flagAsset": "parthian-empire.svg"
+    "region": "Parthian Empire"
   },
   {
     "id": "roman-empire",
     "nameEn": "Roman Empire",
     "nameRu": "Римская империя",
-    "region": "Roman Empire",
-    "flagAsset": "roman-empire.svg"
+    "region": "Roman Empire"
   },
   {
     "id": "saka-kingdom",
     "nameEn": "Saka Kingdom",
     "nameRu": "Царство саков",
-    "region": "Saka Kingdom"
+    "region": "Saka Kingdom",
+    "flagAsset": "saka-kingdom.png"
   },
   {
     "id": "satavahanihara",
@@ -175,7 +182,8 @@
     "id": "silla",
     "nameEn": "Silla",
     "nameRu": "Силла",
-    "region": "Silla"
+    "region": "Silla",
+    "flagAsset": "silla.png"
   },
   {
     "id": "simhala",
@@ -187,7 +195,8 @@
     "id": "southern-xiongnu",
     "nameEn": "Southern Xiongnu",
     "nameRu": "Южные сюнну",
-    "region": "Southern Xiongnu"
+    "region": "Southern Xiongnu",
+    "flagAsset": "southern-xiongnu.png"
   },
   {
     "id": "suren-kingdom",
@@ -205,6 +214,7 @@
     "id": "yueban",
     "nameEn": "Yueban",
     "nameRu": "Юэбань",
-    "region": "Yueban"
+    "region": "Yueban",
+    "flagAsset": "yueban.png"
   }
 ]
