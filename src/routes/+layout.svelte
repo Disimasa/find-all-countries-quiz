@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
+	import { afterNavigate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { onMount } from 'svelte'
 	import 'maplibre-gl/dist/maplibre-gl.css'
@@ -13,11 +14,18 @@
 	$: meta = siteMeta[$locale]
 	$: isDevToolRoute = $page.url.pathname.startsWith('/dev')
 
+	const YANDEX_METRIKA_ID = 110414070
+
 	onMount(() => {
 		document.documentElement.lang = getLocale()
 		return locale.subscribe((value) => {
 			document.documentElement.lang = value
 		})
+	})
+
+	afterNavigate(({ from, to }) => {
+		if (!from || !to || to.url.pathname.startsWith('/dev')) return
+		window.ym?.(YANDEX_METRIKA_ID, 'hit', to.url.href)
 	})
 </script>
 
