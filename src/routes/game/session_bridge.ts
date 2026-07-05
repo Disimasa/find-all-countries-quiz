@@ -23,7 +23,7 @@ function persistSnapshot(snapshot: GameSnapshot): void {
 	if (!activeConfig) return
 
 	if (snapshot.status !== 'playing') {
-		clearSavedGame()
+		clearSavedGame(getSharedMapEra()?.id ?? MODERN_ERA_ID)
 		return
 	}
 
@@ -71,7 +71,7 @@ function bindSession(nextSession: GameSession, config: GameConfig): void {
 
 export async function startGame(config: GameConfig, resume?: SavedGameProgress): Promise<void> {
 	destroyGame()
-	if (!resume) clearSavedGame()
+	if (!resume) clearSavedGame(getSharedMapEra()?.id ?? MODERN_ERA_ID)
 
 	const era = getSharedMapEra()
 	const nextSession = GameSessionFactory.create({ config, era: era ?? undefined })

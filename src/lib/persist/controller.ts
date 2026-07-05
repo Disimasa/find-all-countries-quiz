@@ -4,6 +4,7 @@ import {
 	DEFAULT_GAME_SETTINGS,
 	GAME_SAVE_STORAGE_KEY,
 	GAME_SETTINGS_STORAGE_KEY,
+	gameSaveStorageKey,
 	MAX_LIVES_LIMIT,
 	MAX_TIMER_MINUTES,
 	MIN_LIVES,
@@ -35,6 +36,33 @@ function normalizeSettings(raw: Partial<GameSettings>): GameSettings {
 	}
 }
 
+function parseSavedGame(raw: string): SavedGame | null {
+	try {
+		const parsed = JSON.parse(raw) as SavedGame
+		if (!MapEraRegistry.isKnown(parsed.eraId)) return null
+		if (!parsed.progress) return null
+		return parsed
+	} catch {
+		return null
+	}
+}
+
+function readLegacySave(): SavedGame | null {
+	if (!canUseStorage()) return null
+
+	const raw = localStorage.getItem(GAME_SAVE_STORAGE_KEY)
+	if (!raw) return null
+	return parseSavedGame(raw)
+}
+
+function migrateLegacySave(eraId: string): SavedGame | null {
+	const legacy = readLegacySave()
+	if (!legacy || legacy.eraId !== eraId) return null
+
+	saveGame(legacy)
+	return legacy
+}
+
 export function loadGameSettings(): GameSettings {
 	if (!canUseStorage()) return { ...DEFAULT_GAME_SETTINGS }
 
@@ -56,8 +84,8 @@ export function buildGameConfig(settings: GameSettings): GameConfig {
 	const normalized = normalizeSettings(settings)
 	return {
 		timerEnabled: normalized.timerEnabled,
-		timerSeconds: normalized.timerMinutes * 60,
 		livesEnabled: normalized.livesEnabled,
+		timerSeconds: normalized.timerMinutes * 60,
 		maxLives: normalized.maxLives
 	}
 }
@@ -65,15 +93,13 @@ export function buildGameConfig(settings: GameSettings): GameConfig {
 export function loadSavedGame(expectedEraId?: string): SavedGame | null {
 	if (!canUseStorage()) return null
 
+	const eraId = expectedEraId ?? loadGameSettings().eraId
+
 	try {
-		const raw = localStorage.getItem(GAME_SAVE_STORAGE_KEY)
-		if (!raw) return null
-		const parsed = JSON.parse(raw) as SavedGame
-		if (!MapEraRegistry.isKnown(parsed.eraId)) return null
-		if (!parsed.progress) return null
-		const eraId = expectedEraId ?? loadGameSettings().eraId
-		if (parsed.eraId !== eraId) return null
-		return parsed
+		const raw = localStorage.getItem(gameSaveStorageKey(eraId))
+		if (raw) return parseSavedGame(raw)
+
+		return migrateLegacySave(eraId)
 	} catch {
 		return null
 	}
@@ -81,10 +107,22 @@ export function loadSavedGame(expectedEraId?: string): SavedGame | null {
 
 export function saveGame(save: SavedGame): void {
 	if (!canUseStorage()) return
-	localStorage.setItem(GAME_SAVE_STORAGE_KEY, JSON.stringify(save))
+	localStorage.setItem(gameSaveStorageKey(save.eraId), JSON.stringify(save))
+	localStorage.removeItem(GAME_SAVE_STORAGE_KEY)
 }
 
-export function clearSavedGame(): void {
+export function clearSavedGame(eraId?: string): void {
 	if (!canUseStorage()) return
+
+	if (eraId) {
+		localStorage.removeItem(gameSaveStorageKey(eraId))
+		const legacy = readLegacySave()
+		if (legacy?.eraId === eraId) localStorage.removeItem(GAME_SAVE_STORAGE_KEY)
+		return
+	}
+
 	localStorage.removeItem(GAME_SAVE_STORAGE_KEY)
+	for (const id of MapEraRegistry.listIds()) {
+		localStorage.removeItem(gameSaveStorageKey(id))
+	}
 }

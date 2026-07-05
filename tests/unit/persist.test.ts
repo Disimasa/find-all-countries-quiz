@@ -170,6 +170,158 @@ describe('persist', () => {
 		expect(loadSavedGame('modern')?.progress.guessedIds).toEqual(['DE', 'FR'])
 	})
 
+	it('keeps era A save when starting a new game on era B', () => {
+		saveGame({
+			eraId: 'ce1300',
+			config: buildGameConfig({
+				eraId: 'ce1300',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['moscow', 'novgorod'],
+				livesRemaining: 2,
+				timeRemaining: 1200,
+				total: 72
+			},
+			savedAt: Date.now()
+		})
+
+		clearSavedGame('modern')
+
+		expect(loadSavedGame('ce1300')?.progress.guessedIds).toEqual(['moscow', 'novgorod'])
+
+		saveGame({
+			eraId: 'modern',
+			config: buildGameConfig({
+				eraId: 'modern',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['DE'],
+				livesRemaining: 3,
+				timeRemaining: null,
+				total: 195
+			},
+			savedAt: Date.now()
+		})
+
+		expect(loadSavedGame('modern')?.progress.guessedIds).toEqual(['DE'])
+		expect(loadSavedGame('ce1300')?.progress.guessedIds).toEqual(['moscow', 'novgorod'])
+	})
+
+	it('clears saved game for one era only', () => {
+		saveGame({
+			eraId: 'modern',
+			config: buildGameConfig({
+				eraId: 'modern',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['DE'],
+				livesRemaining: 3,
+				timeRemaining: null,
+				total: 195
+			},
+			savedAt: Date.now()
+		})
+		saveGame({
+			eraId: 'preww1',
+			config: buildGameConfig({
+				eraId: 'preww1',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['germany-prussia'],
+				livesRemaining: 2,
+				timeRemaining: 900,
+				total: 142
+			},
+			savedAt: Date.now()
+		})
+
+		clearSavedGame('modern')
+		expect(loadSavedGame('modern')).toBeNull()
+		expect(loadSavedGame('preww1')?.progress.guessedIds).toEqual(['germany-prussia'])
+	})
+
+	it('clears all era saves when era is omitted', () => {
+		saveGame({
+			eraId: 'modern',
+			config: buildGameConfig({
+				eraId: 'modern',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['DE'],
+				livesRemaining: 3,
+				timeRemaining: null,
+				total: 195
+			},
+			savedAt: Date.now()
+		})
+		saveGame({
+			eraId: 'ce1300',
+			config: buildGameConfig({
+				eraId: 'ce1300',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['moscow'],
+				livesRemaining: 3,
+				timeRemaining: null,
+				total: 72
+			},
+			savedAt: Date.now()
+		})
+
+		clearSavedGame()
+		expect(loadSavedGame('modern')).toBeNull()
+		expect(loadSavedGame('ce1300')).toBeNull()
+	})
+
+	it('migrates legacy single-key save on load', () => {
+		const legacy = {
+			eraId: 'modern',
+			config: buildGameConfig({
+				eraId: 'modern',
+				timerEnabled: true,
+				livesEnabled: true,
+				timerMinutes: 30,
+				maxLives: 3
+			}),
+			progress: {
+				guessedIds: ['DE'],
+				livesRemaining: 3,
+				timeRemaining: null,
+				total: 195
+			},
+			savedAt: Date.now()
+		}
+		localStorage.setItem('quiz-game-save', JSON.stringify(legacy))
+
+		expect(loadSavedGame('modern')?.progress.guessedIds).toEqual(['DE'])
+		expect(localStorage.getItem('quiz-game-save')).toBeNull()
+		expect(localStorage.getItem('quiz-game-save:modern')).toBeTruthy()
+	})
+
 	it('clears saved game', () => {
 		saveGame({
 			eraId: 'modern',
@@ -188,7 +340,7 @@ describe('persist', () => {
 			},
 			savedAt: Date.now()
 		})
-		clearSavedGame()
+		clearSavedGame('modern')
 		expect(loadSavedGame('modern')).toBeNull()
 	})
 })

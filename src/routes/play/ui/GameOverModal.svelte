@@ -74,7 +74,7 @@
 
 	function playAgain() {
 		closeDialog()
-		clearSavedGame()
+		clearSavedGame(eraId)
 		void startGame(buildGameConfig(loadGameSettings()))
 	}
 

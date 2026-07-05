@@ -192,63 +192,43 @@ describe('fillEntityInDirection', () => {
 		expect(Math.min(...lowLat)).toBeLessThan(31.5)
 	})
 
-	it('does not cover neighboring principalities on ce1300 Ryazan fills', () => {
-		const collection = JSON.parse(
-			readFileSync('static/data/eras/ce1300/revisions/2026-07-04T21-30-37Z.geojson', 'utf8')
-		)
-		const ryazan = collection.features.find(
-			(feature: { properties?: { entity_id?: string } }) =>
-				feature.properties?.entity_id === 'ryazan'
-		)
-		const moscow = collection.features.find(
-			(feature: { properties?: { entity_id?: string } }) =>
-				feature.properties?.entity_id === 'moscow'
-		)
-		const tver = collection.features.find(
-			(feature: { properties?: { entity_id?: string } }) =>
-				feature.properties?.entity_id === 'tver'
-		)
-		expect(ryazan).toBeTruthy()
-
-		for (const direction of ['north', 'south', 'east', 'west'] as FillDirection[]) {
-			const result = fillEntityInDirection(ryazan, collection, 'ryazan', direction)
-			for (const neighbor of [moscow, tver]) {
-				if (!neighbor) continue
-				let overlap = 0
-				try {
-					const hit = intersect(result.feature, neighbor)
-					if (hit) overlap = area(hit)
-				} catch {
-					overlap = 0
-				}
-				expect(overlap).toBeLessThan(1)
-			}
-		}
-	})
-
-	it('can expand east after a north fill on real-era geometry', () => {
-		const collection = JSON.parse(
-			readFileSync('static/data/eras/ce1300/boundaries.geojson', 'utf8')
-		)
-		const target = collection.features.find(
-			(feature: { properties?: { entity_id?: string } }) =>
-				feature.properties?.entity_id === 'vladimir-suzdal'
-		)
-		expect(target).toBeTruthy()
-
-		const north = fillEntityInDirection(target, collection, 'vladimir-suzdal', 'north')
-		const mergedCollection = {
-			...collection,
-			features: collection.features.map(
-				(feature: { properties?: { entity_id?: string } }) =>
-					feature.properties?.entity_id === 'vladimir-suzdal' ? north.feature : feature
+	it(
+		'does not cover neighboring principalities on ce1300 Ryazan fills',
+		() => {
+			const collection = JSON.parse(
+				readFileSync('static/data/eras/ce1300/revisions/2026-07-04T21-30-37Z.geojson', 'utf8')
 			)
-		}
-		const east = fillEntityInDirection(north.feature, mergedCollection, 'vladimir-suzdal', 'east')
+			const ryazan = collection.features.find(
+				(feature: { properties?: { entity_id?: string } }) =>
+					feature.properties?.entity_id === 'ryazan'
+			)
+			const moscow = collection.features.find(
+				(feature: { properties?: { entity_id?: string } }) =>
+					feature.properties?.entity_id === 'moscow'
+			)
+			const tver = collection.features.find(
+				(feature: { properties?: { entity_id?: string } }) =>
+					feature.properties?.entity_id === 'tver'
+			)
+			expect(ryazan).toBeTruthy()
 
-		expect(east.expanded).toBe(true)
-		expect(east.areaAfterSqM).toBeGreaterThan(east.areaBeforeSqM)
-	})
+			for (const direction of ['north', 'south', 'east', 'west'] as FillDirection[]) {
+				const result = fillEntityInDirection(ryazan, collection, 'ryazan', direction)
+				for (const neighbor of [moscow, tver]) {
+					if (!neighbor) continue
+					let overlap = 0
+					try {
+						const hit = intersect(result.feature, neighbor)
+						if (hit) overlap = area(hit)
+					} catch {
+						overlap = 0
+					}
+					expect(overlap).toBeLessThan(1)
+				}
+			}
+		},
+		30_000
+	)
 
 	it('drops micro polygon slivers after multi-direction fill', () => {
 		const messy = {

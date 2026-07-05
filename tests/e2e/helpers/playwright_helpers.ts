@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { type Browser, type Page } from 'playwright'
 import type { Locale } from '@domain/entities'
 import { MODERN_ERA_ID } from '@domain/maps'
-import { GAME_SAVE_STORAGE_KEY, GAME_SETTINGS_STORAGE_KEY } from '@persist/constants'
+import { GAME_SETTINGS_STORAGE_KEY, gameSaveStorageKey } from '@persist/constants'
 import { LOCALE_STORAGE_KEY } from '@i18n/constants'
 
 const CANDIDATE_PORTS = [5174, 5173, 4173]
@@ -164,7 +164,7 @@ export async function seedPlayStorage(
 		{
 			localeKey: LOCALE_STORAGE_KEY,
 			settingsKey: GAME_SETTINGS_STORAGE_KEY,
-			saveKey: GAME_SAVE_STORAGE_KEY,
+			saveKey: gameSaveStorageKey(eraId),
 			eraId,
 			localeValue: locale,
 			gameSettings: {
