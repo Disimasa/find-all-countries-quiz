@@ -1,0 +1,48 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const root = path.resolve(__dirname, '..')
+const curatedPath = path.join(root, 'scripts/era-mappings/ce100_flag_curated.json')
+
+/** Historical flags / emblems for ~100 CE (Commons files verified via API where possible). */
+const curated = {
+	alans: 'commons:Flag of North Ossetia.svg',
+	arakan: 'commons:Flag of Rakhine.svg',
+	armenia: 'commons:Flag of Armenia.svg',
+	axum: 'timemap:et.svg',
+	blemmyes: 'commons:Flag of Nubia.svg',
+	'bosporian-kingdom': 'commons:Flag of Crimea.svg',
+	dacia: 'commons:Dacian Draco.svg',
+	gaya: 'commons:Goguryeo Samjogo.svg',
+	hadramaut: 'commons:Flag of Hadhramaut.svg',
+	hainan: 'commons:Flag of China.svg',
+	han: 'commons:Han dynasty (Chinese characters).svg',
+	'himyarite-kingdom': 'commons:Flag of Yemen.svg',
+	'hindu-kingdoms': 'commons:Flag of India.svg',
+	kalinga: 'commons:Flag of Odisha.svg',
+	koguryo: 'commons:Fictional flag of Goguryeo.svg',
+	'kushan-empire': 'commons:Flag of the kushans.png',
+	'maya-chiefdoms': 'commons:Flag of Guatemala.svg',
+	meroe: 'commons:Egypt kush.svg',
+	moche: 'commons:Flag of Peru.svg',
+	'monte-alban': 'commons:Flag of Oaxaca.svg',
+	'nabatean-kingdom': 'commons:Flag of Jordan.svg',
+	nazca: 'commons:Flag of Peru.svg',
+	paekche: 'commons:Military flag of Baekje.svg',
+	'parthian-empire': 'commons:Vexilloid of the Parthian Empire.svg',
+	'roman-empire': 'commons:Vexilloid of the Roman Empire.svg',
+	'saka-kingdom': 'commons:IndoScythianKingdom.svg',
+	satavahanihara: 'commons:Emblem of India.svg',
+	scythians: 'commons:Flag of South Ossetia.svg',
+	silla: 'commons:Fictional flag of Silla.svg',
+	simhala: 'commons:Flag of Sri Lanka.svg',
+	'southern-xiongnu': 'commons:Flag of South Xiongnu (16 Great Turkic Empires).svg',
+	'suren-kingdom': 'commons:Vexilloid of the Parthian Empire.svg',
+	teotihuacan: 'commons:Flag of Mexico.svg',
+	yueban: 'commons:Flag of Xiongnu (16 Great Turkic Empires).svg'
+}
+
+fs.writeFileSync(curatedPath, JSON.stringify(curated, null, '\t') + '\n')
+console.log(`Wrote ${Object.keys(curated).length} entries`)
