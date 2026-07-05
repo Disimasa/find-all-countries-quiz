@@ -15,12 +15,18 @@ export type VertexBorderClamp = {
 
 type AreaGeometry = Polygon | MultiPolygon
 
+type MapPanSnapshot = {
+	dragPanWasEnabled?: boolean
+	boxZoomWasEnabled?: boolean
+}
+
 type BoxSelectState = {
 	boxSelectStart: { x: number; y: number } | null
 	canBoxSelect: boolean
 	boxSelecting: boolean
 	boxSelectElement: HTMLDivElement | null
-	boxZoomWasEnabled?: boolean
+	mapPanSnapshot?: MapPanSnapshot
+	releaseShiftPanCapture?: () => void
 	featureId: string
 	selectedCoordPaths: string[]
 	borderDragLastCoords?: Record<string, Position>
@@ -120,6 +126,48 @@ function restoreBoxZoom(map: MaplibreMap, wasEnabled?: boolean): void {
 	if (wasEnabled) map.boxZoom?.enable?.()
 }
 
+export function suspendMapPanForShiftSelect(map: MaplibreMap, snapshot: MapPanSnapshot): void {
+	if (snapshot.dragPanWasEnabled === undefined) {
+		snapshot.dragPanWasEnabled = map.dragPan.isEnabled()
+		snapshot.boxZoomWasEnabled = map.boxZoom.isEnabled()
+	}
+	map.dragPan.disable()
+	map.boxZoom?.disable?.()
+}
+
+export function restoreMapPan(map: MaplibreMap, snapshot: MapPanSnapshot): void {
+	if (snapshot.dragPanWasEnabled) map.dragPan.enable()
+	restoreBoxZoom(map, snapshot.boxZoomWasEnabled)
+	snapshot.dragPanWasEnabled = undefined
+	snapshot.boxZoomWasEnabled = undefined
+}
+
+function installShiftPanGuard(map: MaplibreMap, state: BoxSelectState): void {
+	const canvas = map.getCanvas()
+
+	const preemptPan = (event: MouseEvent): void => {
+		if (event.button !== 0 || !event.shiftKey) return
+		suspendMapPanForShiftSelect(map, state.mapPanSnapshot ??= {})
+	}
+
+	const releaseIfAborted = (event: MouseEvent): void => {
+		if (event.button !== 0) return
+		if (state.canBoxSelect || state.boxSelecting) return
+		if (state.mapPanSnapshot?.dragPanWasEnabled !== undefined) {
+			restoreMapPan(map, state.mapPanSnapshot)
+		}
+	}
+
+	canvas.addEventListener('mousedown', preemptPan, { capture: true })
+	window.addEventListener('mouseup', releaseIfAborted)
+
+	state.releaseShiftPanCapture = () => {
+		canvas.removeEventListener('mousedown', preemptPan, { capture: true })
+		window.removeEventListener('mouseup', releaseIfAborted)
+		if (state.mapPanSnapshot) restoreMapPan(map, state.mapPanSnapshot)
+	}
+}
+
 function cleanupBoxSelect(state: BoxSelectState): void {
 	if (state.boxSelectElement?.parentNode) {
 		state.boxSelectElement.parentNode.removeChild(state.boxSelectElement)
@@ -134,9 +182,7 @@ function startBoxSelect(this: DirectSelectModeThis, state: BoxSelectState, event
 	this.stopDragging(state)
 	event.originalEvent.preventDefault()
 	event.originalEvent.stopPropagation()
-	state.boxZoomWasEnabled = this.map.boxZoom.isEnabled()
-	this.map.dragPan.disable()
-	this.map.boxZoom?.disable?.()
+	suspendMapPanForShiftSelect(this.map, state.mapPanSnapshot ??= {})
 	state.boxSelectStart = mouseEventPoint(event.originalEvent, this.map.getContainer())
 	state.canBoxSelect = true
 }
@@ -204,9 +250,9 @@ function finishBoxSelect(this: DirectSelectModeThis, state: BoxSelectState, even
 		}
 	}
 
-	this.map.dragPan.enable()
-	restoreBoxZoom(this.map, state.boxZoomWasEnabled)
-	state.boxZoomWasEnabled = undefined
+	if (state.mapPanSnapshot) {
+		restoreMapPan(this.map, state.mapPanSnapshot)
+	}
 	cleanupBoxSelect(state)
 }
 
@@ -278,22 +324,23 @@ export function createDirectSelectBoxMode(
 		...base,
 		onSetup(opts) {
 			const state = base.onSetup?.call(this, opts) as BoxSelectState
-			return {
+			const nextState: BoxSelectState = {
 				...state,
 				boxSelectStart: null,
 				canBoxSelect: false,
 				boxSelecting: false,
 				boxSelectElement: null,
-				boxZoomWasEnabled: undefined,
+				mapPanSnapshot: undefined,
 				borderDragLastCoords: undefined
 			}
+			installShiftPanGuard(this.map, nextState)
+			return nextState
 		},
 		onStop(state) {
+			state.releaseShiftPanCapture?.()
+			state.releaseShiftPanCapture = undefined
 			cleanupBoxSelect(state)
-			restoreBoxZoom(this.map, state.boxZoomWasEnabled)
-			state.boxZoomWasEnabled = undefined
 			clearBorderDragCoords(state)
-			this.map.dragPan.enable()
 			base.onStop?.call(this, state)
 		},
 		onMouseDown(state, event) {
@@ -311,6 +358,13 @@ export function createDirectSelectBoxMode(
 				return
 			}
 			return base.onMouseDown?.call(this, state, event)
+		},
+		onClick(state, event) {
+			if (state.canBoxSelect || state.boxSelecting) {
+				finishBoxSelect.call(this as DirectSelectModeThis, state, event as DrawEvent)
+				return
+			}
+			return base.onClick?.call(this, state, event)
 		},
 		onMouseMove(state, event) {
 			if (state.canBoxSelect || state.boxSelecting) {

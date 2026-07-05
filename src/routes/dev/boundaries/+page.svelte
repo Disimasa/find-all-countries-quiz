@@ -330,6 +330,25 @@
 		drawFeatureId = null
 	}
 
+	function ensureDirectSelectMode(): void {
+		if (!draw || !drawFeatureId || !selectedId) return
+		if (!draw.get(drawFeatureId)) return
+		if (draw.getMode() === 'direct_select') {
+			lastDrawMode = 'direct_select'
+			return
+		}
+
+		suppressDrawModeSync = true
+		try {
+			draw.changeMode('direct_select', { featureId: drawFeatureId })
+			lastDrawMode = 'direct_select'
+		} finally {
+			queueMicrotask(() => {
+				suppressDrawModeSync = false
+			})
+		}
+	}
+
 	function deselectEntity(): void {
 		if (!selectedId) return
 
@@ -403,11 +422,13 @@
 			drawFeatureId = idList[0] ?? null
 			if (drawFeatureId) {
 				draw.changeMode('direct_select', { featureId: drawFeatureId })
+				lastDrawMode = 'direct_select'
 			}
 		} finally {
 			queueMicrotask(() => {
 				suppressHistoryRecording = false
 				suppressDrawModeSync = false
+				ensureDirectSelectMode()
 				syncGeometrySnapshot()
 			})
 		}
@@ -493,11 +514,9 @@
 	function selectEntity(entityId: string): void {
 		if (!map || !draw || !collection) return
 		if (entityId === selectedId) {
-			if (draw.getMode() === 'direct_select' && drawFeatureId) return
-			if (drawFeatureId && draw.get(drawFeatureId)) {
-				draw.changeMode('direct_select', { featureId: drawFeatureId })
-				status = `Редактирование: ${entityId}`
-			}
+			ensureDirectSelectMode()
+			if (draw.getMode() === 'direct_select') return
+			status = `Редактирование: ${entityId}`
 			return
 		}
 
@@ -520,8 +539,12 @@
 			const id = String(Array.isArray(ids) ? ids[0] : ids)
 			drawFeatureId = id
 			draw.changeMode('direct_select', { featureId: id })
+			lastDrawMode = 'direct_select'
 		} finally {
-			suppressDrawModeSync = false
+			queueMicrotask(() => {
+				suppressDrawModeSync = false
+				ensureDirectSelectMode()
+			})
 		}
 
 		const bounds = featureBounds(feature)
