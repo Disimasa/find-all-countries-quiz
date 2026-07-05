@@ -343,4 +343,46 @@ describe('persist', () => {
 		clearSavedGame('modern')
 		expect(loadSavedGame('modern')).toBeNull()
 	})
+
+	it('rejects save with invalid config', () => {
+		localStorage.setItem(
+			'quiz-game-save:modern',
+			JSON.stringify({
+				eraId: 'modern',
+				config: { timerEnabled: true },
+				progress: {
+					guessedIds: ['DE'],
+					livesRemaining: 3,
+					timeRemaining: null,
+					total: 195
+				},
+				savedAt: Date.now()
+			})
+		)
+		expect(loadSavedGame('modern')).toBeNull()
+	})
+
+	it('rejects save with invalid progress', () => {
+		localStorage.setItem(
+			'quiz-game-save:modern',
+			JSON.stringify({
+				eraId: 'modern',
+				config: buildGameConfig({
+					eraId: 'modern',
+					timerEnabled: true,
+					livesEnabled: true,
+					timerMinutes: 30,
+					maxLives: 3
+				}),
+				progress: {
+					guessedIds: 'DE',
+					livesRemaining: 3,
+					timeRemaining: null,
+					total: 0
+				},
+				savedAt: Date.now()
+			})
+		)
+		expect(loadSavedGame('modern')).toBeNull()
+	})
 })

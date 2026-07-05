@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { get } from 'svelte/store'
 
 import { DEFAULT_ERA_ID, CE1300_ERA_ID, PREWW1_ERA_ID } from '@domain/maps'
-import { DEFAULT_GAME_SETTINGS, loadGameSettings, saveGameSettings } from '@persist'
+import { DEFAULT_GAME_SETTINGS, mergeGameSettings } from '@persist'
 
 import {
 	applyGameSettings,
@@ -22,11 +22,10 @@ import {
 	getLobbySearchForSettings,
 	isLobbySearchInSync,
 	parseGameSettingsSearch,
-	mergeGameSettings,
-	resolveGameSettingsFromSearch,
-	resolveInitialGameSettings
+	resolveInitialGameSettings,
+	resolveLobbySettingsFromSearch,
+	resolvePlaySettingsFromSearch
 } from '../../src/routes/game_settings_url.ts'
-import { installLocalStorageMock } from './helpers/local_storage_mock.ts'
 
 describe('game_settings_url', () => {
 	it('encodes era, timer minutes, and lives count', () => {
@@ -67,6 +66,10 @@ describe('game_settings_url', () => {
 		expect(getLobbySearchForSettings(DEFAULT_GAME_SETTINGS)).toBe('?timer=30&lives=3')
 	})
 
+	it('returns null when era param is unknown', () => {
+		expect(parseGameSettingsSearch('?era=ce1279')).toBeNull()
+	})
+
 	it('returns null when search has no game settings', () => {
 		expect(parseGameSettingsSearch('')).toBeNull()
 	})
@@ -102,17 +105,15 @@ describe('game_settings_url', () => {
 		})
 	})
 
-	it('merges partial URL settings over stored settings', () => {
-		const stored = { ...DEFAULT_GAME_SETTINGS, eraId: DEFAULT_ERA_ID }
-		expect(
-			mergeGameSettings(stored, {
-				eraId: CE1300_ERA_ID,
-				timerEnabled: true,
-				timerMinutes: 60,
-				livesEnabled: true,
-				maxLives: 5
-			})
-		).toEqual({
+	it('resolveLobbySettingsFromSearch uses defaults for omitted params', () => {
+		expect(resolveLobbySettingsFromSearch('?era=ce1300')).toEqual({
+			...DEFAULT_GAME_SETTINGS,
+			eraId: CE1300_ERA_ID
+		})
+	})
+
+	it('resolvePlaySettingsFromSearch uses defaults for omitted params', () => {
+		expect(resolvePlaySettingsFromSearch('?era=ce1300&timer=60&lives=5')).toEqual({
 			eraId: CE1300_ERA_ID,
 			timerEnabled: true,
 			timerMinutes: 60,
@@ -121,17 +122,7 @@ describe('game_settings_url', () => {
 		})
 	})
 
-	it('resolveGameSettingsFromSearch keeps stored values for omitted params', () => {
-		expect(resolveGameSettingsFromSearch('?era=ce1300', DEFAULT_GAME_SETTINGS)).toEqual({
-			...DEFAULT_GAME_SETTINGS,
-			eraId: CE1300_ERA_ID
-		})
-	})
-
-	it('resolveInitialGameSettings applies lobby URL before map init', () => {
-		installLocalStorageMock()
-		saveGameSettings({ ...DEFAULT_GAME_SETTINGS })
-
+	it('resolveInitialGameSettings reads lobby URL', () => {
 		expect(
 			resolveInitialGameSettings({
 				pathname: '/',
@@ -146,10 +137,16 @@ describe('game_settings_url', () => {
 		})
 	})
 
-	it('resolveInitialGameSettings ignores URL on non-lobby paths', () => {
-		installLocalStorageMock()
-		saveGameSettings({ ...DEFAULT_GAME_SETTINGS })
+	it('resolveInitialGameSettings uses defaults on bare lobby URL', () => {
+		expect(
+			resolveInitialGameSettings({
+				pathname: '/',
+				search: ''
+			})
+		).toEqual(DEFAULT_GAME_SETTINGS)
+	})
 
+	it('resolveInitialGameSettings ignores URL on non-lobby paths', () => {
 		expect(
 			resolveInitialGameSettings({
 				pathname: '/explore',
@@ -158,52 +155,19 @@ describe('game_settings_url', () => {
 		).toEqual(DEFAULT_GAME_SETTINGS)
 	})
 
-	it('resolveInitialGameSettings applies play URL on cold load', () => {
-		installLocalStorageMock()
-		saveGameSettings({ ...DEFAULT_GAME_SETTINGS })
-
+	it('resolveInitialGameSettings reads play URL', () => {
 		expect(
 			resolveInitialGameSettings({
 				pathname: '/play',
 				search: '?era=ce1300&timer=60&lives=5'
-			}).eraId
-		).toBe(CE1300_ERA_ID)
-	})
-
-	it('resolveInitialGameSettings persists merged settings to localStorage', () => {
-		installLocalStorageMock()
-		saveGameSettings({ ...DEFAULT_GAME_SETTINGS })
-
-		resolveInitialGameSettings({
-			pathname: '/',
-			search: '?era=ce1300&timer=60&lives=5'
-		})
-
-		expect(loadGameSettings()).toEqual({
+			})
+		).toEqual({
 			eraId: CE1300_ERA_ID,
 			timerEnabled: true,
 			timerMinutes: 60,
 			livesEnabled: true,
 			maxLives: 5
 		})
-	})
-
-	it('resolveInitialGameSettings leaves localStorage unchanged without URL params', () => {
-		installLocalStorageMock()
-		const stored = {
-			...DEFAULT_GAME_SETTINGS,
-			eraId: PREWW1_ERA_ID,
-			timerMinutes: 15
-		}
-		saveGameSettings(stored)
-
-		expect(
-			resolveInitialGameSettings({
-				pathname: '/',
-				search: ''
-			})
-		).toEqual(stored)
-		expect(loadGameSettings()).toEqual(stored)
 	})
 
 	it('mergeGameSettings keeps stored fields when partial omits them', () => {
@@ -235,7 +199,6 @@ describe('game_settings_url', () => {
 
 describe('share settings integration', () => {
 	beforeEach(() => {
-		installLocalStorageMock()
 		applyGameSettings({ ...DEFAULT_GAME_SETTINGS })
 	})
 
@@ -265,11 +228,7 @@ describe('share settings integration', () => {
 	})
 
 	it('detects when lobby search matches settings', () => {
-		expect(
-			isLobbySearchInSync('?timer=30&lives=3', {
-				...DEFAULT_GAME_SETTINGS
-			})
-		).toBe(true)
+		expect(isLobbySearchInSync('?timer=30&lives=3', { ...DEFAULT_GAME_SETTINGS })).toBe(true)
 		expect(
 			isLobbySearchInSync('?era=ce1300&timer=0&lives=1', {
 				eraId: CE1300_ERA_ID,
@@ -291,17 +250,6 @@ describe('share settings integration', () => {
 		expect(getGameSettings()).toEqual({
 			eraId: CE1300_ERA_ID,
 			timerEnabled: false,
-			timerMinutes: 60,
-			livesEnabled: true,
-			maxLives: 5
-		})
-	})
-
-	it('resolveGameSettingsFromSearch overrides stored era from shared link', () => {
-		const stored = { ...DEFAULT_GAME_SETTINGS, eraId: DEFAULT_ERA_ID }
-		expect(resolveGameSettingsFromSearch('?era=ce1300&timer=60&lives=5', stored)).toEqual({
-			eraId: CE1300_ERA_ID,
-			timerEnabled: true,
 			timerMinutes: 60,
 			livesEnabled: true,
 			maxLives: 5

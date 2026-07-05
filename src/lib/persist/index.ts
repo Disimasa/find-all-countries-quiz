@@ -12,5 +12,9 @@ export {
 	buildGameConfig,
 	loadSavedGame,
 	saveGame,
-	clearSavedGame
+	clearSavedGame,
+	normalizeGameSettings,
+	mergeGameSettings,
+	clampTimerMinutes,
+	clampMaxLives
 } from './controller.ts'

@@ -1,26 +1,21 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { get } from 'svelte/store'
-	import { replaceState } from '$app/navigation'
+	import { afterNavigate, replaceState } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { Circle } from 'svelte-loading-spinners'
 	import {
 		applyGameSettings,
 		buildPlayHref,
 		eraId,
+		getGameSettings,
 		getSavedGame,
 		livesEnabled,
 		maxLives,
 		timerEnabled,
 		timerMinutes
 	} from './controller'
-	import {
-		initialLobbySyncedSearch,
-		parseLobbySearchSync,
-		resolveLobbyUrlPush,
-		shouldApplyLobbySearchFromUrl,
-		shouldSwitchMapEraFromUrl
-	} from './lobby_url_sync.ts'
+	import { lobbyHrefForSettings, lobbyUrlNeedsUpdate, readLobbySettings } from './lobby_url.ts'
 	import { copyShareLink } from './play/share_game_link'
 	import { warmupPlay } from './play/controller'
 	import { getSharedMapEra } from './map_era.ts'
@@ -36,8 +31,7 @@
 	let currentEra = 'modern'
 	let continueLabel = ''
 	let shareCopied = false
-	let lobbyUrlReady = false
-	let syncedLobbySearch: string | null = null
+	let lobbyReady = false
 
 	$: timerOn = $timerEnabled
 	$: livesOn = $livesEnabled
@@ -57,72 +51,45 @@
 		ce1300: $t('eraCe1300Hint')
 	}
 
-	function syncLobbyUrl(): void {
-		if (!lobbyUrlReady || get(page).url.pathname !== '/') return
-
-		const settings = {
-			eraId: get(eraId),
-			timerEnabled: get(timerEnabled),
-			livesEnabled: get(livesEnabled),
-			timerMinutes: get(timerMinutes),
-			maxLives: get(maxLives)
+	async function applyLobbyFromUrl(search: string): Promise<void> {
+		const settings = readLobbySettings(search)
+		applyGameSettings(settings)
+		const mapEra = getSharedMapEra()?.id
+		if (settings.eraId !== mapEra) {
+			await switchMapEra(settings.eraId)
 		}
-
-		const push = resolveLobbyUrlPush(get(page).url.search, settings)
-		syncedLobbySearch = push.syncedSearch
-		if (!push.shouldReplace) return
-
-		replaceState(push.href, {})
 	}
 
-	$: if (lobbyUrlReady && $mapShellReady) {
-		$eraId
-		$timerEnabled
-		$livesEnabled
-		$timerMinutes
-		$maxLives
-		void syncLobbyUrl()
-	}
+	function pushLobbyUrl(): void {
+		if (!lobbyReady || get(page).url.pathname !== '/') return
 
-	$: if (lobbyUrlReady && $page.url.pathname === '/') {
-		const search = $page.url.search
-		if (shouldApplyLobbySearchFromUrl(search, syncedLobbySearch)) {
-			const { settings, syncedSearch } = parseLobbySearchSync(search)
-			if (settings) {
-				applyGameSettings(settings)
-				const nextEra = shouldSwitchMapEraFromUrl(settings, $eraId)
-				if (nextEra) void switchMapEra(nextEra)
-			}
-			syncedLobbySearch = syncedSearch
-		}
+		const settings = getGameSettings()
+		const search = get(page).url.search
+		if (!lobbyUrlNeedsUpdate(search, settings)) return
+
+		replaceState(lobbyHrefForSettings(settings), {})
 	}
 
 	onMount(() => {
-		const initialSearch = get(page).url.search
-		const { settings } = parseLobbySearchSync(initialSearch)
-		if (settings) {
-			applyGameSettings(settings)
-			const nextEra = shouldSwitchMapEraFromUrl(settings, get(eraId))
-			if (nextEra) void switchMapEra(nextEra)
-		} else {
-			const saved = getSavedGame()
-			if (saved) {
-				eraId.set(saved.eraId)
-				timerEnabled.set(saved.config.timerEnabled)
-				livesEnabled.set(saved.config.livesEnabled)
-				timerMinutes.set(Math.round(saved.config.timerSeconds / 60))
-				maxLives.set(saved.config.maxLives)
-			}
-		}
-		syncedLobbySearch = initialLobbySyncedSearch(initialSearch)
+		void applyLobbyFromUrl(get(page).url.search).then(() => {
+			lobbyReady = true
+			pushLobbyUrl()
+		})
 
-		lobbyUrlReady = true
 		updateContinueLabel()
 		warmupPlay()
 		const unsubReady = mapShellReady.subscribe((ready) => {
-			if (ready) warmupPlay()
+			if (ready) {
+				pushLobbyUrl()
+				warmupPlay()
+			}
 		})
 		return unsubReady
+	})
+
+	afterNavigate(({ to }) => {
+		if (!lobbyReady || !to || to.url.pathname !== '/') return
+		void applyLobbyFromUrl(to.url.search)
 	})
 
 	function updateContinueLabel() {
@@ -150,7 +117,20 @@
 		if (isLobbyEraSelectionRedundant(nextEraId, $eraId, getSharedMapEra()?.id)) return
 		eraId.set(nextEraId)
 		await switchMapEra(nextEraId)
+		pushLobbyUrl()
 		updateContinueLabel()
+	}
+
+	function handleTimerSelect(event: CustomEvent<{ enabled: boolean; minutes?: number }>) {
+		timerEnabled.set(event.detail.enabled)
+		if (event.detail.minutes != null) timerMinutes.set(event.detail.minutes)
+		pushLobbyUrl()
+	}
+
+	function handleLivesSelect(event: CustomEvent<{ enabled: boolean; count?: number }>) {
+		livesEnabled.set(event.detail.enabled)
+		if (event.detail.count != null) maxLives.set(event.detail.count)
+		pushLobbyUrl()
 	}
 
 	async function handleShare() {
@@ -195,14 +175,8 @@
 		on:continue={handleContinue}
 		on:share={handleShare}
 		on:eraSelect={(event) => void handleEraSelect(event.detail)}
-		on:timerSelect={(event) => {
-			timerEnabled.set(event.detail.enabled)
-			if (event.detail.minutes != null) timerMinutes.set(event.detail.minutes)
-		}}
-		on:livesSelect={(event) => {
-			livesEnabled.set(event.detail.enabled)
-			if (event.detail.count != null) maxLives.set(event.detail.count)
-		}}
+		on:timerSelect={handleTimerSelect}
+		on:livesSelect={handleLivesSelect}
 		on:localeSelect={(event) => setLocale(event.detail)}
 	/>
 {:else}

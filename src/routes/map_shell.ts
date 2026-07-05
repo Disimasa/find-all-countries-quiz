@@ -16,13 +16,11 @@ import {
 } from './game/session_bridge'
 import {
 	buildGameConfig,
-	loadGameSettings,
 	loadSavedGame,
 	type SavedGameProgress
 } from '@persist'
 import { getSharedMapEra, setSharedMapEra } from './map_era.ts'
 import { buildPlayHref, getGameSettings } from './controller'
-import { resolveInitialGameSettings } from './game_settings_url.ts'
 import {
 	pauseLobbyTeaser,
 	resumeLobbyTeaser,
@@ -36,7 +34,7 @@ export const mapShellReady = writable(false)
 export const mapShellTransitioning = writable(false)
 export const mapEraSwitching = writable(false)
 export const activeEraTheme = writable<EraThemeProfile>(
-	getActiveEraThemeProfile(resolveInitialGameSettings().eraId)
+	getActiveEraThemeProfile(getGameSettings().eraId)
 )
 
 function delay(ms: number): Promise<void> {
@@ -114,7 +112,7 @@ async function loadEra(eraId: string): Promise<void> {
 
 export async function switchMapEra(nextEraId: string): Promise<void> {
 	if (!MapEraRegistry.isKnown(nextEraId)) return
-	const current = getSharedMapEra()?.id ?? loadGameSettings().eraId
+	const current = getSharedMapEra()?.id ?? getGameSettings().eraId
 	if (current === nextEraId) return
 
 	mapEraSwitching.set(true)
@@ -150,7 +148,7 @@ export function initMapShell(el: HTMLElement): Promise<void> {
 	if (initPromise) return initPromise
 
 	initPromise = (async () => {
-		const settings = resolveInitialGameSettings()
+		const settings = getGameSettings()
 		await loadEra(settings.eraId)
 		void import('@infrastructure/data/geo_json_loader')
 		renderer = new MapRenderer()

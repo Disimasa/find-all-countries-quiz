@@ -3,7 +3,7 @@
 	import { closeDialog } from 'svelte-awaitable-dialog'
 	import type { GameConfig, GameSnapshot } from '@domain/entities'
 	import { t } from '@i18n'
-	import { buildGameConfig, clearSavedGame, loadGameSettings } from '@persist'
+	import { clearSavedGame } from '@persist'
 	import { formatTime, startGame } from '../controller'
 	import { buildGameOverSummary } from '../game_over_summary'
 	import { formatGameRulesLine } from '../game_over_rules.ts'
@@ -75,7 +75,7 @@
 	function playAgain() {
 		closeDialog()
 		clearSavedGame(eraId)
-		void startGame(buildGameConfig(loadGameSettings()))
+		void startGame(config)
 	}
 
 	async function shareChallenge() {

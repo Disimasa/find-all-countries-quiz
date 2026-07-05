@@ -1,14 +1,8 @@
-import { beforeEach, describe, expect, it } from 'vitest'
-import { CE1300_ERA_ID } from '@domain/maps'
+import { describe, expect, it } from 'vitest'
+import { CE1300_ERA_ID, PREWW1_ERA_ID } from '@domain/maps'
 import { parseConfig, parseEraId } from '../../src/routes/play/parse_config.ts'
-import { loadGameSettings, saveGameSettings } from '@persist'
-import { installLocalStorageMock } from './helpers/local_storage_mock.ts'
 
 describe('parseConfig', () => {
-	beforeEach(() => {
-		installLocalStorageMock()
-	})
-
 	it('enables timer and lives by default', () => {
 		const config = parseConfig('')
 		expect(config.timerEnabled).toBe(true)
@@ -31,98 +25,35 @@ describe('parseConfig', () => {
 		expect(config.livesEnabled).toBe(false)
 	})
 
-	it('reads custom timerMinutes and maxLives from stored settings', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: true,
-			livesEnabled: true,
-			timerMinutes: 45,
-			maxLives: 5
-		})
-
-		const config = parseConfig('')
-		expect(config.timerSeconds).toBe(2700)
-		expect(config.maxLives).toBe(5)
-	})
-
-	it('keeps stored durations when query only toggles timer off', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: true,
-			livesEnabled: true,
-			timerMinutes: 15,
-			maxLives: 1
-		})
-
+	it('keeps default durations when query only toggles timer off', () => {
 		expect(parseConfig('?timer=0')).toEqual({
 			timerEnabled: false,
-			timerSeconds: 900,
+			timerSeconds: 1800,
 			livesEnabled: true,
-			maxLives: 1
-		})
-	})
-
-	it('keeps stored durations when query only toggles lives off', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: true,
-			livesEnabled: true,
-			timerMinutes: 60,
-			maxLives: 5
-		})
-
-		expect(parseConfig('?lives=0')).toEqual({
-			timerEnabled: true,
-			timerSeconds: 3600,
-			livesEnabled: false,
-			maxLives: 5
-		})
-	})
-
-	it('falls back to stored on/off flags when query params are absent', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: false,
-			livesEnabled: false,
-			timerMinutes: 30,
 			maxLives: 3
 		})
+	})
 
-		expect(parseConfig('')).toEqual({
-			timerEnabled: false,
+	it('keeps default durations when query only toggles lives off', () => {
+		expect(parseConfig('?lives=0')).toEqual({
+			timerEnabled: true,
 			timerSeconds: 1800,
 			livesEnabled: false,
 			maxLives: 3
 		})
 	})
 
-	it('uses era from query over stored settings', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: true,
-			livesEnabled: true,
-			timerMinutes: 30,
-			maxLives: 3
-		})
-
+	it('uses era from query', () => {
 		expect(parseEraId('?era=ce1300')).toBe(CE1300_ERA_ID)
 		expect(parseConfig('?era=ce1300&timer=60&lives=5').maxLives).toBe(5)
 	})
 
-	it('merges stored durations with URL era on play cold load', () => {
-		saveGameSettings({
-			eraId: 'modern',
-			timerEnabled: true,
-			livesEnabled: true,
-			timerMinutes: 15,
-			maxLives: 1
-		})
-
+	it('merges era from URL with default timer and lives', () => {
 		expect(parseConfig('?era=preww1')).toEqual({
 			timerEnabled: true,
-			timerSeconds: 900,
+			timerSeconds: 1800,
 			livesEnabled: true,
-			maxLives: 1
+			maxLives: 3
 		})
 	})
 })

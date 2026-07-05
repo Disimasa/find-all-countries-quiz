@@ -3,13 +3,7 @@ import type { GameConfig } from '@domain/entities'
 import { DEFAULT_ERA_ID } from '@domain/maps'
 import { locale, setLocale, type MessageKey } from '@i18n'
 import type { Locale } from '@domain/entities'
-import {
-	buildGameConfig,
-	loadSavedGame,
-	saveGameSettings,
-	type GameSettings,
-	type SavedGame
-} from '@persist'
+import { buildGameConfig, loadSavedGame, type GameSettings, type SavedGame } from '@persist'
 import {
 	buildLobbyShareHref as buildLobbyShareHrefFromSettings,
 	buildPlayHrefFromSettings,
@@ -24,9 +18,7 @@ export const livesEnabled = writable(initialSettings.livesEnabled)
 export const timerMinutes = writable(initialSettings.timerMinutes)
 export const maxLives = writable(initialSettings.maxLives)
 
-let settingsPersistReady = false
-
-function getCurrentSettings(): GameSettings {
+export function getGameSettings(): GameSettings {
 	return {
 		eraId: get(eraId),
 		timerEnabled: get(timerEnabled),
@@ -36,25 +28,8 @@ function getCurrentSettings(): GameSettings {
 	}
 }
 
-function persistSettings(): void {
-	saveGameSettings(getCurrentSettings())
-}
-
-for (const store of [eraId, timerEnabled, livesEnabled, timerMinutes, maxLives]) {
-	store.subscribe(() => {
-		if (!settingsPersistReady) return
-		persistSettings()
-	})
-}
-
-settingsPersistReady = true
-
-export function getGameSettings(): GameSettings {
-	return getCurrentSettings()
-}
-
 export function getGameConfig(): GameConfig {
-	return buildGameConfig(getCurrentSettings())
+	return buildGameConfig(getGameSettings())
 }
 
 export function getSavedGame(): SavedGame | null {
@@ -75,11 +50,11 @@ export function applyGameSettings(partial: Partial<GameSettings>): void {
 }
 
 export function buildPlayHref(): string {
-	return buildPlayHrefFromSettings(getCurrentSettings())
+	return buildPlayHrefFromSettings(getGameSettings())
 }
 
 export function buildLobbyShareHref(): string {
-	return buildLobbyShareHrefFromSettings(getCurrentSettings())
+	return buildLobbyShareHrefFromSettings(getGameSettings())
 }
 
 export type { MessageKey }

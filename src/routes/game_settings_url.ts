@@ -1,16 +1,12 @@
 import { browser } from '$app/environment'
 import { DEFAULT_ERA_ID, MapEraRegistry } from '@domain/maps'
 import {
-	MAX_LIVES_LIMIT,
-	MAX_TIMER_MINUTES,
-	MIN_LIVES,
-	MIN_TIMER_MINUTES
-} from '@domain/session/constants'
-import { loadGameSettings, saveGameSettings, type GameSettings } from '@persist'
-
-function clamp(value: number, min: number, max: number): number {
-	return Math.min(max, Math.max(min, value))
-}
+	clampMaxLives,
+	clampTimerMinutes,
+	DEFAULT_GAME_SETTINGS,
+	mergeGameSettings,
+	type GameSettings
+} from '@persist'
 
 export function encodeGameSettingsParams(settings: GameSettings): URLSearchParams {
 	const params = new URLSearchParams()
@@ -67,7 +63,7 @@ export function parseGameSettingsSearch(search: string): Partial<GameSettings> |
 			const minutes = Number(raw)
 			if (Number.isFinite(minutes)) {
 				settings.timerEnabled = true
-				settings.timerMinutes = clamp(minutes, MIN_TIMER_MINUTES, MAX_TIMER_MINUTES)
+				settings.timerMinutes = clampTimerMinutes(minutes)
 			}
 		}
 	}
@@ -80,47 +76,35 @@ export function parseGameSettingsSearch(search: string): Partial<GameSettings> |
 			const count = Number(raw)
 			if (Number.isFinite(count)) {
 				settings.livesEnabled = true
-				settings.maxLives = clamp(count, MIN_LIVES, MAX_LIVES_LIMIT)
+				settings.maxLives = clampMaxLives(count)
 			}
 		}
 	}
 
-	return settings
+	return Object.keys(settings).length > 0 ? settings : null
 }
 
-export function mergeGameSettings(stored: GameSettings, partial: Partial<GameSettings>): GameSettings {
-	return {
-		eraId: partial.eraId ?? stored.eraId,
-		timerEnabled: partial.timerEnabled ?? stored.timerEnabled,
-		timerMinutes: partial.timerMinutes ?? stored.timerMinutes,
-		livesEnabled: partial.livesEnabled ?? stored.livesEnabled,
-		maxLives: partial.maxLives ?? stored.maxLives
-	}
-}
-
-export function resolveGameSettingsFromSearch(
-	search: string,
-	stored: GameSettings = loadGameSettings()
-): GameSettings {
+export function resolveLobbySettingsFromSearch(search: string): GameSettings {
 	const fromUrl = parseGameSettingsSearch(search)
-	if (!fromUrl) return stored
-	return mergeGameSettings(stored, fromUrl)
+	if (!fromUrl) return { ...DEFAULT_GAME_SETTINGS }
+	return mergeGameSettings(DEFAULT_GAME_SETTINGS, fromUrl)
 }
 
-/** Applies lobby/play query params before map shell init (browser cold load). */
+/** Play: URL params merged over defaults (share link / refresh). */
+export function resolvePlaySettingsFromSearch(search: string): GameSettings {
+	const fromUrl = parseGameSettingsSearch(search)
+	if (!fromUrl) return { ...DEFAULT_GAME_SETTINGS }
+	return mergeGameSettings(DEFAULT_GAME_SETTINGS, fromUrl)
+}
+
+/** Cold load: lobby and play read from URL; other routes use defaults. */
 export function resolveInitialGameSettings(
 	location: Pick<Location, 'pathname' | 'search'> | null = browser ? window.location : null
 ): GameSettings {
-	const stored = loadGameSettings()
-	if (!location) return stored
+	if (!location) return { ...DEFAULT_GAME_SETTINGS }
 
 	const { pathname, search } = location
-	if (pathname !== '/' && pathname !== '/play') return stored
-
-	const fromUrl = parseGameSettingsSearch(search)
-	if (!fromUrl) return stored
-
-	const resolved = mergeGameSettings(stored, fromUrl)
-	saveGameSettings(resolved)
-	return resolved
+	if (pathname === '/') return resolveLobbySettingsFromSearch(search)
+	if (pathname === '/play') return resolvePlaySettingsFromSearch(search)
+	return { ...DEFAULT_GAME_SETTINGS }
 }

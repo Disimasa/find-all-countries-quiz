@@ -11,10 +11,18 @@ import {
 	MIN_TIMER_MINUTES
 } from './constants.ts'
 import { canUseStorage } from './storage.ts'
-import type { GameSettings, SavedGame } from './types.ts'
+import type { GameSettings, SavedGame, SavedGameProgress } from './types.ts'
 
 function clamp(value: number, min: number, max: number): number {
 	return Math.min(max, Math.max(min, value))
+}
+
+export function clampTimerMinutes(minutes: number): number {
+	return clamp(minutes, MIN_TIMER_MINUTES, MAX_TIMER_MINUTES)
+}
+
+export function clampMaxLives(count: number): number {
+	return clamp(count, MIN_LIVES, MAX_LIVES_LIMIT)
 }
 
 function normalizeEraId(eraId: string | undefined): string {
@@ -22,25 +30,59 @@ function normalizeEraId(eraId: string | undefined): string {
 	return DEFAULT_ERA_ID
 }
 
-function normalizeSettings(raw: Partial<GameSettings>): GameSettings {
+export function normalizeGameSettings(raw: Partial<GameSettings>): GameSettings {
 	return {
 		eraId: normalizeEraId(raw.eraId),
 		timerEnabled: raw.timerEnabled ?? DEFAULT_GAME_SETTINGS.timerEnabled,
 		livesEnabled: raw.livesEnabled ?? DEFAULT_GAME_SETTINGS.livesEnabled,
-		timerMinutes: clamp(
-			raw.timerMinutes ?? DEFAULT_GAME_SETTINGS.timerMinutes,
-			MIN_TIMER_MINUTES,
-			MAX_TIMER_MINUTES
-		),
-		maxLives: clamp(raw.maxLives ?? DEFAULT_GAME_SETTINGS.maxLives, MIN_LIVES, MAX_LIVES_LIMIT)
+		timerMinutes: clampTimerMinutes(raw.timerMinutes ?? DEFAULT_GAME_SETTINGS.timerMinutes),
+		maxLives: clampMaxLives(raw.maxLives ?? DEFAULT_GAME_SETTINGS.maxLives)
 	}
+}
+
+export function mergeGameSettings(
+	stored: GameSettings,
+	partial: Partial<GameSettings>
+): GameSettings {
+	return normalizeGameSettings({ ...stored, ...partial })
+}
+
+function isValidGameConfig(config: unknown): config is GameConfig {
+	if (!config || typeof config !== 'object') return false
+	const c = config as GameConfig
+	return (
+		typeof c.timerEnabled === 'boolean' &&
+		typeof c.livesEnabled === 'boolean' &&
+		typeof c.timerSeconds === 'number' &&
+		Number.isFinite(c.timerSeconds) &&
+		typeof c.maxLives === 'number' &&
+		Number.isFinite(c.maxLives)
+	)
+}
+
+function isValidProgress(progress: unknown): progress is SavedGameProgress {
+	if (!progress || typeof progress !== 'object') return false
+	const p = progress as SavedGameProgress
+	return (
+		Array.isArray(p.guessedIds) &&
+		p.guessedIds.every((id) => typeof id === 'string') &&
+		typeof p.livesRemaining === 'number' &&
+		Number.isFinite(p.livesRemaining) &&
+		(p.timeRemaining === null ||
+			(typeof p.timeRemaining === 'number' && Number.isFinite(p.timeRemaining))) &&
+		typeof p.total === 'number' &&
+		Number.isFinite(p.total) &&
+		p.total > 0
+	)
 }
 
 function parseSavedGame(raw: string): SavedGame | null {
 	try {
 		const parsed = JSON.parse(raw) as SavedGame
 		if (!MapEraRegistry.isKnown(parsed.eraId)) return null
-		if (!parsed.progress) return null
+		if (!isValidProgress(parsed.progress)) return null
+		if (!isValidGameConfig(parsed.config)) return null
+		if (typeof parsed.savedAt !== 'number' || !Number.isFinite(parsed.savedAt)) return null
 		return parsed
 	} catch {
 		return null
@@ -69,7 +111,7 @@ export function loadGameSettings(): GameSettings {
 	try {
 		const raw = localStorage.getItem(GAME_SETTINGS_STORAGE_KEY)
 		if (!raw) return { ...DEFAULT_GAME_SETTINGS }
-		return normalizeSettings(JSON.parse(raw) as Partial<GameSettings>)
+		return normalizeGameSettings(JSON.parse(raw) as Partial<GameSettings>)
 	} catch {
 		return { ...DEFAULT_GAME_SETTINGS }
 	}
@@ -77,11 +119,11 @@ export function loadGameSettings(): GameSettings {
 
 export function saveGameSettings(settings: GameSettings): void {
 	if (!canUseStorage()) return
-	localStorage.setItem(GAME_SETTINGS_STORAGE_KEY, JSON.stringify(normalizeSettings(settings)))
+	localStorage.setItem(GAME_SETTINGS_STORAGE_KEY, JSON.stringify(normalizeGameSettings(settings)))
 }
 
 export function buildGameConfig(settings: GameSettings): GameConfig {
-	const normalized = normalizeSettings(settings)
+	const normalized = normalizeGameSettings(settings)
 	return {
 		timerEnabled: normalized.timerEnabled,
 		livesEnabled: normalized.livesEnabled,
