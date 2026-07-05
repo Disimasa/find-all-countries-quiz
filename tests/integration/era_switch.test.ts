@@ -76,6 +76,14 @@ describe('lobby era switch', () => {
 					() => !document.querySelector('[data-testid="map-shell"]')?.hasAttribute('data-map-era'),
 					{ timeout: 30_000 }
 				)
+
+				await page.getByTestId('era-option-preww1').click()
+				await page.waitForFunction(
+					() =>
+						document.querySelector('[data-testid="map-shell"]')?.getAttribute('data-map-era') ===
+						'preww1',
+					{ timeout: 30_000 }
+				)
 			} finally {
 				await page.close()
 			}

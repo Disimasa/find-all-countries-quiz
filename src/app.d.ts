@@ -10,6 +10,10 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	interface Window {
+		ym?: (counterId: number, method: string, ...args: unknown[]) => void
+	}
 }
 
 export {}
