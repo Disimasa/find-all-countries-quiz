@@ -21,8 +21,8 @@ Switch between political maps from different periods. Each era has its own borde
 | --- | --- |
 | **Modern** | Today’s internationally recognized borders |
 | **1914** | Europe and the world on the eve of the First World War |
-| **100 AD** | Major powers of the ancient world around 100 CE |
 | **1300** | The Mongol uluses, Rus principalities, and the late medieval world |
+| **100 AD** | Major powers of the ancient world around 100 CE |
 
 Good for learning geography beyond “where things are today”—see how borders used to look.
 
