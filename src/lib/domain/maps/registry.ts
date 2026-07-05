@@ -32,7 +32,11 @@ export function getEraRegistration(id: string): EraRegistration | undefined {
 }
 
 export function listEraRegistrations(): EraRegistration[] {
-	return [...registrations.values()]
+	return [...registrations.values()].sort((a, b) => eraSortYear(b) - eraSortYear(a))
+}
+
+function eraSortYear(era: EraRegistration): number {
+	return era.year ?? Number.POSITIVE_INFINITY
 }
 
 export function resolveThemeProfileId(eraId: string): string {

@@ -86,6 +86,20 @@ const PARENT_DISPLAY_NAMES = {
 	denmark: 'Denmark'
 }
 
+/** Era-appropriate display names by entity id (CShapes cntry_name is often anachronistic). */
+const ENTITY_DISPLAY_NAMES = {
+	'germany-prussia': 'German Empire',
+	'russia-soviet-union': 'Russian Empire',
+	'turkey-ottoman-empire': 'Ottoman Empire',
+	persia: 'Persia',
+	italy: 'Italy',
+	'british-india': 'British India',
+	'dutch-east-indies': 'Dutch East Indies',
+	'korea-empire': 'Korean Empire',
+	'union-of-south-africa': 'Union of South Africa',
+	thailand: 'Siam'
+}
+
 function resolveEntityId(nameEn) {
 	if (SLUG_OVERRIDES[nameEn]) return SLUG_OVERRIDES[nameEn]
 	return slugify(nameEn)
@@ -206,8 +220,10 @@ async function main() {
 	for (const [entityId, bucket] of pending) {
 		if (MERGE_INTO_PARENT_BY_ID[entityId]) continue
 		if (!bucket.nameEn) {
-			bucket.nameEn = PARENT_DISPLAY_NAMES[entityId] ?? entityId
+			bucket.nameEn = PARENT_DISPLAY_NAMES[entityId] ?? ENTITY_DISPLAY_NAMES[entityId] ?? entityId
 		}
+
+		bucket.nameEn = ENTITY_DISPLAY_NAMES[entityId] ?? bucket.nameEn
 
 		const merged = mergeFeatures(bucket.parts)
 		merged.properties = {

@@ -6,7 +6,7 @@
   },
   {
     "id": "french-algeria",
-    "nameEn": "Algeria",
+    "nameEn": "French Algeria",
     "nameRu": "Французский Алжир"
   },
   {
@@ -85,7 +85,7 @@
   },
   {
     "id": "british-somaliland-somaliland-republic",
-    "nameEn": "British Somaliland (Somaliland Republic)",
+    "nameEn": "British Somaliland",
     "nameRu": "Британское Сомали"
   },
   {
@@ -101,7 +101,7 @@
   },
   {
     "id": "cambodia-kampuchea",
-    "nameEn": "Cambodia (Kampuchea)",
+    "nameEn": "Cambodia",
     "nameRu": "Камбоджа"
   },
   {
@@ -148,7 +148,7 @@
   },
   {
     "id": "congo-democratic-republic-of-zaire",
-    "nameEn": "Congo, Democratic Republic of (Zaire)",
+    "nameEn": "Belgian Congo",
     "nameRu": "Бельгийское Конго"
   },
   {
@@ -260,7 +260,7 @@
   },
   {
     "id": "germany-prussia",
-    "nameEn": "Germany (Prussia)",
+    "nameEn": "German Empire",
     "nameRu": "Германская империя"
   },
   {
@@ -311,17 +311,17 @@
   },
   {
     "id": "british-india",
-    "nameEn": "India",
+    "nameEn": "British India",
     "nameRu": "Британская Индия"
   },
   {
     "id": "dutch-east-indies",
-    "nameEn": "Indonesia",
+    "nameEn": "Dutch East Indies",
     "nameRu": "Голландская Ост-Индия"
   },
   {
     "id": "persia",
-    "nameEn": "Iran (Persia)",
+    "nameEn": "Persia",
     "nameRu": "Персия"
   },
   {
@@ -331,7 +331,7 @@
   },
   {
     "id": "italy",
-    "nameEn": "Italy/Sardinia",
+    "nameEn": "Italy",
     "nameRu": "Италия",
     "flagCode": "IT"
   },
@@ -363,7 +363,7 @@
   },
   {
     "id": "korea-empire",
-    "nameEn": "Korea",
+    "nameEn": "Korean Empire",
     "nameRu": "Корейская империя"
   },
   {
@@ -388,7 +388,7 @@
   },
   {
     "id": "madagascar-malagasy",
-    "nameEn": "Madagascar (Malagasy)",
+    "nameEn": "Madagascar",
     "nameRu": "Мадагаскар"
   },
   {
@@ -434,7 +434,7 @@
   },
   {
     "id": "french-morocco",
-    "nameEn": "Morocco",
+    "nameEn": "French Morocco",
     "nameRu": "Французское Марокко"
   },
   {
@@ -465,7 +465,7 @@
   },
   {
     "id": "new-guinea-german-new-guinea-kaiser-wilhelmsland",
-    "nameEn": "New Guinea (German New Guinea) (Kaiser Wilhelmsland)",
+    "nameEn": "German New Guinea",
     "nameRu": "Немецкая Новая Гвинея"
   },
   {
@@ -542,18 +542,18 @@
   },
   {
     "id": "romania",
-    "nameEn": "Rumania",
+    "nameEn": "Romania",
     "nameRu": "Румыния",
     "flagCode": "RO"
   },
   {
     "id": "russia-soviet-union",
-    "nameEn": "Russia (Soviet Union)",
+    "nameEn": "Russian Empire",
     "nameRu": "Российская империя"
   },
   {
     "id": "sabah-north-borneo",
-    "nameEn": "Sabah (North Borneo)",
+    "nameEn": "North Borneo",
     "nameRu": "Сабах"
   },
   {
@@ -584,7 +584,7 @@
   },
   {
     "id": "union-of-south-africa",
-    "nameEn": "South Africa",
+    "nameEn": "Union of South Africa",
     "nameRu": "Южно-Африканский Союз"
   },
   {
@@ -605,7 +605,7 @@
   },
   {
     "id": "sri-lanka-ceylon",
-    "nameEn": "Sri Lanka (Ceylon)",
+    "nameEn": "Ceylon",
     "nameRu": "Цейлон"
   },
   {
@@ -625,7 +625,7 @@
   },
   {
     "id": "swaziland-eswatini",
-    "nameEn": "Swaziland (Eswatini)",
+    "nameEn": "Swaziland",
     "nameRu": "Свазиленд"
   },
   {
@@ -647,12 +647,12 @@
   },
   {
     "id": "tanzania-tanganyika",
-    "nameEn": "Tanzania (Tanganyika)",
+    "nameEn": "German East Africa",
     "nameRu": "Танганьика"
   },
   {
     "id": "thailand",
-    "nameEn": "Thailand",
+    "nameEn": "Siam",
     "nameRu": "Сиам"
   },
   {
@@ -667,12 +667,12 @@
   },
   {
     "id": "french-tunisia",
-    "nameEn": "Tunisia",
+    "nameEn": "French Tunisia",
     "nameRu": "Французский Тунис"
   },
   {
     "id": "turkey-ottoman-empire",
-    "nameEn": "Turkey (Ottoman Empire)",
+    "nameEn": "Ottoman Empire",
     "nameRu": "Османская империя"
   },
   {
@@ -714,7 +714,7 @@
   },
   {
     "id": "vietnam-annam-cochin-china-tonkin",
-    "nameEn": "Vietnam (Annam/Cochin China/Tonkin)",
+    "nameEn": "French Indochina",
     "nameRu": "Французский Индокитай"
   },
   {
@@ -729,7 +729,7 @@
   },
   {
     "id": "zimbabwe-rhodesia",
-    "nameEn": "Zimbabwe (Rhodesia)",
+    "nameEn": "Southern Rhodesia",
     "nameRu": "Родезия"
   }
 ]

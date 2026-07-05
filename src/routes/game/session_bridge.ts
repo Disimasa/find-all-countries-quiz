@@ -56,11 +56,14 @@ function bindSession(nextSession: GameSession, config: GameConfig): void {
 			void openDialog(GameOverModal, {
 				snapshot,
 				config,
+				eraId: getSharedMapEra()?.id ?? MODERN_ERA_ID,
 				victoryTitle: m.victory,
 				gameOverTitle: m.gameOver,
 				playAgainLabel: m.playAgain,
 				exploreLinkLabel: m.gameOverExploreLink,
-				homeLabel: m.home
+				homeLabel: m.home,
+				shareLabel: m.shareGameOver,
+				shareCopiedLabel: m.shareGameCopied
 			})
 		}
 	})
@@ -151,14 +154,16 @@ export function showEndGameSummary(): void {
 	void openDialog(GameOverModal, {
 		snapshot,
 		config: activeConfig,
+		eraId: getSharedMapEra()?.id ?? MODERN_ERA_ID,
 		ended: true,
 		victoryTitle: m.victory,
 		gameOverTitle: m.gameOver,
 		endedTitle: m.gameEnded,
-		endedNote: m.gameEndedNote,
 		playAgainLabel: m.playAgain,
 		exploreLinkLabel: m.gameOverExploreLink,
-		homeLabel: m.home
+		homeLabel: m.home,
+		shareLabel: m.shareGameOver,
+		shareCopiedLabel: m.shareGameCopied
 	}).then(reenableGameOverModal, reenableGameOverModal)
 }
 

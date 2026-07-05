@@ -260,5 +260,38 @@ describe('ce1300 entities dataset', () => {
 
 	})
 
+
+
+	it('does not accept modern country names as cheat aliases', () => {
+		const aliasesEn = JSON.parse(
+			fs.readFileSync(path.join(dataDir, 'aliases.en.json'), 'utf8')
+		) as Record<string, string[]>
+		const normalize = (value: string) => value.trim().toLowerCase()
+
+		const bannedEn: Record<string, string[]> = {
+			ilkhanate: ['persia'],
+			'holy-roman-empire': ['germany'],
+			'mamluk-sultanate': ['egypt'],
+			'kamakura-japan': ['japan'],
+			'khmer-empire': ['cambodia'],
+			'hindu-kingdoms': ['india'],
+			'sinhalese-kingdom': ['sri lanka', 'ceylon'],
+			'dai-viet': ['vietnam'],
+			'papal-states': ['vatican'],
+			'hafsid-caliphate': ['tunisia'],
+			'great-zimbabwe': ['zimbabwe'],
+			'teutonic-knights': ['prussia'],
+			england: ['britain'],
+			'swiss-confederation': ['switzerland']
+		}
+
+		for (const [entityId, banned] of Object.entries(bannedEn)) {
+			const aliases = aliasesEn[entityId] ?? []
+			for (const cheat of banned) {
+				expect(aliases.map(normalize), `${entityId} EN`).not.toContain(cheat)
+			}
+		}
+	})
+
 })
 

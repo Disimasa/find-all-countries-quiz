@@ -120,13 +120,14 @@
     "Portugal"
   ],
   "germany-prussia": [
-    "Germany (Prussia)"
+    "German Empire",
+    "Germany"
   ],
   "austria-hungary": [
     "Austria-Hungary"
   ],
   "italy": [
-    "Italy/Sardinia"
+    "Italy"
   ],
   "malta": [
     "Malta"
@@ -141,10 +142,12 @@
     "Bulgaria"
   ],
   "romania": [
+    "Romania",
     "Rumania"
   ],
   "russia-soviet-union": [
-    "Russia (Soviet Union)"
+    "Russian Empire",
+    "Russia"
   ],
   "sweden": [
     "Sweden"
@@ -219,7 +222,7 @@
     "Congo"
   ],
   "congo-democratic-republic-of-zaire": [
-    "Congo, Democratic Republic of (Zaire)"
+    "Belgian Congo"
   ],
   "uganda": [
     "Uganda"
@@ -228,13 +231,13 @@
     "Kenya"
   ],
   "tanzania-tanganyika": [
-    "Tanzania (Tanganyika)"
+    "German East Africa"
   ],
   "zanzibar": [
     "Zanzibar"
   ],
   "british-somaliland-somaliland-republic": [
-    "British Somaliland (Somaliland Republic)"
+    "British Somaliland"
   ],
   "djibouti": [
     "Djibouti"
@@ -255,13 +258,13 @@
     "Zambia"
   ],
   "zimbabwe-rhodesia": [
-    "Zimbabwe (Rhodesia)"
+    "Southern Rhodesia"
   ],
   "malawi": [
     "Malawi"
   ],
   "union-of-south-africa": [
-    "South Africa"
+    "Union of South Africa"
   ],
   "namibia": [
     "Namibia"
@@ -273,10 +276,10 @@
     "Botswana"
   ],
   "swaziland-eswatini": [
-    "Swaziland (Eswatini)"
+    "Swaziland"
   ],
   "madagascar-malagasy": [
-    "Madagascar (Malagasy)"
+    "Madagascar"
   ],
   "reunion": [
     "Reunion"
@@ -285,7 +288,7 @@
     "Mauritius"
   ],
   "french-morocco": [
-    "Morocco"
+    "French Morocco"
   ],
   "spanish-morocco": [
     "Spanish Morocco"
@@ -294,10 +297,10 @@
     "Spanish West Africa"
   ],
   "french-algeria": [
-    "Algeria"
+    "French Algeria"
   ],
   "french-tunisia": [
-    "Tunisia"
+    "French Tunisia"
   ],
   "libya": [
     "Libya"
@@ -306,10 +309,11 @@
     "Sudan"
   ],
   "persia": [
-    "Iran (Persia)"
+    "Persia"
   ],
   "turkey-ottoman-empire": [
-    "Turkey (Ottoman Empire)"
+    "Ottoman Empire",
+    "Turkey"
   ],
   "egypt": [
     "Egypt"
@@ -333,19 +337,19 @@
     "Taiwan"
   ],
   "korea-empire": [
-    "Korea"
+    "Korean Empire"
   ],
   "japan": [
     "Japan"
   ],
   "british-india": [
-    "India"
+    "British India"
   ],
   "bhutan": [
     "Bhutan"
   ],
   "sri-lanka-ceylon": [
-    "Sri Lanka (Ceylon)"
+    "Ceylon"
   ],
   "maldives": [
     "Maldives"
@@ -354,16 +358,16 @@
     "Nepal"
   ],
   "thailand": [
-    "Thailand"
+    "Siam"
   ],
   "cambodia-kampuchea": [
-    "Cambodia (Kampuchea)"
+    "Cambodia"
   ],
   "laos": [
     "Laos"
   ],
   "vietnam-annam-cochin-china-tonkin": [
-    "Vietnam (Annam/Cochin China/Tonkin)"
+    "French Indochina"
   ],
   "federated-malay-states": [
     "Federated Malay States"
@@ -372,7 +376,7 @@
     "Unfederated Malay States"
   ],
   "sabah-north-borneo": [
-    "Sabah (North Borneo)"
+    "North Borneo"
   ],
   "sarawak": [
     "Sarawak"
@@ -387,7 +391,7 @@
     "Philippines"
   ],
   "dutch-east-indies": [
-    "Indonesia"
+    "Dutch East Indies"
   ],
   "east-timor": [
     "East Timor"
@@ -399,7 +403,7 @@
     "Papua"
   ],
   "new-guinea-german-new-guinea-kaiser-wilhelmsland": [
-    "New Guinea (German New Guinea) (Kaiser Wilhelmsland)"
+    "German New Guinea"
   ],
   "new-zealand": [
     "New Zealand"

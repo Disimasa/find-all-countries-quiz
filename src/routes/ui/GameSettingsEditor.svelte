@@ -2,10 +2,10 @@
 	import { createEventDispatcher } from 'svelte'
 	import type { Locale } from '@domain/entities'
 	import EraPicker from './EraPicker.svelte'
+	import LocalePicker from './LocalePicker.svelte'
 	import SegmentedRow from './SegmentedRow.svelte'
 	import {
 		buildEraPickerOptions,
-		buildLocaleSegmentOptions,
 		buildLivesSegmentOptions,
 		buildTimerSegmentOptions,
 		parseLivesSelection,
@@ -35,7 +35,6 @@
 		livesSelect: { enabled: boolean; count?: number }
 	}>()
 
-	$: localeOptions = buildLocaleSegmentOptions(currentLocale)
 	$: eraOptions = buildEraPickerOptions(currentEraId, eraLabels, eraHints)
 	$: timerOptions = buildTimerSegmentOptions(timerOn, timerMinutes, infiniteLabel)
 	$: livesOptions = buildLivesSegmentOptions(livesOn, maxLives, infiniteLabel)
@@ -45,7 +44,15 @@
 	class="grid grid-cols-[4rem_minmax(0,1fr)] items-center gap-x-3 gap-y-3"
 	style:background-color={lobbyPanelTint ? `${lobbyPanelTint}40` : undefined}
 >
-	<span class="col-span-2 text-sm font-medium text-base-content/80">{eraLabel}</span>
+	<span class="col-span-2 flex items-center justify-between gap-2">
+		<span class="text-sm font-medium text-base-content/80">{eraLabel}</span>
+		<LocalePicker
+			ariaLabel={languageLabel}
+			{disabled}
+			{currentLocale}
+			on:select={(event) => dispatch('localeSelect', event.detail)}
+		/>
+	</span>
 	<div class="col-span-2">
 		<EraPicker
 			ariaLabel={eraLabel}
@@ -54,14 +61,6 @@
 			on:select={(event) => dispatch('eraSelect', event.detail)}
 		/>
 	</div>
-
-	<span class="text-sm font-medium text-base-content/80">{languageLabel}</span>
-	<SegmentedRow
-		ariaLabel={languageLabel}
-		{disabled}
-		options={localeOptions}
-		on:select={(event) => dispatch('localeSelect', event.detail as Locale)}
-	/>
 
 	<span class="text-sm font-medium text-base-content/80">{timerLabel}</span>
 	<SegmentedRow

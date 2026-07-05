@@ -42,7 +42,6 @@ export const messages = {
 		gameOver: 'Game Over',
 		victory: 'You found them all!',
 		gameEnded: 'Quiz ended',
-		gameEndedNote: 'You ended the quiz. Here is how far you got.',
 		gameOverFoundCount: 'Found {correct} of {total}',
 		gameOverNoMistakes: 'No mistakes',
 		gameOverMistakes: '{n} mistakes',
@@ -65,7 +64,12 @@ export const messages = {
 		errorTitle: 'Something went wrong',
 		errorHint: 'The page failed to load. You can go back and try again.',
 		errorHome: 'Back to home',
-		exploreTitle: 'Explore map'
+		exploreTitle: 'Explore map',
+		shareGame: 'Share game',
+		shareGameHint: 'Copy a link with the current map and rules',
+		shareGameCopied: 'Link copied',
+		shareGameOver: 'Challenge a friend',
+		shareGameOverHint: 'Same map and rules'
 	},
 	ru: {
 		title: 'Найди все страны',
@@ -105,7 +109,6 @@ export const messages = {
 		gameOver: 'Игра окончена',
 		victory: 'Вы нашли все страны!',
 		gameEnded: 'Квиз завершён',
-		gameEndedNote: 'Вы завершили квиз. Вот ваш результат.',
 		gameOverFoundCount: 'Найдено {correct} из {total}',
 		gameOverNoMistakes: 'Без ошибок',
 		gameOverMistakes: 'Ошибок: {n}',
@@ -128,6 +131,11 @@ export const messages = {
 		errorTitle: 'Что-то пошло не так',
 		errorHint: 'Страница не загрузилась. Вернитесь на главную и попробуйте снова.',
 		errorHome: 'На главную',
-		exploreTitle: 'Карта для изучения'
+		exploreTitle: 'Карта для изучения',
+		shareGame: 'Поделиться',
+		shareGameHint: 'Скопировать ссылку с текущей картой и правилами',
+		shareGameCopied: 'Ссылка скопирована',
+		shareGameOver: 'Бросить вызов другу',
+		shareGameOverHint: 'Та же карта и те же правила'
 	}
 } as const satisfies Record<Locale, Record<string, string>>

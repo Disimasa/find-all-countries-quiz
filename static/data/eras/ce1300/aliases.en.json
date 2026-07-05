@@ -1,28 +1,18 @@
 {
-  "cyprus": [
-    "Cyprus"
+  "aceh": [
+    "Aceh"
   ],
-  "norway": [
-    "Norway"
+  "andean-states": [
+    "Andean states and chiefdoms",
+    "Andes",
+    "Tiwanaku"
   ],
-  "portugal": [
-    "Portugal"
+  "aragon": [
+    "Aragón"
   ],
-  "hainan": [
-    "Hainan"
-  ],
-  "sinhalese-kingdom": [
-    "Sinhalese kingdom",
-    "Sri Lanka",
-    "Ceylon"
-  ],
-  "teutonic-knights": [
-    "Teutonic Knights",
-    "Teutonic Order",
-    "Prussia"
-  ],
-  "navarre": [
-    "Navarre"
+  "bosnia": [
+    "Banate of Bosnia",
+    "Bosnia"
   ],
   "benin": [
     "Benin"
@@ -31,208 +21,166 @@
     "Bornu-Kanem",
     "Kanem-Bornu"
   ],
-  "yemen": [
-    "Yemen"
-  ],
-  "maya-city-states": [
-    "Maya city-states",
-    "Maya"
-  ],
-  "mixtec-empire": [
-    "Mixtec Empire",
-    "Mixtec"
-  ],
-  "zapotec-empire": [
-    "Zapotec Empire",
-    "Zapotec"
-  ],
-  "chimu-empire": [
-    "Chimú Empire",
-    "Chimu"
-  ],
-  "andean-states": [
-    "Andean states and chiefdoms",
-    "Andes",
-    "Tiwanaku"
-  ],
-  "morocco": [
-    "Morocco",
-    "Marinid Sultanate",
-    "Merinides"
-  ],
-  "mali": [
-    "Mali"
-  ],
-  "ethiopia": [
-    "Ethiopia"
-  ],
-  "great-zimbabwe": [
-    "Great Zimbabwe",
-    "Zimbabwe"
-  ],
-  "hadramaut": [
-    "Hadramaut"
-  ],
-  "muscat": [
-    "Muscat"
-  ],
-  "hindu-kingdoms": [
-    "minor Hindu kingdoms",
-    "India"
-  ],
-  "dai-viet": [
-    "Đại Việt",
-    "Vietnam",
-    "Dai Viet"
-  ],
-  "khmer-empire": [
-    "Khmer Empire",
-    "Cambodia",
-    "Angkor"
-  ],
-  "champa": [
-    "Champa"
-  ],
-  "tibet": [
-    "Tibet"
-  ],
-  "delhi-sultanate": [
-    "Sultanate of Delhi",
-    "Delhi Sultanate"
-  ],
-  "kashmir-ladakh": [
-    "Kashmir and Ladakh",
-    "Kashmir"
-  ],
-  "chagatai-khanate": [
-    "Chagatai Khanate",
-    "Chagatai",
-    "Chagatai Ulus"
-  ],
-  "poland": [
-    "Poland"
-  ],
-  "lithuania": [
-    "Lithuania"
-  ],
   "bulgaria": [
     "Bulgar Khanate",
     "Second Bulgarian Empire"
-  ],
-  "novgorod": [
-    "Novgorod",
-    "Novgorod Republic"
-  ],
-  "serbia": [
-    "Raška"
-  ],
-  "venice": [
-    "Venice"
-  ],
-  "papal-states": [
-    "Papal States",
-    "Papacy",
-    "Vatican"
-  ],
-  "sicily": [
-    "Sicily"
-  ],
-  "hungary": [
-    "Hungary"
-  ],
-  "france": [
-    "France"
-  ],
-  "granada": [
-    "Granada",
-    "Emirate of Granada"
-  ],
-  "castile": [
-    "Castile"
-  ],
-  "mamluk-sultanate": [
-    "Mamluke Sultanate",
-    "Mamluks",
-    "Egypt"
-  ],
-  "hafsid-caliphate": [
-    "Hafsid Caliphate",
-    "Tunisia",
-    "Hafsids"
-  ],
-  "trebizond": [
-    "Trebizond",
-    "Empire of Trebizond"
-  ],
-  "ilkhanate": [
-    "Ilkhanate",
-    "Il-Khanate",
-    "Hulaguids",
-    "Persia"
-  ],
-  "georgia": [
-    "Georgia"
-  ],
-  "golden-horde": [
-    "Khanate of the Golden Horde",
-    "Ulus of Jochi",
-    "Golden Horde Khanate"
-  ],
-  "aceh": [
-    "Aceh"
-  ],
-  "sukhothai": [
-    "Sukhothai"
-  ],
-  "scotland": [
-    "Scotland"
-  ],
-  "england": [
-    "English territory",
-    "Kingdom of England",
-    "Britain"
-  ],
-  "holy-roman-empire": [
-    "Holy Roman Empire",
-    "HRE",
-    "Germany"
-  ],
-  "kamakura-japan": [
-    "Shogun Japan (Kamakura)",
-    "Kamakura",
-    "Japan"
   ],
   "byzantine-empire": [
     "Byzantine Empire",
     "Byzantium",
     "Eastern Roman Empire"
   ],
-  "moscow": [
-    "Grand Duchy of Moscow",
-    "Muscovy"
+  "castile": [
+    "Castile"
+  ],
+  "chagatai-khanate": [
+    "Chagatai Khanate",
+    "Chagatai",
+    "Chagatai Ulus"
+  ],
+  "champa": [
+    "Champa"
+  ],
+  "chimu-empire": [
+    "Chimú Empire",
+    "Chimu"
+  ],
+  "cyprus": [
+    "Cyprus"
+  ],
+  "dai-viet": [
+    "Đại Việt",
+    "Dai Viet"
   ],
   "denmark": [
     "Denmark"
   ],
-  "sweden": [
-    "Sweden"
+  "england": [
+    "English territory",
+    "Kingdom of England"
   ],
-  "aragon": [
-    "Aragón"
+  "ethiopia": [
+    "Ethiopia"
   ],
-  "great-khanate": [
-    "Yuan",
-    "Great Khanate",
-    "Mongol Empire",
-    "Kublai Khan"
+  "france": [
+    "France"
   ],
-  "tver": [
-    "Tver",
-    "Principality of Tver"
+  "galicia-volhynia": [
+    "Galicia-Volhynia",
+    "Galicia Volhynia",
+    "Halych-Volhynia"
   ],
-  "pskov": [
-    "Pskov Republic",
-    "Pskov"
+  "georgia": [
+    "Georgia"
+  ],
+  "granada": [
+    "Granada",
+    "Emirate of Granada"
+  ],
+  "moscow": [
+    "Grand Duchy of Moscow",
+    "Muscovy"
+  ],
+  "great-zimbabwe": [
+    "Great Zimbabwe"
+  ],
+  "hadramaut": [
+    "Hadramaut"
+  ],
+  "hafsid-caliphate": [
+    "Hafsid Caliphate",
+    "Hafsids"
+  ],
+  "hainan": [
+    "Hainan"
+  ],
+  "holy-roman-empire": [
+    "Holy Roman Empire",
+    "HRE"
+  ],
+  "hungary": [
+    "Hungary"
+  ],
+  "ilkhanate": [
+    "Ilkhanate",
+    "Il-Khanate",
+    "Hulaguids"
+  ],
+  "kashmir-ladakh": [
+    "Kashmir and Ladakh",
+    "Kashmir"
+  ],
+  "golden-horde": [
+    "Khanate of the Golden Horde",
+    "Ulus of Jochi",
+    "Golden Horde Khanate"
+  ],
+  "khmer-empire": [
+    "Khmer Empire",
+    "Angkor"
+  ],
+  "lithuania": [
+    "Lithuania"
+  ],
+  "majapahit": [
+    "Majapahit",
+    "Majapahit Empire"
+  ],
+  "mali": [
+    "Mali"
+  ],
+  "mamluk-sultanate": [
+    "Mamluke Sultanate",
+    "Mamluks"
+  ],
+  "maya-city-states": [
+    "Maya city-states",
+    "Maya"
+  ],
+  "hindu-kingdoms": [
+    "minor Hindu kingdoms"
+  ],
+  "mixtec-empire": [
+    "Mixtec Empire",
+    "Mixtec"
+  ],
+  "morocco": [
+    "Morocco",
+    "Marinid Sultanate",
+    "Merinides"
+  ],
+  "muscat": [
+    "Muscat"
+  ],
+  "navarre": [
+    "Navarre"
+  ],
+  "norway": [
+    "Norway"
+  ],
+  "novgorod": [
+    "Novgorod",
+    "Novgorod Republic"
+  ],
+  "papal-states": [
+    "Papal States",
+    "Papacy"
+  ],
+  "poland": [
+    "Poland"
+  ],
+  "portugal": [
+    "Portugal"
+  ],
+  "chernigov": [
+    "Principality of Chernigov",
+    "Chernigov",
+    "Chernihiv"
+  ],
+  "polotsk": [
+    "Principality of Polotsk",
+    "Polotsk",
+    "Polatsk"
   ],
   "smolensk": [
     "Principality of Smolensk",
@@ -243,45 +191,81 @@
     "Vladimir-Suzdal",
     "Vladimir"
   ],
-  "galicia-volhynia": [
-    "Galicia-Volhynia",
-    "Galicia Volhynia",
-    "Halych-Volhynia"
+  "pskov": [
+    "Pskov Republic",
+    "Pskov"
+  ],
+  "serbia": [
+    "Raška"
+  ],
+  "florence": [
+    "Republic of Florence",
+    "Florence"
+  ],
+  "genoa": [
+    "Republic of Genoa",
+    "Genoa"
   ],
   "ryazan": [
     "Ryazan",
     "Principality of Ryazan",
     "Ryazan Principality"
   ],
-  "bosnia": [
-    "Banate of Bosnia",
-    "Bosnia"
+  "scotland": [
+    "Scotland"
   ],
-  "majapahit": [
-    "Majapahit",
-    "Majapahit Empire"
+  "kamakura-japan": [
+    "Shogun Japan (Kamakura)",
+    "Kamakura"
   ],
-  "genoa": [
-    "Republic of Genoa",
-    "Genoa"
+  "sicily": [
+    "Sicily"
   ],
-  "florence": [
-    "Republic of Florence",
-    "Florence"
+  "sinhalese-kingdom": [
+    "Sinhalese kingdom"
+  ],
+  "sukhothai": [
+    "Sukhothai"
+  ],
+  "delhi-sultanate": [
+    "Sultanate of Delhi",
+    "Delhi Sultanate"
+  ],
+  "sweden": [
+    "Sweden"
   ],
   "swiss-confederation": [
     "Swiss Confederation",
-    "Switzerland",
     "Swiss Confederacy"
   ],
-  "polotsk": [
-    "Principality of Polotsk",
-    "Polotsk",
-    "Polatsk"
+  "teutonic-knights": [
+    "Teutonic Knights",
+    "Teutonic Order"
   ],
-  "chernigov": [
-    "Principality of Chernigov",
-    "Chernigov",
-    "Chernihiv"
+  "tibet": [
+    "Tibet"
+  ],
+  "trebizond": [
+    "Trebizond",
+    "Empire of Trebizond"
+  ],
+  "tver": [
+    "Tver",
+    "Principality of Tver"
+  ],
+  "venice": [
+    "Venice"
+  ],
+  "yemen": [
+    "Yemen"
+  ],
+  "great-khanate": [
+    "Yuan",
+    "Mongol Empire",
+    "Kublai Khan"
+  ],
+  "zapotec-empire": [
+    "Zapotec Empire",
+    "Zapotec"
   ]
 }

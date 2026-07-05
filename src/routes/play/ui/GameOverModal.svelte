@@ -6,8 +6,15 @@
 	import { buildGameConfig, clearSavedGame, loadGameSettings } from '@persist'
 	import { formatTime, startGame } from '../controller'
 	import { buildGameOverSummary } from '../game_over_summary'
+	import { formatGameRulesLine } from '../game_over_rules.ts'
+	import { buildLobbyShareUrl, copyShareLink } from '../share_game_link.ts'
 	import { transitionToExplore, transitionToHome } from '../../map_shell'
 	import ProgressDonut from './ProgressDonut.svelte'
+	import IconShare2 from '~icons/lucide/share-2'
+	import IconPlay from '~icons/lucide/play'
+	import IconMap from '~icons/lucide/map'
+	import IconCircleX from '~icons/lucide/circle-x'
+	import IconTimer from '~icons/lucide/timer'
 
 	export let snapshot: GameSnapshot
 	export let config: GameConfig
@@ -18,9 +25,13 @@
 	export let homeLabel: string
 	export let ended = false
 	export let endedTitle = ''
-	export let endedNote = ''
+	export let eraId = 'modern'
+	export let shareLabel: string
+	export let shareCopiedLabel: string
 
 	let dialog: HTMLDialogElement
+	let shareCopied = false
+	let shareResetTimer: ReturnType<typeof setTimeout> | undefined
 
 	$: summary = buildGameOverSummary(snapshot, config)
 	$: won = snapshot.status === 'won'
@@ -28,6 +39,7 @@
 	$: foundLabel = $t('gameOverFoundCount')
 		.replace('{correct}', String(summary.correct))
 		.replace('{total}', String(summary.total))
+	$: rulesLine = formatGameRulesLine(eraId, config, $t)
 	$: mistakesLabel =
 		summary.wrongCount === 0
 			? $t('gameOverNoMistakes')
@@ -42,18 +54,9 @@
 		}
 		return null
 	})()
-	$: lossLabel =
-		summary.lossReason === 'time'
-			? $t('gameOverLossTime')
-			: summary.lossReason === 'lives'
-				? $t('gameOverLossLives')
-				: null
-	$: timerChip = summary.timerEnabled
-		? $t('minutesLabel').replace('{n}', String(Math.round(summary.timerSeconds / 60)))
-		: $t('gameOverModeNoTimer')
-	$: livesChip = summary.livesEnabled
-		? `${summary.maxLives} ${$t('lives').toLowerCase()}`
-		: $t('gameOverModeNoLives')
+	$: timeLine = timeLabel ?? $t('gameOverModeNoTimer')
+	$: mistakesIconClass =
+		summary.wrongCount === 0 ? 'text-emerald-600' : 'text-amber-600'
 
 	onMount(() => {
 		dialog?.showModal()
@@ -74,6 +77,21 @@
 		clearSavedGame()
 		void startGame(buildGameConfig(loadGameSettings()))
 	}
+
+	async function shareChallenge() {
+		const url = buildLobbyShareUrl(window.location.origin, eraId, config)
+		const copied = await copyShareLink(url)
+		if (!copied) {
+			window.prompt(url)
+			return
+		}
+
+		shareCopied = true
+		if (shareResetTimer) clearTimeout(shareResetTimer)
+		shareResetTimer = setTimeout(() => {
+			shareCopied = false
+		}, 2000)
+	}
 </script>
 
 <dialog
@@ -85,61 +103,81 @@
 	<div class="rounded-2xl border border-base-300/80 bg-base-100 p-6 text-center shadow-xl">
 		<h2
 			data-testid="game-over-title"
-			class="text-xl font-bold text-base-content sm:text-2xl"
+			class="text-xl font-bold text-base-content sm:text-2xl mb-4"
 		>
 			{title}
 		</h2>
 
-		<div class="mt-4 flex justify-center">
-			<ProgressDonut percent={summary.percent} />
+		<div class="mt-4 border-t border-base-300/70 pt-4">
+			<div class="flex items-center justify-center gap-4">
+				<ProgressDonut percent={summary.percent} />
+				<div class="flex h-32 min-w-0 flex-col justify-center gap-5 text-left">
+					<div class="flex items-center gap-2">
+						<IconMap class="size-3.5 shrink-0 text-violet-600" />
+						<p class="text-sm font-medium leading-tight text-base-content">{foundLabel}</p>
+					</div>
+					<div class="flex items-center gap-2">
+						<IconCircleX class="size-3.5 shrink-0 {mistakesIconClass}" />
+						<p class="text-xs leading-tight text-base-content/70">{mistakesLabel}</p>
+					</div>
+					<div class="flex items-center gap-2">
+						<IconTimer
+							class="size-3.5 shrink-0 {summary.timerEnabled ? 'text-sky-600' : 'text-base-content/40'}"
+						/>
+						<p class="text-xs leading-tight text-base-content/60">{timeLine}</p>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<p class="mt-3 text-sm font-medium text-base-content">{foundLabel}</p>
+		<div class="mt-4 border-t border-base-300/70 pt-4">
+			<p class="text-xs leading-snug text-base-content/55">{rulesLine}</p>
 
-		{#if ended && endedNote}
-			<p class="mt-1 text-sm text-base-content/70">{endedNote}</p>
-		{:else if lossLabel}
-			<p class="mt-1 text-sm text-error/90">{lossLabel}</p>
-		{/if}
+			<button
+				type="button"
+				data-testid="share-game-over"
+				class="mt-4 flex w-full items-center gap-3 rounded-xl border border-dashed border-base-300/80 bg-base-200/30 px-3 py-2.5 text-left transition-[border-color,background-color] hover:border-primary/30 hover:bg-primary/5"
+				on:click={shareChallenge}
+			>
+				<span
+					class="flex size-8 shrink-0 items-center justify-center rounded-full bg-base-100 text-primary shadow-sm"
+				>
+					<IconShare2 class="size-4" />
+				</span>
+				<span class="min-w-0 flex-1">
+					<span class="block text-sm font-medium leading-tight text-base-content">
+						{shareCopied ? shareCopiedLabel : shareLabel}
+					</span>
+				</span>
+			</button>
 
-		<p class="mt-2 text-xs text-base-content/60">
-			{mistakesLabel}
-			{#if timeLabel}
-				<span aria-hidden="true"> · </span>
-				{timeLabel}
+			<div class="mt-5 flex gap-2">
+				<button
+					type="button"
+					class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-content shadow-sm ring-1 ring-primary/25 transition-[background-color,box-shadow,transform] hover:bg-primary/90 hover:shadow-md active:scale-[0.98]"
+					on:click={playAgain}
+				>
+					<IconPlay class="size-4" />
+					{playAgainLabel}
+				</button>
+				<button
+					type="button"
+					class="flex flex-1 items-center justify-center rounded-xl px-3 py-2.5 text-sm font-medium text-base-content/65 hover:bg-base-200/80 hover:text-base-content"
+					on:click={goHome}
+				>
+					{homeLabel}
+				</button>
+			</div>
+
+			{#if !won}
+				<button
+					type="button"
+					class="mt-3 bg-transparent p-0 text-xs font-normal text-primary/75 underline-offset-2 hover:text-primary hover:underline focus:outline-none"
+					on:click={goExplore}
+				>
+					{exploreLinkLabel}
+				</button>
 			{/if}
-		</p>
-
-		<div class="mt-3 flex flex-wrap justify-center gap-1.5">
-			<span class="rounded-full bg-base-200/80 px-2 py-0.5 text-[10px] font-medium text-base-content/65">
-				{timerChip}
-			</span>
-			<span class="rounded-full bg-base-200/80 px-2 py-0.5 text-[10px] font-medium text-base-content/65">
-				{livesChip}
-			</span>
-		</div>
-
-		{#if !won}
-			<button
-				type="button"
-				class="mt-3 bg-transparent p-0 text-sm font-medium text-primary underline-offset-2 hover:underline focus:outline-none"
-				on:click={goExplore}
-			>
-				{exploreLinkLabel}
-			</button>
-		{/if}
-
-		<div class="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
-			<button type="button" class="btn btn-primary flex-1 rounded-xl sm:flex-none" on:click={playAgain}>
-				{playAgainLabel}
-			</button>
-			<button
-				type="button"
-				class="btn btn-outline flex-1 rounded-xl border-primary/45 text-primary hover:border-primary hover:bg-primary/10 hover:text-primary sm:flex-none"
-				on:click={goHome}
-			>
-				{homeLabel}
-			</button>
 		</div>
 	</div>
 </dialog>

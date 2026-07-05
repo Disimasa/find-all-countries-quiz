@@ -14,7 +14,7 @@ import { Ce1300WorldMap } from '@domain/maps'
 
 describe('MapEraRegistry', () => {
 
-	it('lists registered eras', () => {
+	it('lists registered eras in descending year order', () => {
 
 		expect(MapEraRegistry.listIds()).toEqual([
 
@@ -22,9 +22,9 @@ describe('MapEraRegistry', () => {
 
 			PREWW1_ERA_ID,
 
-			CE100_ERA_ID,
+			CE1300_ERA_ID,
 
-			CE1300_ERA_ID
+			CE100_ERA_ID
 
 		])
 
