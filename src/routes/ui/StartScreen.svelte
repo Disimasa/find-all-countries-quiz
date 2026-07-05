@@ -2,9 +2,13 @@
 	import { createEventDispatcher } from 'svelte'
 	import GameSettingsEditor from './GameSettingsEditor.svelte'
 	import type { Locale } from '@domain/entities'
+	import { t } from '@i18n'
 	import IconPlay from '~icons/lucide/play'
 	import IconShare2 from '~icons/lucide/share-2'
+	import IconGithub from '~icons/lucide/github'
 	import { activeEraTheme, mapEraSwitching, mapShellTransitioning } from '../map_shell'
+
+	const GITHUB_REPO_URL = 'https://github.com/Disimasa/find-all-countries-quiz'
 
 	export let title: string
 	export let modeHint: string
@@ -44,7 +48,7 @@
 </script>
 
 <div
-	class="pointer-events-none flex min-h-screen items-center justify-center p-4 md:items-start md:justify-end md:p-6 md:pt-10"
+	class="pointer-events-none flex min-h-screen items-center justify-center p-4 md:justify-end md:p-6"
 >
 	<div
 		class="pointer-events-auto flex w-full max-w-70 flex-col gap-3 lg:max-w-72"
@@ -62,8 +66,22 @@
 		<section
 			class="rounded-2xl border border-base-300/80 bg-base-100/95 p-4 shadow-lg backdrop-blur-md"
 		>
-			<h1 class="text-xl font-bold leading-tight text-base-content">{title}</h1>
-			<p class="mt-1.5 text-sm leading-snug text-base-content/65">{modeHint}</p>
+			<div class="flex items-start justify-between gap-2">
+				<div class="min-w-0">
+					<h1 class="text-xl font-bold leading-tight text-base-content">{title}</h1>
+					<p class="mt-1.5 text-sm leading-snug text-base-content/65">{modeHint}</p>
+				</div>
+				<a
+					href={GITHUB_REPO_URL}
+					target="_blank"
+					rel="noopener noreferrer"
+					data-testid="lobby-github"
+					class="shrink-0 rounded-lg p-1 text-base-content/40 transition-colors hover:bg-base-200/80 hover:text-base-content"
+					aria-label={$t('lobbyGithub')}
+				>
+					<IconGithub class="size-4" />
+				</a>
+			</div>
 		</section>
 
 		<section

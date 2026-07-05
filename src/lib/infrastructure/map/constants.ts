@@ -9,6 +9,9 @@ export const MAP_DEFAULT_ZOOM = 1
 export const MAP_MIN_ZOOM = 1
 export const MAP_MAX_ZOOM = 8
 
+/** Keep tiles across our full zoom range (1–8) to reduce reload flashes when zooming in and out. */
+export const MAP_MAX_TILE_CACHE_ZOOM_LEVELS = 8
+
 /** [west, south, east, north] — initial view similar to Elsewhere Challenge. */
 export const MAP_WORLD_BOUNDS: [number, number, number, number] = [-165, -48, 165, 72]
 export const MAP_FIT_PADDING = 40

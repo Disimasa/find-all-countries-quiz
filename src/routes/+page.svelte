@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { get } from 'svelte/store'
-	import { goto } from '$app/navigation'
+	import { replaceState } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { Circle } from 'svelte-loading-spinners'
 	import {
 		applyGameSettings,
-		buildLobbyShareHref,
 		buildPlayHref,
 		eraId,
 		getSavedGame,
@@ -15,9 +14,11 @@
 		timerEnabled,
 		timerMinutes
 	} from './controller'
-	import { getLobbySearchForSettings, isLobbySearchInSync, parseGameSettingsSearch } from './game_settings_url'
+	import { getLobbySearchForSettings, parseGameSettingsSearch, buildLobbyShareHref } from './game_settings_url'
 	import { copyShareLink } from './play/share_game_link'
 	import { warmupPlay } from './play/controller'
+	import { getSharedMapEra } from './map_era.ts'
+	import { isLobbyEraSelectionRedundant } from './lobby_era_selection.ts'
 	import { mapShellReady, switchMapEra, transitionToPlay, transitionToPlayResume } from './map_shell'
 	import { locale, setLocale, t } from '@i18n'
 	import StartScreen from './ui/StartScreen.svelte'
@@ -50,7 +51,7 @@
 		ce1300: $t('eraCe1300Hint')
 	}
 
-	async function syncLobbyUrl(): Promise<void> {
+	function syncLobbyUrl(): void {
 		if (!lobbyUrlReady || get(page).url.pathname !== '/') return
 
 		const settings = {
@@ -61,13 +62,14 @@
 			maxLives: get(maxLives)
 		}
 
-		if (isLobbySearchInSync(get(page).url.search, settings)) {
-			syncedLobbySearch = get(page).url.search
+		const targetSearch = getLobbySearchForSettings(settings)
+		if (get(page).url.search === targetSearch) {
+			syncedLobbySearch = targetSearch
 			return
 		}
 
-		syncedLobbySearch = getLobbySearchForSettings(settings)
-		await goto(buildLobbyShareHref(), { replaceState: true, keepFocus: true, noScroll: true })
+		syncedLobbySearch = targetSearch
+		replaceState(buildLobbyShareHref(settings), {})
 	}
 
 	$: if (lobbyUrlReady && $mapShellReady) {
@@ -142,7 +144,7 @@
 	}
 
 	async function handleEraSelect(nextEraId: string) {
-		if (nextEraId === $eraId) return
+		if (isLobbyEraSelectionRedundant(nextEraId, $eraId, getSharedMapEra()?.id)) return
 		eraId.set(nextEraId)
 		await switchMapEra(nextEraId)
 		updateContinueLabel()

@@ -48,6 +48,9 @@ describe('era switch on lobby', () => {
 
 				await selectEraOnLobby(page, 'modern')
 				await waitForLobbyMapEra(page, null)
+
+				await selectEraOnLobby(page, 'preww1')
+				await waitForLobbyMapEra(page, 'preww1')
 			} finally {
 				await page.close()
 			}

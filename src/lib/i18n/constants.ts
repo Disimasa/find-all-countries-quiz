@@ -69,7 +69,8 @@ export const messages = {
 		shareGameHint: 'Copy a link with the current map and rules',
 		shareGameCopied: 'Link copied',
 		shareGameOver: 'Challenge a friend',
-		shareGameOverHint: 'Same map and rules'
+		shareGameOverHint: 'Same map and rules',
+		lobbyGithub: 'GitHub repository'
 	},
 	ru: {
 		title: 'Найди все страны',
@@ -136,6 +137,7 @@ export const messages = {
 		shareGameHint: 'Скопировать ссылку с текущей картой и правилами',
 		shareGameCopied: 'Ссылка скопирована',
 		shareGameOver: 'Бросить вызов другу',
-		shareGameOverHint: 'Та же карта и те же правила'
+		shareGameOverHint: 'Та же карта и те же правила',
+		lobbyGithub: 'Репозиторий на GitHub'
 	}
 } as const satisfies Record<Locale, Record<string, string>>
