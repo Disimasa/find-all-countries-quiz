@@ -23,8 +23,10 @@ export function prepareBasemapStyle(
 ): StyleSpecification {
 	if (!next.layers?.length) return next
 
+	const { sprite: _unusedSprites, ...withoutSprites } = next
+
 	return {
-		...next,
+		...withoutSprites,
 		layers: next.layers.map((layer) => {
 			if (layer.type === 'symbol' || HIDDEN_LAYER_IDS.has(layer.id)) {
 				return hideLayer(layer)

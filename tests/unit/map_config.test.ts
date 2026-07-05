@@ -43,6 +43,7 @@ describe('basemap theme', () => {
 		const prepared = prepareBasemapStyle(undefined, {
 			version: 8,
 			sources: {},
+			sprite: 'https://tiles.openfreemap.org/sprites/ofm_f384/ofm',
 			layers: [
 				{ id: 'water', type: 'fill', source: 'openmaptiles' },
 				{ id: 'boundary_2', type: 'line', source: 'openmaptiles' },
@@ -58,6 +59,17 @@ describe('basemap theme', () => {
 		expect(prepared.layers[0].layout).toBeUndefined()
 		expect(prepared.layers[1].layout).toEqual({ visibility: 'none' })
 		expect(prepared.layers[2].layout).toMatchObject({ visibility: 'none' })
+	})
+
+	it('drops basemap sprite URL (symbol layers are hidden; avoids CDN sprite fetch)', () => {
+		const prepared = prepareBasemapStyle(undefined, {
+			version: 8,
+			sources: {},
+			sprite: 'https://tiles.openfreemap.org/sprites/ofm_f384/ofm',
+			layers: [{ id: 'water', type: 'fill', source: 'openmaptiles' }]
+		})
+
+		expect(prepared).not.toHaveProperty('sprite')
 	})
 
 	it('uses green only for guessed countries, not active selection', () => {
