@@ -22,9 +22,11 @@ Switch between political maps from different periods. Each era has its own borde
 | **Modern** | Today’s internationally recognized borders |
 | **1914** | Europe and the world on the eve of the First World War |
 | **100 AD** | Major powers of the ancient world around 100 CE |
-| **1279** | The Mongol uluses and the late medieval world |
+| **1300** | The Mongol uluses, Rus principalities, and the late medieval world |
 
 Good for learning geography beyond “where things are today”—see how borders used to look.
+
+Want another era? [Open an issue](https://github.com/Disimasa/find-all-countries-quiz/issues) and suggest it.
 
 ## Game settings
 
@@ -38,7 +40,7 @@ Your choices are saved in the browser for the next visit.
 
 ## Save & continue
 
-Progress is saved automatically. Leave mid-game and the lobby will offer **Continue** with your score (e.g. 12/195). **New game** starts fresh.
+Progress is saved automatically per map era. Leave mid-game and the lobby will offer **Continue** for the selected era (e.g. 12/178 on the modern map). **New game** starts fresh on that era.
 
 ---
 
@@ -46,7 +48,7 @@ Progress is saved automatically. Leave mid-game and the lobby will offer **Conti
 
 Some regions are territories or disputed areas. Borders are shown for quiz purposes only.
 
-Historical map borders for the **1914** era are derived from [CShapes 2.0](https://icr.ethz.ch/data/cshapes/) (ETH Zurich). The **100 AD** and **1279** eras use [historical-basemaps](https://github.com/aourednik/historical-basemaps) (GPL-3.0). Era-specific flag artwork, where shown, is sourced from [Wikimedia Commons](https://commons.wikimedia.org/) and used under their respective licenses.
+Historical map borders for the **1914** era are derived from [CShapes 2.0](https://icr.ethz.ch/data/cshapes/) (ETH Zurich). The **100 AD** era uses [historical-basemaps](https://github.com/aourednik/historical-basemaps) (GPL-3.0). The **1300** era combines historical-basemaps with [Cliopatria](https://github.com/Seshat-Global-History-Databank/cliopatria) (CC BY 4.0), then curated by hand—boundary edits, entity selection, and gap fills such as Rus principalities missing from the base datasets. Era-specific flag artwork, where shown, is sourced from [Wikimedia Commons](https://commons.wikimedia.org/) and used under their respective licenses.
 
 ## Development
 
