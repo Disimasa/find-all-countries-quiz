@@ -1,18 +1,138 @@
 {
+  "alans": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of North Ossetia.svg"
+  },
+  "arakan": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Rakhine.svg"
+  },
+  "armenia": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Armenia.svg"
+  },
+  "axum": {
+    "type": "timemap",
+    "file": "et.svg"
+  },
+  "blemmyes": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Nubia.svg"
+  },
+  "bosporian-kingdom": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Crimea.svg"
+  },
+  "dacia": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Dacian Draco.svg"
+  },
+  "gaya": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Goguryeo Samjogo.svg"
+  },
+  "hadramaut": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Hadhramaut.svg"
+  },
+  "hainan": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of China.svg"
+  },
   "han": {
     "type": "commons",
-    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Han_dynasty_(Chinese_characters).svg"
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Han dynasty (Chinese characters).svg"
+  },
+  "himyarite-kingdom": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Yemen.svg"
+  },
+  "hindu-kingdoms": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of India.svg"
+  },
+  "kalinga": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Odisha.svg"
+  },
+  "koguryo": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Fictional flag of Goguryeo.svg"
   },
   "kushan-empire": {
     "type": "commons",
-    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_kushans.png"
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the kushans.png"
+  },
+  "maya-chiefdoms": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Guatemala.svg"
+  },
+  "meroe": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Egypt kush.svg"
+  },
+  "moche": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Peru.svg"
+  },
+  "monte-alban": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Oaxaca.svg"
+  },
+  "nabatean-kingdom": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Jordan.svg"
+  },
+  "nazca": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Peru.svg"
+  },
+  "paekche": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Military flag of Baekje.svg"
   },
   "parthian-empire": {
     "type": "commons",
-    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Parthian_Empire.svg"
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid of the Parthian Empire.svg"
   },
   "roman-empire": {
     "type": "commons",
-    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Roman_Empire.svg"
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid of the Roman Empire.svg"
+  },
+  "saka-kingdom": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/IndoScythianKingdom.svg"
+  },
+  "satavahanihara": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Emblem of India.svg"
+  },
+  "scythians": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of South Ossetia.svg"
+  },
+  "silla": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Fictional flag of Silla.svg"
+  },
+  "simhala": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Sri Lanka.svg"
+  },
+  "southern-xiongnu": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of South Xiongnu (16 Great Turkic Empires).svg"
+  },
+  "suren-kingdom": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid of the Parthian Empire.svg"
+  },
+  "teotihuacan": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
+  },
+  "yueban": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Xiongnu (16 Great Turkic Empires).svg"
   }
 }

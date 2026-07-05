@@ -1,22 +1,172 @@
 [
   {
+    "entityId": "alans",
+    "file": "alans.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of North Ossetia.svg"
+  },
+  {
+    "entityId": "arakan",
+    "file": "arakan.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Rakhine.svg"
+  },
+  {
+    "entityId": "armenia",
+    "file": "armenia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Armenia.svg"
+  },
+  {
+    "entityId": "axum",
+    "file": "axum.svg",
+    "source": "timemap:et.svg"
+  },
+  {
+    "entityId": "blemmyes",
+    "file": "blemmyes.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Nubia.svg"
+  },
+  {
+    "entityId": "bosporian-kingdom",
+    "file": "bosporian-kingdom.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Crimea.svg"
+  },
+  {
+    "entityId": "dacia",
+    "file": "dacia.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Dacian Draco.svg"
+  },
+  {
+    "entityId": "gaya",
+    "file": "gaya.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Goguryeo Samjogo.svg"
+  },
+  {
+    "entityId": "hadramaut",
+    "file": "hadramaut.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Hadhramaut.svg"
+  },
+  {
+    "entityId": "hainan",
+    "file": "hainan.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of China.svg"
+  },
+  {
     "entityId": "han",
     "file": "han.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Han_dynasty_(Chinese_characters).svg"
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Han dynasty (Chinese characters).svg"
+  },
+  {
+    "entityId": "himyarite-kingdom",
+    "file": "himyarite-kingdom.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Yemen.svg"
+  },
+  {
+    "entityId": "hindu-kingdoms",
+    "file": "hindu-kingdoms.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of India.svg"
+  },
+  {
+    "entityId": "kalinga",
+    "file": "kalinga.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Odisha.svg"
+  },
+  {
+    "entityId": "koguryo",
+    "file": "koguryo.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Fictional flag of Goguryeo.svg"
   },
   {
     "entityId": "kushan-empire",
     "file": "kushan-empire.png",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_the_kushans.png"
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the kushans.png"
+  },
+  {
+    "entityId": "maya-chiefdoms",
+    "file": "maya-chiefdoms.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Guatemala.svg"
+  },
+  {
+    "entityId": "meroe",
+    "file": "meroe.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Egypt kush.svg"
+  },
+  {
+    "entityId": "moche",
+    "file": "moche.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Peru.svg"
+  },
+  {
+    "entityId": "monte-alban",
+    "file": "monte-alban.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Oaxaca.svg"
+  },
+  {
+    "entityId": "nabatean-kingdom",
+    "file": "nabatean-kingdom.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Jordan.svg"
+  },
+  {
+    "entityId": "nazca",
+    "file": "nazca.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Peru.svg"
+  },
+  {
+    "entityId": "paekche",
+    "file": "paekche.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Military flag of Baekje.svg"
   },
   {
     "entityId": "parthian-empire",
     "file": "parthian-empire.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Parthian_Empire.svg"
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid of the Parthian Empire.svg"
   },
   {
     "entityId": "roman-empire",
     "file": "roman-empire.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid_of_the_Roman_Empire.svg"
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid of the Roman Empire.svg"
+  },
+  {
+    "entityId": "saka-kingdom",
+    "file": "saka-kingdom.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/IndoScythianKingdom.svg"
+  },
+  {
+    "entityId": "satavahanihara",
+    "file": "satavahanihara.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Emblem of India.svg"
+  },
+  {
+    "entityId": "scythians",
+    "file": "scythians.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of South Ossetia.svg"
+  },
+  {
+    "entityId": "silla",
+    "file": "silla.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Fictional flag of Silla.svg"
+  },
+  {
+    "entityId": "simhala",
+    "file": "simhala.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Sri Lanka.svg"
+  },
+  {
+    "entityId": "southern-xiongnu",
+    "file": "southern-xiongnu.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of South Xiongnu (16 Great Turkic Empires).svg"
+  },
+  {
+    "entityId": "suren-kingdom",
+    "file": "suren-kingdom.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Vexilloid of the Parthian Empire.svg"
+  },
+  {
+    "entityId": "teotihuacan",
+    "file": "teotihuacan.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
+  },
+  {
+    "entityId": "yueban",
+    "file": "yueban.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Xiongnu (16 Great Turkic Empires).svg"
   }
 ]
