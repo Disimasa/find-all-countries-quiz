@@ -16,6 +16,8 @@ const preww1EntitiesPath = path.join(root, 'static/data/eras/preww1/entities.jso
 const preww1AliasesEnPath = path.join(root, 'static/data/eras/preww1/aliases.en.json')
 const ce100EntitiesPath = path.join(root, 'static/data/eras/ce100/entities.json')
 const ce100AliasesEnPath = path.join(root, 'static/data/eras/ce100/aliases.en.json')
+const ce1300EntitiesPath = path.join(root, 'static/data/eras/ce1300/entities.json')
+const ce1300AliasesEnPath = path.join(root, 'static/data/eras/ce1300/aliases.en.json')
 
 export type QuizEntity = {
 	id: string
@@ -77,6 +79,23 @@ export function loadCe100EnglishAnswers(): Map<string, string> {
 		string[]
 	>
 	const entities = loadCe100QuizEntities()
+	const answers = new Map<string, string>()
+	for (const entity of entities) {
+		answers.set(entity.id, aliases[entity.id]?.[0] ?? entity.nameEn)
+	}
+	return answers
+}
+
+export function loadCe1300QuizEntities(): QuizEntity[] {
+	return JSON.parse(fs.readFileSync(ce1300EntitiesPath, 'utf8')) as QuizEntity[]
+}
+
+export function loadCe1300EnglishAnswers(): Map<string, string> {
+	const aliases = JSON.parse(fs.readFileSync(ce1300AliasesEnPath, 'utf8')) as Record<
+		string,
+		string[]
+	>
+	const entities = loadCe1300QuizEntities()
 	const answers = new Map<string, string>()
 	for (const entity of entities) {
 		answers.set(entity.id, aliases[entity.id]?.[0] ?? entity.nameEn)

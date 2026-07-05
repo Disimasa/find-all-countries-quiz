@@ -1,0 +1,364 @@
+[
+  {
+    "id": "aceh",
+    "nameEn": "Aceh",
+    "nameRu": "Ачех",
+    "region": "Aceh"
+  },
+  {
+    "id": "andean-states",
+    "nameEn": "Andean states and chiefdoms",
+    "nameRu": "Андские государства",
+    "region": "Andean states and chiefdoms"
+  },
+  {
+    "id": "aragon",
+    "nameEn": "Aragón",
+    "nameRu": "Арагон",
+    "region": "Aragón"
+  },
+  {
+    "id": "benin",
+    "nameEn": "Benin",
+    "nameRu": "Бенин",
+    "region": "Benin"
+  },
+  {
+    "id": "bornu-kanem",
+    "nameEn": "Bornu-Kanem",
+    "nameRu": "Борну-Канем",
+    "region": "Bornu-Kanem"
+  },
+  {
+    "id": "bulgaria",
+    "nameEn": "Bulgar Khanate",
+    "nameRu": "Болгария",
+    "region": "Bulgar Khanate"
+  },
+  {
+    "id": "byzantine-empire",
+    "nameEn": "Byzantine Empire",
+    "nameRu": "Византийская империя",
+    "region": "Byzantine Empire"
+  },
+  {
+    "id": "castile",
+    "nameEn": "Castile",
+    "nameRu": "Кастилия",
+    "region": "Castile"
+  },
+  {
+    "id": "chagatai-khanate",
+    "nameEn": "Chagatai Khanate",
+    "nameRu": "Улус Чагатая",
+    "region": "Chagatai Khanate"
+  },
+  {
+    "id": "champa",
+    "nameEn": "Champa",
+    "nameRu": "Чампа",
+    "region": "Champa",
+    "flagAsset": "champa.jpg"
+  },
+  {
+    "id": "chimu-empire",
+    "nameEn": "Chimú Empire",
+    "nameRu": "Империя чиму",
+    "region": "Chimú Empire"
+  },
+  {
+    "id": "cyprus",
+    "nameEn": "Cyprus",
+    "nameRu": "Кипр",
+    "region": "Cyprus"
+  },
+  {
+    "id": "dai-viet",
+    "nameEn": "Đại Việt",
+    "nameRu": "Дайвьет",
+    "region": "Đại Việt"
+  },
+  {
+    "id": "denmark",
+    "nameEn": "Denmark",
+    "nameRu": "Дания",
+    "region": "Denmark"
+  },
+  {
+    "id": "england",
+    "nameEn": "English territory",
+    "nameRu": "Англия",
+    "region": "England"
+  },
+  {
+    "id": "ethiopia",
+    "nameEn": "Ethiopia",
+    "nameRu": "Эфиопия",
+    "region": "Ethiopia"
+  },
+  {
+    "id": "france",
+    "nameEn": "France",
+    "nameRu": "Франция",
+    "region": "France"
+  },
+  {
+    "id": "georgia",
+    "nameEn": "Georgia",
+    "nameRu": "Грузия",
+    "region": "Georgia"
+  },
+  {
+    "id": "granada",
+    "nameEn": "Granada",
+    "nameRu": "Гранада",
+    "region": "Granada"
+  },
+  {
+    "id": "great-khanate",
+    "nameEn": "Great Khanate",
+    "nameRu": "Великий каганат",
+    "region": "Great Khanate",
+    "flagAsset": "great-khanate.png"
+  },
+  {
+    "id": "great-zimbabwe",
+    "nameEn": "Great Zimbabwe",
+    "nameRu": "Большой Зимбабве",
+    "region": "Great Zimbabwe"
+  },
+  {
+    "id": "hadramaut",
+    "nameEn": "Hadramaut",
+    "nameRu": "Хадрамаут",
+    "region": "Hadramaut"
+  },
+  {
+    "id": "hafsid-caliphate",
+    "nameEn": "Hafsid Caliphate",
+    "nameRu": "Хафсидский халифат",
+    "region": "Hafsid Caliphate"
+  },
+  {
+    "id": "hainan",
+    "nameEn": "Hainan",
+    "nameRu": "Хайнань",
+    "region": "Hainan"
+  },
+  {
+    "id": "holy-roman-empire",
+    "nameEn": "Holy Roman Empire",
+    "nameRu": "Священная Римская империя",
+    "region": "Holy Roman Empire"
+  },
+  {
+    "id": "hungary",
+    "nameEn": "Hungary",
+    "nameRu": "Венгрия",
+    "region": "Hungary"
+  },
+  {
+    "id": "ilkhanate",
+    "nameEn": "Ilkhanate",
+    "nameRu": "Ильханат",
+    "region": "Mongol Empire"
+  },
+  {
+    "id": "kashmir-ladakh",
+    "nameEn": "Kashmir and Ladakh",
+    "nameRu": "Кашмир и Ладакх",
+    "region": "Kashmir and Ladakh"
+  },
+  {
+    "id": "golden-horde",
+    "nameEn": "Khanate of the Golden Horde",
+    "nameRu": "Золотая Орда",
+    "region": "Khanate of the Golden Horde"
+  },
+  {
+    "id": "khmer-empire",
+    "nameEn": "Khmer Empire",
+    "nameRu": "Кхмерская империя",
+    "region": "Khmer Empire"
+  },
+  {
+    "id": "lithuania",
+    "nameEn": "Lithuania",
+    "nameRu": "Литва",
+    "region": "Lithuania"
+  },
+  {
+    "id": "mali",
+    "nameEn": "Mali",
+    "nameRu": "Мали",
+    "region": "Mali"
+  },
+  {
+    "id": "mamluk-sultanate",
+    "nameEn": "Mamluke Sultanate",
+    "nameRu": "Мамлюкский султанат",
+    "region": "Mamluke Sultanate"
+  },
+  {
+    "id": "maya-city-states",
+    "nameEn": "Maya city-states",
+    "nameRu": "Города-государства майя",
+    "region": "Maya city-states"
+  },
+  {
+    "id": "merinides",
+    "nameEn": "Merinides",
+    "nameRu": "Маринниды",
+    "region": "Merinides"
+  },
+  {
+    "id": "hindu-kingdoms",
+    "nameEn": "minor Hindu kingdoms",
+    "nameRu": "Индийские царства",
+    "region": "minor Hindu kingdoms"
+  },
+  {
+    "id": "mixtec-empire",
+    "nameEn": "Mixtec Empire",
+    "nameRu": "Империя миштеков",
+    "region": "Mixtec Empire"
+  },
+  {
+    "id": "muscat",
+    "nameEn": "Muscat",
+    "nameRu": "Маскат",
+    "region": "Muscat"
+  },
+  {
+    "id": "navarre",
+    "nameEn": "Navarre",
+    "nameRu": "Наварра",
+    "region": "Navarre"
+  },
+  {
+    "id": "norway",
+    "nameEn": "Norway",
+    "nameRu": "Норвегия",
+    "region": "Norway"
+  },
+  {
+    "id": "novgorod",
+    "nameEn": "Novgorod",
+    "nameRu": "Новгород",
+    "region": "Novgorod"
+  },
+  {
+    "id": "papal-states",
+    "nameEn": "Papal States",
+    "nameRu": "Папская область",
+    "region": "Papal States"
+  },
+  {
+    "id": "poland",
+    "nameEn": "Poland",
+    "nameRu": "Польша",
+    "region": "Poland"
+  },
+  {
+    "id": "portugal",
+    "nameEn": "Portugal",
+    "nameRu": "Португалия",
+    "region": "Portugal"
+  },
+  {
+    "id": "ryazan",
+    "nameEn": "Ryazan",
+    "nameRu": "Рязань",
+    "region": "Ryazan"
+  },
+  {
+    "id": "scotland",
+    "nameEn": "Scotland",
+    "nameRu": "Шотландия",
+    "region": "Scotland"
+  },
+  {
+    "id": "serbia",
+    "nameEn": "Serbia",
+    "nameRu": "Сербия",
+    "region": "Serbia"
+  },
+  {
+    "id": "kamakura-japan",
+    "nameEn": "Shogun Japan (Kamakura)",
+    "nameRu": "Япония (сёгунат Камакура)",
+    "region": "Shogun Japan (Kamakura)"
+  },
+  {
+    "id": "sicily",
+    "nameEn": "Sicily",
+    "nameRu": "Сицилия",
+    "region": "Sicily"
+  },
+  {
+    "id": "sinhalese-kingdom",
+    "nameEn": "Sinhalese kingdom",
+    "nameRu": "Сингальское царство",
+    "region": "Sinhalese kingdom"
+  },
+  {
+    "id": "srivijaya-empire",
+    "nameEn": "Srivijaya Empire",
+    "nameRu": "Шривиджая",
+    "region": "Srivijaya Empire"
+  },
+  {
+    "id": "sukhothai",
+    "nameEn": "Sukhothai",
+    "nameRu": "Сукхотаи",
+    "region": "Sukhothai"
+  },
+  {
+    "id": "delhi-sultanate",
+    "nameEn": "Sultanate of Delhi",
+    "nameRu": "Султанат Дели",
+    "region": "Sultanate of Delhi"
+  },
+  {
+    "id": "sweden",
+    "nameEn": "Sweden",
+    "nameRu": "Швеция",
+    "region": "Sweden"
+  },
+  {
+    "id": "teutonic-knights",
+    "nameEn": "Teutonic Knights",
+    "nameRu": "Тевтонский орден",
+    "region": "Teutonic Knights"
+  },
+  {
+    "id": "tibet",
+    "nameEn": "Tibet",
+    "nameRu": "Тибет",
+    "region": "Tibet"
+  },
+  {
+    "id": "trebizond",
+    "nameEn": "Trebizond",
+    "nameRu": "Трапезунд",
+    "region": "Trebizond"
+  },
+  {
+    "id": "venice",
+    "nameEn": "Venice",
+    "nameRu": "Венеция",
+    "region": "Venice"
+  },
+  {
+    "id": "yemen",
+    "nameEn": "Yemen",
+    "nameRu": "Йемен",
+    "region": "Yemen"
+  },
+  {
+    "id": "zapotec-empire",
+    "nameEn": "Zapotec Empire",
+    "nameRu": "Империя сапотеков",
+    "region": "Zapotec Empire"
+  }
+]

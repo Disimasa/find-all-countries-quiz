@@ -1,0 +1,362 @@
+[
+  {
+    "entityId": "aceh",
+    "file": "aceh.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Aceh.svg"
+  },
+  {
+    "entityId": "andean-states",
+    "file": "andean-states.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Suntur Paucar.svg"
+  },
+  {
+    "entityId": "aragon",
+    "file": "aragon.svg",
+    "source": "timemap:sparagon.svg"
+  },
+  {
+    "entityId": "bosnia",
+    "file": "bosnia.svg",
+    "source": "timemap:_c/Kingdom_of_Bosnia.svg"
+  },
+  {
+    "entityId": "benin",
+    "file": "benin.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Benin Empire.svg"
+  },
+  {
+    "entityId": "bornu-kanem",
+    "file": "bornu-kanem.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Kanem-Bornu Empire.svg"
+  },
+  {
+    "entityId": "bulgaria",
+    "file": "bulgaria.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Bulgaria.svg"
+  },
+  {
+    "entityId": "byzantine-empire",
+    "file": "byzantine-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Byzantine imperial flag, 14th century.svg"
+  },
+  {
+    "entityId": "castile",
+    "file": "castile.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Castile.svg"
+  },
+  {
+    "entityId": "chagatai-khanate",
+    "file": "chagatai-khanate.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Chagatai khanate.svg"
+  },
+  {
+    "entityId": "chimu-empire",
+    "file": "chimu-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Peru.svg"
+  },
+  {
+    "entityId": "cyprus",
+    "file": "cyprus.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Cyprus.svg"
+  },
+  {
+    "entityId": "dai-viet",
+    "file": "dai-viet.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Vietnam.svg"
+  },
+  {
+    "entityId": "denmark",
+    "file": "denmark.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Denmark.svg"
+  },
+  {
+    "entityId": "england",
+    "file": "england.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of England.svg"
+  },
+  {
+    "entityId": "ethiopia",
+    "file": "ethiopia.svg",
+    "source": "timemap:et.svg"
+  },
+  {
+    "entityId": "france",
+    "file": "france.svg",
+    "source": "timemap:fr14th.svg"
+  },
+  {
+    "entityId": "galicia-volhynia",
+    "file": "galicia-volhynia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat of arms of Ruthenia (Герб Русі).svg"
+  },
+  {
+    "entityId": "chernigov",
+    "file": "chernigov.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat of arms of Ruthenia (Герб Русі).svg"
+  },
+  {
+    "entityId": "georgia",
+    "file": "georgia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Kingdom of Georgia.svg"
+  },
+  {
+    "entityId": "granada",
+    "file": "granada.svg",
+    "source": "timemap:spgranada.svg"
+  },
+  {
+    "entityId": "moscow",
+    "file": "moscow.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of Dmitry Donskoy.svg"
+  },
+  {
+    "entityId": "great-zimbabwe",
+    "file": "great-zimbabwe.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Zimbabwe.svg"
+  },
+  {
+    "entityId": "hadramaut",
+    "file": "hadramaut.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Hadhramaut.svg"
+  },
+  {
+    "entityId": "hafsid-caliphate",
+    "file": "hafsid-caliphate.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Tunisia.svg"
+  },
+  {
+    "entityId": "hainan",
+    "file": "hainan.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of China.svg"
+  },
+  {
+    "entityId": "holy-roman-empire",
+    "file": "holy-roman-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of the Holy Roman Emperor without haloes (1400-1806).svg"
+  },
+  {
+    "entityId": "hungary",
+    "file": "hungary.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Hungary.svg"
+  },
+  {
+    "entityId": "ilkhanate",
+    "file": "ilkhanate.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Ilkhanate.svg"
+  },
+  {
+    "entityId": "kashmir-ladakh",
+    "file": "kashmir-ladakh.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Jammu and Kashmir.svg"
+  },
+  {
+    "entityId": "golden-horde",
+    "file": "golden-horde.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Golden Horde flag 1339.svg"
+  },
+  {
+    "entityId": "khmer-empire",
+    "file": "khmer-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Cambodia.svg"
+  },
+  {
+    "entityId": "lithuania",
+    "file": "lithuania.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Lithuania.svg"
+  },
+  {
+    "entityId": "majapahit",
+    "file": "majapahit.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Naval flag of Majapahit Kingdom.svg"
+  },
+  {
+    "entityId": "mali",
+    "file": "mali.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mali.svg"
+  },
+  {
+    "entityId": "mamluk-sultanate",
+    "file": "mamluk-sultanate.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Egypt.svg"
+  },
+  {
+    "entityId": "maya-city-states",
+    "file": "maya-city-states.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Guatemala.svg"
+  },
+  {
+    "entityId": "hindu-kingdoms",
+    "file": "hindu-kingdoms.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of India.svg"
+  },
+  {
+    "entityId": "mixtec-empire",
+    "file": "mixtec-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
+  },
+  {
+    "entityId": "zapotec-empire",
+    "file": "zapotec-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
+  },
+  {
+    "entityId": "morocco",
+    "file": "morocco.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Morocco.svg"
+  },
+  {
+    "entityId": "muscat",
+    "file": "muscat.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Oman.svg"
+  },
+  {
+    "entityId": "navarre",
+    "file": "navarre.svg",
+    "source": "timemap:spnavarre.svg"
+  },
+  {
+    "entityId": "norway",
+    "file": "norway.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Norway.svg"
+  },
+  {
+    "entityId": "novgorod",
+    "file": "novgorod.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of the Novgorod Republic (c. 1385).svg"
+  },
+  {
+    "entityId": "papal-states",
+    "file": "papal-states.svg",
+    "source": "timemap:itpapal1808.svg"
+  },
+  {
+    "entityId": "poland",
+    "file": "poland.svg",
+    "source": "timemap:pl_5.svg"
+  },
+  {
+    "entityId": "portugal",
+    "file": "portugal.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Portugal.svg"
+  },
+  {
+    "entityId": "polotsk",
+    "file": "polotsk.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Pahonia.svg"
+  },
+  {
+    "entityId": "smolensk",
+    "file": "smolensk.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Smolensk Oblast.svg"
+  },
+  {
+    "entityId": "vladimir-suzdal",
+    "file": "vladimir-suzdal.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Vladimir Oblast.svg"
+  },
+  {
+    "entityId": "pskov",
+    "file": "pskov.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Pskov Oblast.svg"
+  },
+  {
+    "entityId": "serbia",
+    "file": "serbia.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Serbian Empire.svg"
+  },
+  {
+    "entityId": "florence",
+    "file": "florence.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Florence.svg"
+  },
+  {
+    "entityId": "genoa",
+    "file": "genoa.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Genoa.svg"
+  },
+  {
+    "entityId": "ryazan",
+    "file": "ryazan.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Ryazan.svg"
+  },
+  {
+    "entityId": "scotland",
+    "file": "scotland.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Scotland.svg"
+  },
+  {
+    "entityId": "kamakura-japan",
+    "file": "kamakura-japan.svg",
+    "source": "timemap:Japan.svg"
+  },
+  {
+    "entityId": "sicily",
+    "file": "sicily.svg",
+    "source": "timemap:itsicily.svg"
+  },
+  {
+    "entityId": "sinhalese-kingdom",
+    "file": "sinhalese-kingdom.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Sri Lanka.svg"
+  },
+  {
+    "entityId": "srivijaya-empire",
+    "file": "srivijaya-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Indonesia.svg"
+  },
+  {
+    "entityId": "sukhothai",
+    "file": "sukhothai.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Thailand.svg"
+  },
+  {
+    "entityId": "delhi-sultanate",
+    "file": "delhi-sultanate.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Delhi Sultanate Flag.svg"
+  },
+  {
+    "entityId": "sweden",
+    "file": "sweden.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Sweden.svg"
+  },
+  {
+    "entityId": "swiss-confederation",
+    "file": "swiss-confederation.svg",
+    "source": "iso:CH"
+  },
+  {
+    "entityId": "teutonic-knights",
+    "file": "teutonic-knights.svg",
+    "source": "timemap:deteutonic.svg"
+  },
+  {
+    "entityId": "tibet",
+    "file": "tibet.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Tibet.svg"
+  },
+  {
+    "entityId": "trebizond",
+    "file": "trebizond.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of the Empire of Trebizond.svg"
+  },
+  {
+    "entityId": "tver",
+    "file": "tver.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Tver Oblast.svg"
+  },
+  {
+    "entityId": "venice",
+    "file": "venice.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Republic of Venice.svg"
+  },
+  {
+    "entityId": "yemen",
+    "file": "yemen.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Yemen.svg"
+  },
+  {
+    "entityId": "great-khanate",
+    "file": "great-khanate.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Catalan Atlas, Flag of Cathay (Chinese Empire).png"
+  }
+]

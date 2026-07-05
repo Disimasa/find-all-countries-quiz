@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
+	import { page } from '$app/stores'
 	import { onMount } from 'svelte'
 	import 'maplibre-gl/dist/maplibre-gl.css'
 	import { AwaitableDialog } from 'svelte-awaitable-dialog'
@@ -10,6 +11,7 @@
 	import MapShell from './ui/MapShell.svelte'
 
 	$: meta = siteMeta[$locale]
+	$: isDevToolRoute = $page.url.pathname.startsWith('/dev')
 
 	onMount(() => {
 		document.documentElement.lang = getLocale()
@@ -42,11 +44,15 @@
 	<meta name="twitter:image" content="/og-cover.svg" />
 </svelte:head>
 
-{#if browser}
+{#if browser && !isDevToolRoute}
 	<MapShell />
 {/if}
 
-<div class="relative z-10 h-screen overflow-hidden pointer-events-none">
+<div
+	class={isDevToolRoute
+		? 'fixed inset-0 z-50 overflow-hidden bg-base-200'
+		: 'relative z-10 h-screen overflow-hidden pointer-events-none'}
+>
 	<slot />
 </div>
 

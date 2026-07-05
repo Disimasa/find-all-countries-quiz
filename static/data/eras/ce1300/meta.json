@@ -1,0 +1,19 @@
+{
+  "eraId": "ce1300",
+  "snapshotYear": 1300,
+  "entityCount": 73,
+  "source": "hybrid:historical-basemaps+cliopatria",
+  "sources": {
+    "basemaps": "https://github.com/aourednik/historical-basemaps",
+    "cliopatria": "https://github.com/Seshat-Global-History-Databank/cliopatria"
+  },
+  "cliopatriaAddCount": 11,
+  "license": {
+    "basemaps": "GPL-3.0",
+    "cliopatria": "CC BY 4.0"
+  },
+  "manualRusAdds": [
+    "polotsk",
+    "chernigov"
+  ]
+}

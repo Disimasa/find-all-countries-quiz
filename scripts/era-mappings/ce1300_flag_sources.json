@@ -1,0 +1,294 @@
+{
+  "aceh": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Aceh.svg"
+  },
+  "andean-states": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Suntur Paucar.svg"
+  },
+  "aragon": {
+    "type": "timemap",
+    "file": "sparagon.svg"
+  },
+  "bosnia": {
+    "type": "timemap",
+    "file": "_c/Kingdom_of_Bosnia.svg"
+  },
+  "benin": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Benin Empire.svg"
+  },
+  "bornu-kanem": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Kanem-Bornu Empire.svg"
+  },
+  "bulgaria": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Bulgaria.svg"
+  },
+  "byzantine-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Byzantine imperial flag, 14th century.svg"
+  },
+  "castile": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Castile.svg"
+  },
+  "chagatai-khanate": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Chagatai khanate.svg"
+  },
+  "champa": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Champa.jpg"
+  },
+  "chimu-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Peru.svg"
+  },
+  "cyprus": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Cyprus.svg"
+  },
+  "dai-viet": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Vietnam.svg"
+  },
+  "denmark": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Denmark.svg"
+  },
+  "england": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of England.svg"
+  },
+  "ethiopia": {
+    "type": "timemap",
+    "file": "et.svg"
+  },
+  "france": {
+    "type": "timemap",
+    "file": "fr14th.svg"
+  },
+  "galicia-volhynia": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat of arms of Ruthenia (Герб Русі).svg"
+  },
+  "georgia": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Kingdom of Georgia.svg"
+  },
+  "granada": {
+    "type": "timemap",
+    "file": "spgranada.svg"
+  },
+  "moscow": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of Dmitry Donskoy.svg"
+  },
+  "great-zimbabwe": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Zimbabwe.svg"
+  },
+  "hadramaut": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Hadhramaut.svg"
+  },
+  "hafsid-caliphate": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Tunisia.svg"
+  },
+  "hainan": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of China.svg"
+  },
+  "holy-roman-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of the Holy Roman Emperor without haloes (1400-1806).svg"
+  },
+  "hungary": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Hungary.svg"
+  },
+  "ilkhanate": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Ilkhanate.svg"
+  },
+  "kashmir-ladakh": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Jammu and Kashmir.svg"
+  },
+  "golden-horde": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Golden Horde flag 1339.svg"
+  },
+  "khmer-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Cambodia.svg"
+  },
+  "lithuania": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Lithuania.svg"
+  },
+  "majapahit": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Naval flag of Majapahit Kingdom.svg"
+  },
+  "mali": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mali.svg"
+  },
+  "mamluk-sultanate": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Egypt.svg"
+  },
+  "maya-city-states": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Guatemala.svg"
+  },
+  "hindu-kingdoms": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of India.svg"
+  },
+  "mixtec-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
+  },
+  "morocco": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Morocco.svg"
+  },
+  "muscat": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Oman.svg"
+  },
+  "navarre": {
+    "type": "timemap",
+    "file": "spnavarre.svg"
+  },
+  "norway": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Norway.svg"
+  },
+  "novgorod": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of the Novgorod Republic (c. 1385).svg"
+  },
+  "papal-states": {
+    "type": "timemap",
+    "file": "itpapal1808.svg"
+  },
+  "poland": {
+    "type": "timemap",
+    "file": "pl_5.svg"
+  },
+  "portugal": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Portugal.svg"
+  },
+  "chernigov": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat of arms of Ruthenia (Герб Русі).svg"
+  },
+  "polotsk": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Pahonia.svg"
+  },
+  "smolensk": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Smolensk Oblast.svg"
+  },
+  "vladimir-suzdal": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Vladimir Oblast.svg"
+  },
+  "pskov": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Pskov Oblast.svg"
+  },
+  "serbia": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of the Serbian Empire.svg"
+  },
+  "florence": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Florence.svg"
+  },
+  "genoa": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Genoa.svg"
+  },
+  "ryazan": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Ryazan.svg"
+  },
+  "scotland": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Scotland.svg"
+  },
+  "kamakura-japan": {
+    "type": "timemap",
+    "file": "Japan.svg"
+  },
+  "sicily": {
+    "type": "timemap",
+    "file": "itsicily.svg"
+  },
+  "sinhalese-kingdom": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Sri Lanka.svg"
+  },
+  "srivijaya-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Indonesia.svg"
+  },
+  "sukhothai": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Thailand.svg"
+  },
+  "delhi-sultanate": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Delhi Sultanate Flag.svg"
+  },
+  "sweden": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Sweden.svg"
+  },
+  "swiss-confederation": {
+    "type": "iso",
+    "code": "CH"
+  },
+  "teutonic-knights": {
+    "type": "timemap",
+    "file": "deteutonic.svg"
+  },
+  "tibet": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Tibet.svg"
+  },
+  "trebizond": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner of the Empire of Trebizond.svg"
+  },
+  "tver": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Tver Oblast.svg"
+  },
+  "venice": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Republic of Venice.svg"
+  },
+  "yemen": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Yemen.svg"
+  },
+  "great-khanate": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Catalan Atlas, Flag of Cathay (Chinese Empire).png"
+  },
+  "zapotec-empire": {
+    "type": "commons",
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
+  }
+}

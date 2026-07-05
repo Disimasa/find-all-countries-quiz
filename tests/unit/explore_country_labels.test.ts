@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+	basemapSymbolLayerVisibility,
 	buildExploreCountryTextField,
 	buildExploreEraLabelsCollection,
 	isBasemapCountryLabelLayerId
@@ -23,6 +24,18 @@ describe('buildExploreCountryTextField', () => {
 			['get', 'name_en'],
 			['get', 'name']
 		])
+	})
+})
+
+describe('basemapSymbolLayerVisibility', () => {
+	it('shows only country label layers', () => {
+		expect(basemapSymbolLayerVisibility('label_country_1')).toBe('visible')
+		expect(basemapSymbolLayerVisibility('label_country_2')).toBe('visible')
+		expect(basemapSymbolLayerVisibility('label_city')).toBe('none')
+		expect(basemapSymbolLayerVisibility('label_city_capital')).toBe('none')
+		expect(basemapSymbolLayerVisibility('label_town')).toBe('none')
+		expect(basemapSymbolLayerVisibility('explore-era-labels')).toBe('none')
+		expect(basemapSymbolLayerVisibility('editor-era-labels')).toBe('none')
 	})
 })
 

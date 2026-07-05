@@ -31,11 +31,13 @@
 	$: eraLabels = {
 		eraModern: $t('eraModern'),
 		eraPreWW1: $t('eraPreWW1'),
-		eraCe100: $t('eraCe100')
+		eraCe100: $t('eraCe100'),
+		eraCe1300: $t('eraCe1300')
 	}
 	$: eraHints = {
 		preww1: $t('eraPreWW1Hint'),
-		ce100: $t('eraCe100Hint')
+		ce100: $t('eraCe100Hint'),
+		ce1300: $t('eraCe1300Hint')
 	}
 
 	onMount(() => {
@@ -117,6 +119,11 @@
 		}}
 		on:localeSelect={(event) => setLocale(event.detail)}
 	/>
+	{#if import.meta.env.DEV}
+		<p class="pointer-events-auto fixed bottom-3 right-3 z-20 text-xs text-base-content/50">
+			<a class="underline" href="/dev/boundaries?era={currentEra}">Редактор границ</a>
+		</p>
+	{/if}
 {:else}
 	<div
 		class="pointer-events-none fixed inset-0 z-10 flex flex-col items-center justify-center gap-3"

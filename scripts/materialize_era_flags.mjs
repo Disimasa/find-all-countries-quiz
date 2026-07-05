@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createHash } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
+import { normalizeSvgBuffer } from './lib/flags/svg.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..')
@@ -11,7 +12,7 @@ const sourcesPath = path.join(root, 'scripts/era-mappings', `${eraId}_flag_sourc
 const flagIconsDir = path.join(root, 'node_modules/country-flag-icons/3x2')
 const USER_AGENT = 'find-all-countries-quiz/1.0 (educational)'
 
-const FETCH_DELAY_MS = 600
+const FETCH_DELAY_MS = 1200
 
 function delay(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms))
@@ -41,7 +42,12 @@ const groups = new Map()
 for (const entity of entities) {
 	const source = sources[entity.id]
 	if (!source) continue
-	const key = source.type === 'iso' ? `iso:${source.code}` : source.url
+	const key =
+		source.type === 'iso'
+			? `iso:${source.code}`
+			: source.type === 'timemap'
+				? `timemap:${source.file}`
+				: source.url
 	if (!groups.has(key)) groups.set(key, { source, ids: [] })
 	groups.get(key).ids.push(entity.id)
 }
@@ -58,31 +64,56 @@ for (const [key, group] of groups) {
 	let svg
 
 	if (fs.existsSync(cacheFile) && fs.statSync(cacheFile).size > 200) {
-		svg = fs.readFileSync(cacheFile, 'utf8')
-	} else if (group.source.type === 'iso') {
+		try {
+			svg = normalizeSvgBuffer(fs.readFileSync(cacheFile))
+		} catch {
+			fs.unlinkSync(cacheFile)
+		}
+	}
+	if (svg) {
+		// cache hit
+	} else if (!svg && group.source.type === 'iso') {
 		const src = path.join(flagIconsDir, `${group.source.code}.svg`)
 		if (!fs.existsSync(src)) {
 			console.log('MISSING ISO', group.source.code, group.ids[0])
 			continue
 		}
-		svg = fs.readFileSync(src, 'utf8')
+		svg = normalizeSvgBuffer(fs.readFileSync(src))
 		fs.writeFileSync(cacheFile, svg)
-	} else {
+	} else if (!svg) {
 		try {
 			await delay(FETCH_DELAY_MS)
-			const response = await fetch(group.source.url, {
-				headers: { 'User-Agent': USER_AGENT }
-			})
+			const fetchUrl =
+				group.source.type === 'timemap'
+					? `https://images.timemap.org/s/${group.source.file}`
+					: group.source.url
+			let response
+			for (let attempt = 0; attempt < 5; attempt++) {
+				response = await fetch(fetchUrl, {
+					headers: { 'User-Agent': USER_AGENT }
+				})
+				if (response.ok) break
+				if (response.status === 429) {
+					await delay(4000 * (attempt + 1))
+					continue
+				}
+				throw new Error(`HTTP ${response.status}`)
+			}
 			if (!response.ok) throw new Error(`HTTP ${response.status}`)
 			const contentType = response.headers.get('content-type') ?? ''
 			const buffer = Buffer.from(await response.arrayBuffer())
 			if (contentType.includes('svg') || buffer.toString('utf8', 0, 200).includes('<svg')) {
-				svg = buffer.toString('utf8')
+				svg = normalizeSvgBuffer(buffer)
 				fs.writeFileSync(cacheFile, svg)
-			} else if (contentType.includes('image/png')) {
-				fs.writeFileSync(cacheFile.replace(/\.svg$/, '.png'), buffer)
+			} else if (
+				contentType.includes('image/png') ||
+				contentType.includes('image/jpeg') ||
+				contentType.includes('image/jpg')
+			) {
+				const ext = contentType.includes('png') ? 'png' : 'jpg'
+				fs.writeFileSync(cacheFile.replace(/\.svg$/, `.${ext}`), buffer)
 				svg = null
-				group.assetExt = 'png'
+				group.assetExt = ext
 				group.assetBuffer = buffer
 			} else {
 				throw new Error(`unsupported type: ${contentType}`)
