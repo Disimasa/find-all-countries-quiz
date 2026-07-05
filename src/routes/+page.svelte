@@ -142,7 +142,7 @@
 		if (isLobbyEraSelectionRedundant(nextEraId, $eraId, getSharedMapEra()?.id)) return
 		eraId.set(nextEraId)
 		await switchMapEra(nextEraId)
-		void pushLobbyUrl()
+		await pushLobbyUrl()
 		updateContinueLabel()
 	}
 
