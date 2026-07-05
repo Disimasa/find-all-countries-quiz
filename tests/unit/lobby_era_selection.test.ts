@@ -13,4 +13,8 @@ describe('isLobbyEraSelectionRedundant', () => {
 	it('returns false when the store differs from the selection', () => {
 		expect(isLobbyEraSelectionRedundant('preww1', 'modern', 'modern')).toBe(false)
 	})
+
+	it('returns false when map era is not loaded yet', () => {
+		expect(isLobbyEraSelectionRedundant('preww1', 'preww1', undefined)).toBe(false)
+	})
 })

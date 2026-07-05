@@ -14,7 +14,13 @@
 		timerEnabled,
 		timerMinutes
 	} from './controller'
-	import { getLobbySearchForSettings, parseGameSettingsSearch, buildLobbyShareHref } from './game_settings_url'
+	import {
+		initialLobbySyncedSearch,
+		parseLobbySearchSync,
+		resolveLobbyUrlPush,
+		shouldApplyLobbySearchFromUrl,
+		shouldSwitchMapEraFromUrl
+	} from './lobby_url_sync.ts'
 	import { copyShareLink } from './play/share_game_link'
 	import { warmupPlay } from './play/controller'
 	import { getSharedMapEra } from './map_era.ts'
@@ -62,14 +68,11 @@
 			maxLives: get(maxLives)
 		}
 
-		const targetSearch = getLobbySearchForSettings(settings)
-		if (get(page).url.search === targetSearch) {
-			syncedLobbySearch = targetSearch
-			return
-		}
+		const push = resolveLobbyUrlPush(get(page).url.search, settings)
+		syncedLobbySearch = push.syncedSearch
+		if (!push.shouldReplace) return
 
-		syncedLobbySearch = targetSearch
-		replaceState(buildLobbyShareHref(settings), {})
+		replaceState(push.href, {})
 	}
 
 	$: if (lobbyUrlReady && $mapShellReady) {
@@ -83,25 +86,24 @@
 
 	$: if (lobbyUrlReady && $page.url.pathname === '/') {
 		const search = $page.url.search
-		if (search !== syncedLobbySearch) {
-			const fromUrl = parseGameSettingsSearch(search)
-			if (fromUrl) {
-				applyGameSettings(fromUrl)
-				if (fromUrl.eraId && fromUrl.eraId !== $eraId) {
-					void switchMapEra(fromUrl.eraId)
-				}
-				syncedLobbySearch = search
+		if (shouldApplyLobbySearchFromUrl(search, syncedLobbySearch)) {
+			const { settings, syncedSearch } = parseLobbySearchSync(search)
+			if (settings) {
+				applyGameSettings(settings)
+				const nextEra = shouldSwitchMapEraFromUrl(settings, $eraId)
+				if (nextEra) void switchMapEra(nextEra)
 			}
+			syncedLobbySearch = syncedSearch
 		}
 	}
 
 	onMount(() => {
 		const initialSearch = get(page).url.search
-		const fromUrl = parseGameSettingsSearch(initialSearch)
-		if (fromUrl) {
-			applyGameSettings(fromUrl)
-			if (fromUrl.eraId) void switchMapEra(fromUrl.eraId)
-			syncedLobbySearch = initialSearch
+		const { settings } = parseLobbySearchSync(initialSearch)
+		if (settings) {
+			applyGameSettings(settings)
+			const nextEra = shouldSwitchMapEraFromUrl(settings, get(eraId))
+			if (nextEra) void switchMapEra(nextEra)
 		} else {
 			const saved = getSavedGame()
 			if (saved) {
@@ -112,6 +114,7 @@
 				maxLives.set(saved.config.maxLives)
 			}
 		}
+		syncedLobbySearch = initialLobbySyncedSearch(initialSearch)
 
 		lobbyUrlReady = true
 		updateContinueLabel()

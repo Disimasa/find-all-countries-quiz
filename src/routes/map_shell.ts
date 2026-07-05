@@ -21,7 +21,8 @@ import {
 	type SavedGameProgress
 } from '@persist'
 import { getSharedMapEra, setSharedMapEra } from './map_era.ts'
-import { buildPlayHref } from './controller'
+import { buildPlayHref, getGameSettings } from './controller'
+import { resolveInitialGameSettings } from './game_settings_url.ts'
 import {
 	pauseLobbyTeaser,
 	resumeLobbyTeaser,
@@ -34,7 +35,9 @@ import {
 export const mapShellReady = writable(false)
 export const mapShellTransitioning = writable(false)
 export const mapEraSwitching = writable(false)
-export const activeEraTheme = writable<EraThemeProfile>(getActiveEraThemeProfile(loadGameSettings().eraId))
+export const activeEraTheme = writable<EraThemeProfile>(
+	getActiveEraThemeProfile(resolveInitialGameSettings().eraId)
+)
 
 function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms))
@@ -140,14 +143,14 @@ export function initMapShell(el: HTMLElement): Promise<void> {
 	if (renderer?.isReady()) {
 		mapShellReady.set(true)
 		renderer.resize()
-		applyEraPresentation(loadGameSettings().eraId)
+		applyEraPresentation(getGameSettings().eraId)
 		return Promise.resolve()
 	}
 
 	if (initPromise) return initPromise
 
 	initPromise = (async () => {
-		const settings = loadGameSettings()
+		const settings = resolveInitialGameSettings()
 		await loadEra(settings.eraId)
 		void import('@infrastructure/data/geo_json_loader')
 		renderer = new MapRenderer()
@@ -248,7 +251,7 @@ export async function transitionToPlay(
 	try {
 		await map.flyToWideView()
 		await goto(href)
-		const settings = loadGameSettings()
+		const settings = getGameSettings()
 		const config = options?.resume
 			? loadSavedGame(settings.eraId)?.config ?? buildGameConfig(settings)
 			: buildGameConfig(settings)

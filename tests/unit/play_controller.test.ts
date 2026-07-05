@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { parseConfig } from '../../src/routes/play/parse_config.ts'
+import { CE1300_ERA_ID } from '@domain/maps'
+import { parseConfig, parseEraId } from '../../src/routes/play/parse_config.ts'
 import { loadGameSettings, saveGameSettings } from '@persist'
 import { installLocalStorageMock } from './helpers/local_storage_mock.ts'
 
@@ -92,6 +93,36 @@ describe('parseConfig', () => {
 			timerSeconds: 1800,
 			livesEnabled: false,
 			maxLives: 3
+		})
+	})
+
+	it('uses era from query over stored settings', () => {
+		saveGameSettings({
+			eraId: 'modern',
+			timerEnabled: true,
+			livesEnabled: true,
+			timerMinutes: 30,
+			maxLives: 3
+		})
+
+		expect(parseEraId('?era=ce1300')).toBe(CE1300_ERA_ID)
+		expect(parseConfig('?era=ce1300&timer=60&lives=5').maxLives).toBe(5)
+	})
+
+	it('merges stored durations with URL era on play cold load', () => {
+		saveGameSettings({
+			eraId: 'modern',
+			timerEnabled: true,
+			livesEnabled: true,
+			timerMinutes: 15,
+			maxLives: 1
+		})
+
+		expect(parseConfig('?era=preww1')).toEqual({
+			timerEnabled: true,
+			timerSeconds: 900,
+			livesEnabled: true,
+			maxLives: 1
 		})
 	})
 })

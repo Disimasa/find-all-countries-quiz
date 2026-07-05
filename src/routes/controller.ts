@@ -5,15 +5,18 @@ import { locale, setLocale, type MessageKey } from '@i18n'
 import type { Locale } from '@domain/entities'
 import {
 	buildGameConfig,
-	loadGameSettings,
 	loadSavedGame,
 	saveGameSettings,
 	type GameSettings,
 	type SavedGame
 } from '@persist'
-import { buildLobbyShareHref as buildLobbyShareHrefFromSettings, buildPlayHrefFromSettings } from './game_settings_url.ts'
+import {
+	buildLobbyShareHref as buildLobbyShareHrefFromSettings,
+	buildPlayHrefFromSettings,
+	resolveInitialGameSettings
+} from './game_settings_url.ts'
 
-const initialSettings = loadGameSettings()
+const initialSettings = resolveInitialGameSettings()
 
 export const eraId = writable(initialSettings.eraId ?? DEFAULT_ERA_ID)
 export const timerEnabled = writable(initialSettings.timerEnabled)
@@ -45,6 +48,10 @@ for (const store of [eraId, timerEnabled, livesEnabled, timerMinutes, maxLives])
 }
 
 settingsPersistReady = true
+
+export function getGameSettings(): GameSettings {
+	return getCurrentSettings()
+}
 
 export function getGameConfig(): GameConfig {
 	return buildGameConfig(getCurrentSettings())

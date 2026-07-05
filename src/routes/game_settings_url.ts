@@ -1,3 +1,4 @@
+import { browser } from '$app/environment'
 import { DEFAULT_ERA_ID, MapEraRegistry } from '@domain/maps'
 import {
 	MAX_LIVES_LIMIT,
@@ -5,7 +6,7 @@ import {
 	MIN_LIVES,
 	MIN_TIMER_MINUTES
 } from '@domain/session/constants'
-import type { GameSettings } from '@persist'
+import { loadGameSettings, saveGameSettings, type GameSettings } from '@persist'
 
 function clamp(value: number, min: number, max: number): number {
 	return Math.min(max, Math.max(min, value))
@@ -85,4 +86,41 @@ export function parseGameSettingsSearch(search: string): Partial<GameSettings> |
 	}
 
 	return settings
+}
+
+export function mergeGameSettings(stored: GameSettings, partial: Partial<GameSettings>): GameSettings {
+	return {
+		eraId: partial.eraId ?? stored.eraId,
+		timerEnabled: partial.timerEnabled ?? stored.timerEnabled,
+		timerMinutes: partial.timerMinutes ?? stored.timerMinutes,
+		livesEnabled: partial.livesEnabled ?? stored.livesEnabled,
+		maxLives: partial.maxLives ?? stored.maxLives
+	}
+}
+
+export function resolveGameSettingsFromSearch(
+	search: string,
+	stored: GameSettings = loadGameSettings()
+): GameSettings {
+	const fromUrl = parseGameSettingsSearch(search)
+	if (!fromUrl) return stored
+	return mergeGameSettings(stored, fromUrl)
+}
+
+/** Applies lobby/play query params before map shell init (browser cold load). */
+export function resolveInitialGameSettings(
+	location: Pick<Location, 'pathname' | 'search'> | null = browser ? window.location : null
+): GameSettings {
+	const stored = loadGameSettings()
+	if (!location) return stored
+
+	const { pathname, search } = location
+	if (pathname !== '/' && pathname !== '/play') return stored
+
+	const fromUrl = parseGameSettingsSearch(search)
+	if (!fromUrl) return stored
+
+	const resolved = mergeGameSettings(stored, fromUrl)
+	saveGameSettings(resolved)
+	return resolved
 }

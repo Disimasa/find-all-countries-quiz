@@ -3,156 +3,156 @@ name: add-map-era
 description: Autonomously adds a new historical map era to the geo-quiz — researches data sources online, builds pipeline, curates flags and RU/EN localization, writes tests, self-reviews, and verifies no regressions in existing eras. Use when the user asks to add a new map, era, epoch, or historical borders.
 ---
 
-# Добавление новой карты (эпохи) — автономный workflow
+# Adding a New Map Era — Autonomous Workflow
 
-Гео-квиз: SvelteKit 5, MapLibre, `BaseMapEra`, данные в `static/data/eras/{eraId}/`.
+Geo-quiz stack: SvelteKit 5, MapLibre, `BaseMapEra`, data in `static/data/eras/{eraId}/`.
 
-**Эталон реализации:** `preww1` (CShapes 1914). **Не ломать:** `modern`, `preww1` и все существующие режимы.
+**Reference implementation:** `preww1` (CShapes 1914). **Do not break:** `modern`, `preww1`, and all existing modes.
 
-Агент выполняет задачу **полностью автономно** от исследования до финальной регрессии. Не останавливаться на полпути. Не спрашивать пользователя о технических деталях, если их можно вывести из кода или интернета.
+The agent completes the task **fully autonomously** from research through final regression. Do not stop halfway. Do not ask the user for technical details that can be inferred from the codebase or the web.
 
 ---
 
-## Фаза 0: Исследование источников (обязательно, до кода)
+## Phase 0: Source Research (required, before code)
 
-**Самостоятельно** найти в интернете кандидатов на геоданные для запрошенного года и масштаба.
+**Independently** search the web for geodata candidates for the requested year and scope.
 
-### Что искать
+### What to look for
 
-- GeoJSON / shapefile / открытые датасеты с политическими границами на нужный год
-- Покрытие: глобальное vs региональное
-- Лицензия: пригодность для open-source (избегать NC, если не оговорено)
-- Готовность: один файл-снимок vs сырой API/planet
+- GeoJSON / shapefile / open datasets with political boundaries for the target year
+- Coverage: global vs regional
+- License: suitable for open-source (avoid NC unless explicitly agreed)
+- Readiness: single snapshot file vs raw API/planet
 
-### Известные кандидаты (стартовая точка, не ограничение)
+### Known candidates (starting points, not limits)
 
-| Источник | Период | Заметка |
-|----------|--------|---------|
+| Source | Period | Notes |
+|--------|--------|-------|
 | CShapes 2.0 | 1886–2019 | `scripts/prepare_cshapes_era.mjs` |
 | historical-basemaps | BCE–2024 | `world_{year}.geojson`, GPL-3.0 |
-| Cliopatria (Seshat) | 3400 BCE–2024 | CC BY 4.0, один большой GeoJSON |
-| OpenHistoricalMap | volunteer | часто неполно для древности |
-| AWMC | античность | Средиземноморье, провинции Рима |
-| Natural Earth | modern | только `modern` |
+| Cliopatria (Seshat) | 3400 BCE–2024 | CC BY 4.0, one large GeoJSON |
+| OpenHistoricalMap | volunteer | often incomplete for antiquity |
+| AWMC | antiquity | Mediterranean, Roman provinces |
+| Natural Earth | modern | `modern` era only |
 
-### Критерии выбора (оценить каждый найденный источник)
+### Selection criteria (evaluate each source found)
 
-1. **Полнота** — есть ли все ключевые политии для квиза (кликабельные полигоны)?
-2. **Формат** — легко ли конвертировать в `boundaries.geojson` + `entity_id`?
-3. **Лицензия** — атрибуция, NC, copyleft
-4. **Точность границ** — приемлема для образовательного квиза?
-5. **Поддержка** — активный репозиторий, документация
+1. **Completeness** — are all key polities present for the quiz (clickable polygons)?
+2. **Format** — easy to convert to `boundaries.geojson` + `entity_id`?
+3. **License** — attribution, NC, copyleft
+4. **Boundary accuracy** — acceptable for an educational quiz?
+5. **Maintenance** — active repo, documentation
 
-### Выход фазы 0
+### Phase 0 output
 
-Кратко зафиксировать (в комментарии к PR или в `meta.json` → `source`):
+Briefly document (in a PR comment or in `meta.json` → `source`):
 
-- какие источники рассмотрены и отклонены (с причиной)
-- **выбранный источник** и почему
-- ожидаемое число сущностей после whitelist
+- which sources were considered and rejected (with reason)
+- **chosen source** and why
+- expected entity count after whitelist
 
-**Не начинать пайплайн**, пока нет whitelist сущностей (~30–180, по аналогии с modern=178, preww1≈142).
+**Do not start the pipeline** until there is an entity whitelist (~30–180, similar to modern=178, preww1≈142).
 
 ---
 
-## Мастер-чеклист (выполнить все пункты)
+## Master Checklist (complete every item)
 
 ```
-Фаза 0 — Исследование
-- [ ] WebSearch: ≥3 кандидата на геоданные
-- [ ] Сравнение по критериям, выбор источника
-- [ ] Скачать/просмотреть сырьё, черновой whitelist
+Phase 0 — Research
+- [ ] WebSearch: ≥3 geodata candidates
+- [ ] Compare by criteria, pick source
+- [ ] Download/inspect raw data, draft whitelist
 
-Фаза 1 — Данные
+Phase 1 — Data
 - [ ] prepare_*_era.mjs → static/data/eras/{eraId}/
 - [ ] boundaries.geojson ↔ entities.json sync
 
-Фаза 2 — Локализация (см. раздел ниже)
-- [ ] nameEn, nameRu, aliases.en.json, aliases.ru.json — полный набор
+Phase 2 — Localization (see section below)
+- [ ] nameEn, nameRu, aliases.en.json, aliases.ru.json — full set
 
-Фаза 3 — Флаги (см. раздел ниже)
-- [ ] Поиск → curated → materialize → исторический аудит
+Phase 3 — Flags (see section below)
+- [ ] Search → curated → materialize → historical audit
 
-Фаза 4 — Код
+Phase 4 — Code
 - [ ] Domain + registry + i18n UI + persist
 
-Фаза 5 — Тесты
-- [ ] Unit + integration + e2e для новой эры
+Phase 5 — Tests
+- [ ] Unit + integration + e2e for the new era
 
-Фаза 6 — Self-review + регрессия
+Phase 6 — Self-review + regression
 - [ ] pnpm test, pnpm test:e2e, pnpm build
-- [ ] modern + preww1 flows не сломаны
-- [ ] Ручной просмотр чеклиста ревью (ниже)
+- [ ] modern + preww1 flows still work
+- [ ] Manual review checklist (below)
 ```
 
 ---
 
-## Фаза 1: Data pipeline
+## Phase 1: Data Pipeline
 
-Выход в `static/data/eras/{eraId}/`:
+Output to `static/data/eras/{eraId}/`:
 
-| Файл | Назначение |
-|------|------------|
-| `boundaries.geojson` | Полигоны; `properties.entity_id` (slug) |
+| File | Purpose |
+|------|---------|
+| `boundaries.geojson` | Polygons; `properties.entity_id` (slug) |
 | `entities.json` | `{ id, nameEn, nameRu, region?, flagCode?, flagAsset? }[]` |
 | `aliases.en.json` | `Record<entityId, string[]>` |
 | `aliases.ru.json` | `Record<entityId, string[]>` |
 | `meta.json` | `{ eraId, snapshotYear/snapshotDate, entityCount, source }` |
 
-Правила:
+Rules:
 
-- `entity_id` — slug (`roman-empire`), стабильный.
-- Исключить микрогосударства, культуры-охотники, не-государства (паттерн `EXCLUDED_MICRO` в `prepare_cshapes_era.mjs`).
+- `entity_id` — slug (`roman-empire`), stable.
+- Exclude microstates, hunter-gatherer cultures, non-states (see `EXCLUDED_MICRO` pattern in `prepare_cshapes_era.mjs`).
 - Whitelist: `scripts/era-mappings/{eraId}_curated.json`.
-- Кэш сырья: `scripts/.cache/` (в `.gitignore`).
+- Raw cache: `scripts/.cache/` (in `.gitignore`).
 
 **CShapes:**
 ```bash
 node scripts/prepare_cshapes_era.mjs --era={eraId} --date=YYYY-MM-DD
 ```
 
-**historical-basemaps** (если выбран):
+**historical-basemaps** (if chosen):
 - `https://raw.githubusercontent.com/aourednik/historical-basemaps/master/geojson/world_{year}.geojson`
-- Исключать: `*hunter-gatherers*`, `*Culture*`, `*complex*`
+- Exclude: `*hunter-gatherers*`, `*Culture*`, `*complex*`
 
-При отсутствии готового скрипта — написать `scripts/prepare_{source}_era.mjs` по образцу `prepare_cshapes_era.mjs`.
+If no ready-made script exists — write `scripts/prepare_{source}_era.mjs` following `prepare_cshapes_era.mjs`.
 
 ---
 
-## Фаза 2: Локализация (EN + RU)
+## Phase 2: Localization (EN + RU)
 
-Агент **сам** проверяет и дополняет все тексты. Не оставлять `nameRu = nameEn` без проверки.
+The agent **must** verify and complete all text. Do not leave `nameRu = nameEn` unchecked.
 
-### Проверить
+### Verify
 
-1. `entities.json` — у каждой сущности осмысленные `nameEn` и `nameRu`.
-2. `aliases.en.json` — варианты на английском (сокращения, исторические синонимы).
-3. `aliases.ru.json` — варианты на русском (исторические названия: «Римская империя», «Парфянское царство», «Хань»).
+1. `entities.json` — every entity has meaningful `nameEn` and `nameRu`.
+2. `aliases.en.json` — English variants (abbreviations, historical synonyms).
+3. `aliases.ru.json` — Russian variants (historical names: «Римская империя», «Парфянское царство», «Хань»).
 4. `src/lib/i18n/constants.ts` — `era{Id}`, `era{Id}Hint` (en + ru).
 
-### Как переводить
+### How to translate
 
-- Для современных государств с ISO — `scripts/apply_era_localization.mjs` + `{eraId}_names.ru.json`, `{eraId}_aliases.ru.json`.
-- Для исторических политий без ISO — **ручной перевод агентом**: исторически корректное русское название эпохи, не современное (Парфия ≠ Иран, Византия ≠ Греция).
-- Добавить алиасы, по которым игрок реально будет вводить ответ (EN и RU UI — см. `.cursor/rules/business.mdc`).
+- For modern states with ISO — `scripts/apply_era_localization.mjs` + `{eraId}_names.ru.json`, `{eraId}_aliases.ru.json`.
+- For historical polities without ISO — **manual translation by the agent**: historically correct Russian name for the era, not the modern one (Parthia ≠ Iran, Byzantium ≠ Greece).
+- Add aliases players are likely to type (EN and RU UI — see `.cursor/rules/business.mdc`).
 
-### Критерий готовности
+### Done criteria
 
-Для **каждого** `entity_id`: есть `nameRu` ≠ копипаста EN (если языки различаются) и ≥1 алиас в `aliases.ru.json`.
+For **every** `entity_id`: `nameRu` is not a copy-paste of EN (when languages differ) and there is ≥1 alias in `aliases.ru.json`.
 
 ---
 
-## Фаза 3: Флаги — поиск, добавление, исторический аудит
+## Phase 3: Flags — Search, Add, Historical Audit
 
-### Шаг 3.1: Поиск для каждой сущности
+### Step 3.1: Search for each entity
 
-Для **каждой** записи в `entities.json` агент **самостоятельно** ищет в интернете исторически уместный флаг/знамя/герб эпохи:
+For **every** entry in `entities.json`, the agent **independently** searches the web for a historically appropriate flag/banner/coat of arms for the era:
 
-1. **Wikimedia Commons** — основной источник (`commons:Flag_of_….svg`, знамёна SPQR, династий и т.д.).
-2. WebSearch по запросам вида: `{polity name} flag {year} SVG`, `historical flag {entity} Wikimedia`.
-3. Проверить лицензию файла на Commons (PD, CC BY, CC BY-SA).
+1. **Wikimedia Commons** — primary source (`commons:Flag_of_….svg`, SPQR standards, dynastic banners, etc.).
+2. WebSearch queries like: `{polity name} flag {year} SVG`, `historical flag {entity} Wikimedia`.
+3. Verify Commons file license (PD, CC BY, CC BY-SA).
 
-Записать в `scripts/era-mappings/{eraId}_flag_curated.json`:
+Record in `scripts/era-mappings/{eraId}_flag_curated.json`:
 
 ```json
 {
@@ -161,39 +161,39 @@ node scripts/prepare_cshapes_era.mjs --era={eraId} --date=YYYY-MM-DD
 }
 ```
 
-Допустимо `iso:XX` **только** если полития = современное государство той эпохи с тем же флагом (редко для древности).
+`iso:XX` is allowed **only** when the polity is a modern state of that era with the same flag (rare for antiquity).
 
-Если достоверного флага нет — явно пропустить (не подставлять современный ISO «наугад»).
+If no reliable flag exists — explicitly skip (do not guess a modern ISO flag).
 
-### Шаг 3.2: Materialize
+### Step 3.2: Materialize
 
 ```bash
-node scripts/generate_flag_sources.mjs   # если нужен промежуточный manifest
-node scripts/materialize_era_flags.mjs   # параметризовать --era={eraId} при необходимости
+node scripts/generate_flag_sources.mjs   # if intermediate manifest is needed
+node scripts/materialize_era_flags.mjs   # pass --era={eraId} if needed
 ```
 
-Результат: `static/flags/eras/{eraId}/{entityId}.svg` + `manifest.json`.
+Result: `static/flags/eras/{eraId}/{entityId}.svg` + `manifest.json`.
 
-Rate limit Commons: `User-Agent`, задержка между запросами (см. `materialize_era_flags.mjs`).
+Commons rate limit: `User-Agent`, delay between requests (see `materialize_era_flags.mjs`).
 
-### Шаг 3.3: Исторический аудит (обязательный второй проход)
+### Step 3.3: Historical audit (required second pass)
 
-Пройтись по **всем** сущностям с флагами и проверить:
+Review **all** entities with flags and verify:
 
-| Проверка | Пример ошибки |
-|----------|---------------|
-| Флаг соответствует **эпохе**, не современности | флаг Ирана для Парфии |
-| Флаг соответствует **политии**, не соседу | османский для Австро-Венгрии |
-| Не анахронизм по дате снимка | флаг СССР для 1914 |
-| SVG открывается и читаем в UI | битый/пустой файл |
+| Check | Example mistake |
+|-------|-----------------|
+| Flag matches the **era**, not the present day | Iran's flag for Parthia |
+| Flag matches the **polity**, not a neighbor | Ottoman flag for Austria-Hungary |
+| No anachronism vs snapshot date | USSR flag for 1914 |
+| SVG opens and is readable in UI | broken/empty file |
 
-При ошибке — найти замену на Commons или установить `flagAsset: null`.
+On failure — find a Commons replacement or set `flagAsset: null`.
 
-Запустить `pnpm flags:validate` если применимо к эре.
+Run `pnpm flags:validate` if applicable to the era.
 
 ---
 
-## Фаза 4: Domain + UI
+## Phase 4: Domain + UI
 
 ### Domain
 
@@ -206,106 +206,106 @@ registerEra({
   id: '{ERA}_ERA_ID',
   factory: () => new {Era}WorldMap(),
   year: 100,               // number | null (modern)
-  entityType: 'polity',    // 'country' только modern
+  entityType: 'polity',    // 'country' only for modern
   themeProfileId: 'parchment',
   labelKey: 'era{Id}'
 })
 ```
 
-### UI (не сломать существующие эры)
+### UI (do not break existing eras)
 
-| Файл | Действие |
-|------|----------|
+| File | Action |
+|------|--------|
 | `src/lib/i18n/constants.ts` | `era{Id}`, `era{Id}Hint` |
-| `src/routes/ui/StartScreen.svelte` | новая опция эры |
-| `src/routes/ui/GameSettingsEditor.svelte` | селектор + hint |
+| `src/routes/ui/StartScreen.svelte` | new era option |
+| `src/routes/ui/GameSettingsEditor.svelte` | selector + hint |
 | `src/routes/+page.svelte` | props, `applyEraSelection` |
 | `src/routes/play/parse_config.ts` | `?era=` |
 
-Селектор эпох — **добавить**, не заменить. `DEFAULT_ERA_ID` = `modern`.
+Era selector — **add**, do not replace. `DEFAULT_ERA_ID` = `modern`.
 
 ---
 
-## Фаза 5: Тесты (обязательно)
+## Phase 5: Tests (required)
 
-| Файл | Проверка |
-|------|----------|
+| File | What to verify |
+|------|----------------|
 | `tests/unit/{eraId}_map.test.ts` | metadata, resolveEntityId |
 | `tests/unit/entities_dataset_{eraId}.test.ts` | count, geojson sync |
-| `tests/unit/map_era_registry.test.ts` | регистрация |
-| `tests/unit/era_flags_manifest.test.ts` | manifest (расширить или новый) |
-| `tests/integration/era_map_display.test.ts` | карта грузится |
-| `tests/e2e/era_switch.test.ts` | переключение эпох |
-| `tests/e2e/game_flow.test.ts` | **не трогать логику modern** — только убедиться что проходит |
+| `tests/unit/map_era_registry.test.ts` | registration |
+| `tests/unit/era_flags_manifest.test.ts` | manifest (extend or add era-specific) |
+| `tests/integration/era_map_display.test.ts` | map loads |
+| `tests/e2e/era_switch.test.ts` | era switching |
+| `tests/e2e/game_flow.test.ts` | **do not change modern logic** — only ensure it still passes |
 
-Минимум по `.cursor/rules/testing.mdc`: happy path + edge case на публичный API.
+Minimum per `.cursor/rules/testing.mdc`: happy path + one edge case per public API.
 
 ---
 
-## Фаза 6: Self-review и регрессия
+## Phase 6: Self-Review and Regression
 
-### Команды (все должны пройти)
+### Commands (all must pass)
 
 ```bash
 pnpm test:unit
 pnpm test:integration
 pnpm test:e2e
 pnpm build
-pnpm check    # если без блокирующих ошибок в затронутых файлах
+pnpm check    # if no blocking errors in touched files
 ```
 
-### Чеклист ревью перед завершением
+### Review checklist before finishing
 
-**Новая эра:**
-- [ ] Карта отображается, полигоны кликабельны
-- [ ] Autocomplete и валидация на EN и RU
-- [ ] Флаги в UI (или осознанно null)
-- [ ] Disclaimer и README обновлены (источник + лицензия)
-- [ ] `meta.json` корректен
+**New era:**
+- [ ] Map renders, polygons are clickable
+- [ ] Autocomplete and validation work in EN and RU
+- [ ] Flags in UI (or intentionally null)
+- [ ] Disclaimer and README updated (source + license)
+- [ ] `meta.json` is correct
 
-**Регрессия существующего:**
-- [ ] `modern`: 178 сущностей, game flow e2e зелёный
-- [ ] `preww1`: карта грузится, era switch работает
-- [ ] Persist: `eraId` сохраняется, Continue работает
-- [ ] Explore mode / hover / guessed states не сломаны
-- [ ] Нет случайных изменений в `static/data/eras/modern/` и `preww1/`
+**Existing-era regression:**
+- [ ] `modern`: 178 entities, game flow e2e green
+- [ ] `preww1`: map loads, era switch works
+- [ ] Persist: `eraId` saved, Continue works
+- [ ] Explore mode / hover / guessed states not broken
+- [ ] No accidental changes in `static/data/eras/modern/` and `preww1/`
 
-**Лицензии:**
-- [ ] Атрибуция источника границ в README/disclaimer
-- [ ] Wikimedia flags — per-file или общая ссылка на Commons
+**Licenses:**
+- [ ] Border source attribution in README/disclaimer
+- [ ] Wikimedia flags — per-file or general Commons link
 
-При падении тестов — **исправить**, не отключать.
-
----
-
-## Документация
-
-- `README.md` — строка в таблице эпох
-- Disclaimer: источник границ + «границы — историческая реконструкция»
-- При необходимости `THIRD_PARTY_NOTICES.md`
+If tests fail — **fix**, do not disable.
 
 ---
 
-## Референсные файлы
+## Documentation
 
-| Назначение | Путь |
-|------------|------|
+- `README.md` — row in the eras table
+- Disclaimer: border source + "boundaries are a historical reconstruction"
+- `THIRD_PARTY_NOTICES.md` if needed
+
+---
+
+## Reference Files
+
+| Purpose | Path |
+|---------|------|
 | CShapes pipeline | `scripts/prepare_cshapes_era.mjs` |
-| RU-локализация | `scripts/apply_era_localization.mjs`, `scripts/era-mappings/preww1_names.ru.json` |
-| Флаги | `scripts/era-mappings/preww1_flag_curated.json`, `materialize_era_flags.mjs` |
+| RU localization | `scripts/apply_era_localization.mjs`, `scripts/era-mappings/preww1_names.ru.json` |
+| Flags | `scripts/era-mappings/preww1_flag_curated.json`, `materialize_era_flags.mjs` |
 | Domain | `src/lib/domain/maps/preww1/` |
 | Registry | `src/lib/domain/maps/registry.ts` |
-| Данные | `static/data/eras/preww1/` |
+| Data | `static/data/eras/preww1/` |
 | E2E modern | `tests/e2e/game_flow.test.ts` |
 | E2E era switch | `tests/e2e/era_switch.test.ts` |
 
 ---
 
-## Антипаттерны
+## Anti-Patterns
 
-- Начинать код до выбора источника и whitelist
-- Копировать `nameRu` из `nameEn` без перевода
-- Ставить современные ISO-флаги на исторические политии
-- Пропускать тесты или регрессию
-- Менять поведение `modern` ради новой эры
-- Спрашивать пользователя то, что можно найти в интернете или в коде `preww1`
+- Starting code before choosing a source and whitelist
+- Copying `nameRu` from `nameEn` without translation
+- Using modern ISO flags for historical polities
+- Skipping tests or regression
+- Changing `modern` behavior to accommodate a new era
+- Asking the user for things findable on the web or in the `preww1` codebase
