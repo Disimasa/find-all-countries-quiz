@@ -300,11 +300,6 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Sri Lanka.svg"
   },
   {
-    "entityId": "srivijaya-empire",
-    "file": "srivijaya-empire.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Indonesia.svg"
-  },
-  {
     "entityId": "sukhothai",
     "file": "sukhothai.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Thailand.svg"
@@ -353,10 +348,5 @@
     "entityId": "yemen",
     "file": "yemen.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Yemen.svg"
-  },
-  {
-    "entityId": "great-khanate",
-    "file": "great-khanate.png",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Catalan Atlas, Flag of Cathay (Chinese Empire).png"
   }
 ]

@@ -10,7 +10,8 @@
 		buildEraMapLabelLayerOptions,
 		configureEditorBasemap,
 		EDITOR_ERA_LABELS_LAYER_ID,
-		EDITOR_ERA_LABELS_SOURCE_ID
+		EDITOR_ERA_LABELS_SOURCE_ID,
+		setEditorBasemapCityVisibility
 	} from '@infrastructure/map/explore_country_labels'
 	import {
 		fillEntityInDirection,
@@ -64,6 +65,7 @@
 	let selectedId: string | null = null
 	let rusOnly = true
 	let respectBorders = true
+	let showCities = false
 	let subtractMode = false
 	let status = ''
 	let saving = false
@@ -194,6 +196,22 @@
 		status = `Загружено ${merged.features.length} полигонов — ${sourceLabel}`
 	}
 
+	function applyShowCities(): void {
+		if (!map) return
+		runWhenMapStyleReady(() => {
+			if (!map) return
+			setEditorBasemapCityVisibility(map, showCities)
+		})
+	}
+
+	function syncEditorBasemap(): void {
+		if (!map) return
+		runWhenMapStyleReady(() => {
+			if (!map) return
+			configureEditorBasemap(map, { showCities })
+		})
+	}
+
 	function runWhenMapStyleReady(run: () => void): void {
 		if (!map) return
 
@@ -207,24 +225,32 @@
 		})
 	}
 
+	function handleContextFillClick(event: maplibregl.MapLayerMouseEvent): void {
+		const entityId = event.features?.[0]?.properties?.entity_id
+		if (typeof entityId !== 'string') return
+		selectEntity(entityId)
+	}
+
+	function handleContextFillSubtractMousedown(event: maplibregl.MapLayerMouseEvent): void {
+		if (!subtractMode || !selectedId) return
+
+		const entityId = event.features?.[0]?.properties?.entity_id
+		if (typeof entityId !== 'string') return
+		if (entityId === selectedId) return
+
+		event.preventDefault()
+		event.originalEvent.stopPropagation()
+		subtractEntityArea(entityId)
+	}
+
 	function bindMapOverlayListeners(): void {
 		if (!map || mapOverlayListenersBound) return
 		mapOverlayListenersBound = true
 
+		map.on('mousedown', CONTEXT_FILL, handleContextFillSubtractMousedown)
 		map.on('click', CONTEXT_FILL, (event) => {
-			const entityId = event.features?.[0]?.properties?.entity_id
-			if (typeof entityId !== 'string') return
-
-			if (subtractMode && selectedId) {
-				if (entityId === selectedId) {
-					status = 'Нельзя вычесть область из самой себя'
-					return
-				}
-				subtractEntityArea(entityId)
-				return
-			}
-
-			selectEntity(entityId)
+			if (subtractMode) return
+			handleContextFillClick(event)
 		})
 
 		map.on('mouseenter', CONTEXT_FILL, () => {
@@ -378,6 +404,10 @@
 		lastDrawMode = event.mode
 		if (suppressDrawModeSync) return
 		if (previousMode === 'direct_select' && event.mode === 'simple_select' && selectedId) {
+			if (subtractMode) {
+				queueMicrotask(() => ensureDirectSelectMode())
+				return
+			}
 			deselectEntity()
 		}
 	}
@@ -404,12 +434,12 @@
 
 	function replaceDrawFeature(
 		feature: Feature<Polygon | MultiPolygon>,
-		options: { clean?: boolean } = {}
+		options: { clean?: boolean; preserveHoles?: boolean } = {}
 	): void {
 		if (!draw) return
 
 		const normalized =
-			options.clean === false
+			options.clean === false || options.preserveHoles
 				? normalizeFilledGeometry(feature)
 				: cleanDrawGeometry(feature)
 
@@ -606,6 +636,7 @@
 
 	function toggleSubtractMode(): void {
 		subtractMode = !subtractMode
+		if (subtractMode) ensureDirectSelectMode()
 		status = subtractMode
 			? 'Режим вычитания: кликните область на карте'
 			: 'Режим вычитания выключен'
@@ -640,7 +671,7 @@
 			return
 		}
 
-		replaceDrawFeature(result.feature)
+		replaceDrawFeature(result.feature, { preserveHoles: true })
 		status = `Вычитание (−${subtractorId}): площадь ×${(result.areaAfterSqM / result.areaBeforeSqM).toFixed(2)}`
 	}
 
@@ -737,13 +768,13 @@
 			resizeObserver.observe(mapContainer)
 
 			map.once('style.load', () => {
-				configureEditorBasemap(map!)
+				syncEditorBasemap()
 				syncMapOverlays(selectedId)
 			})
 
 			map.on('load', () => {
 				map?.resize()
-				configureEditorBasemap(map!)
+				syncEditorBasemap()
 				middleMousePan = attachMiddleMousePan(map!)
 
 				draw = new MapboxDraw({
@@ -832,6 +863,16 @@
 		<label class="flex items-center gap-2 text-sm">
 			<input type="checkbox" class="checkbox checkbox-sm" bind:checked={rusOnly} on:change={applyRusFilter} />
 			Только Русь
+		</label>
+
+		<label class="flex items-center gap-2 text-sm">
+			<input
+				type="checkbox"
+				class="checkbox checkbox-sm"
+				bind:checked={showCities}
+				on:change={applyShowCities}
+			/>
+			Города
 		</label>
 
 		<label

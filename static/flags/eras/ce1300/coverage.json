@@ -1,8 +1,9 @@
 {
-  "total": 73,
-  "fetched": 72,
-  "skipped": 1,
+  "total": 72,
+  "fetched": 70,
+  "skipped": 2,
   "skippedIds": [
-    "champa"
+    "champa",
+    "great-khanate"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "eraId": "ce1300",
   "snapshotYear": 1300,
-  "entityCount": 73,
+  "entityCount": 72,
   "source": "hybrid:historical-basemaps+cliopatria",
   "sources": {
     "basemaps": "https://github.com/aourednik/historical-basemaps",

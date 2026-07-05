@@ -60,6 +60,16 @@
         "name": "Principality of Chernigov",
         "id": "chernigov",
         "source": "manual"
+      },
+      {
+        "name": "Principality of Polotsk",
+        "id": "polotsk",
+        "source": "manual"
+      },
+      {
+        "name": "Principality of Chernigov",
+        "id": "chernigov",
+        "source": "manual"
       }
     ]
   },

@@ -9,6 +9,14 @@ import { featureCentroid } from './country_centroid.ts'
 /** OpenFreeMap Positron country label layers. */
 export const BASEMAP_COUNTRY_LABEL_LAYER_PATTERN = /^label_country_[123]$/
 
+/** OpenFreeMap Positron city / town / village label layers. */
+export const BASEMAP_CITY_LABEL_LAYER_PATTERN = /^label_(city|city_capital|town|village)$/
+
+export type EditorBasemapOptions = {
+	/** Default false — basemap place names for cities/towns/villages. */
+	showCities?: boolean
+}
+
 export const EXPLORE_ERA_LABELS_SOURCE_ID = 'explore-era-labels'
 export const EXPLORE_ERA_LABELS_LAYER_ID = 'explore-era-labels'
 
@@ -49,6 +57,19 @@ export function isBasemapCountryLabelLayerId(id: string): boolean {
 	return BASEMAP_COUNTRY_LABEL_LAYER_PATTERN.test(id)
 }
 
+export function isBasemapCityLabelLayerId(id: string): boolean {
+	return BASEMAP_CITY_LABEL_LAYER_PATTERN.test(id)
+}
+
+export function editorBasemapSymbolLayerVisibility(
+	layerId: string,
+	showCities: boolean
+): 'visible' | 'none' {
+	if (CUSTOM_LABEL_LAYER_IDS.has(layerId)) return 'none'
+	if (showCities && isBasemapCityLabelLayerId(layerId)) return 'visible'
+	return 'none'
+}
+
 export function basemapSymbolLayerVisibility(layerId: string): 'visible' | 'none' {
 	if (CUSTOM_LABEL_LAYER_IDS.has(layerId)) return 'none'
 	return isBasemapCountryLabelLayerId(layerId) ? 'visible' : 'none'
@@ -62,13 +83,29 @@ function hideBasemapAdminBoundaries(map: Map): void {
 	}
 }
 
-/** Hide cities and basemap country names; keep admin borders visible. */
-export function configureEditorBasemap(map: Map): void {
+/** Hide basemap symbol labels; optionally show city/town/village names. */
+export function configureEditorBasemap(map: Map, options: EditorBasemapOptions = {}): void {
+	if (!map.isStyleLoaded()) return
+
+	const showCities = options.showCities === true
+
+	for (const layer of map.getStyle().layers ?? []) {
+		if (layer.type !== 'symbol' || CUSTOM_LABEL_LAYER_IDS.has(layer.id)) continue
+		map.setLayoutProperty(
+			layer.id,
+			'visibility',
+			editorBasemapSymbolLayerVisibility(layer.id, showCities)
+		)
+	}
+}
+
+export function setEditorBasemapCityVisibility(map: Map, showCities: boolean): void {
 	if (!map.isStyleLoaded()) return
 
 	for (const layer of map.getStyle().layers ?? []) {
 		if (layer.type !== 'symbol' || CUSTOM_LABEL_LAYER_IDS.has(layer.id)) continue
-		map.setLayoutProperty(layer.id, 'visibility', 'none')
+		if (!isBasemapCityLabelLayerId(layer.id)) continue
+		map.setLayoutProperty(layer.id, 'visibility', showCities ? 'visible' : 'none')
 	}
 }
 

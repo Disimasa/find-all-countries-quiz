@@ -62,8 +62,7 @@
     "id": "champa",
     "nameEn": "Champa",
     "nameRu": "Чампа",
-    "region": "Champa",
-    "flagAsset": "champa.jpg"
+    "region": "Champa"
   },
   {
     "id": "chimu-empire",
@@ -350,12 +349,6 @@
     "region": "Sinhalese kingdom"
   },
   {
-    "id": "srivijaya-empire",
-    "nameEn": "Srivijaya Empire",
-    "nameRu": "Шривиджая",
-    "region": "Srivijaya Empire"
-  },
-  {
     "id": "sukhothai",
     "nameEn": "Sukhothai",
     "nameRu": "Сукхотаи",
@@ -417,8 +410,7 @@
     "id": "great-khanate",
     "nameEn": "Yuan",
     "nameRu": "Империя Юань",
-    "region": "Mongol Empire",
-    "flagAsset": "great-khanate.png"
+    "region": "Mongol Empire"
   },
   {
     "id": "zapotec-empire",

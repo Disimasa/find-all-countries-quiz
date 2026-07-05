@@ -84,7 +84,7 @@ describe('ce1300 entities dataset', () => {
 
 		expect(meta.cliopatriaAddCount).toBe(11)
 
-		expect(entities.length).toBe(73)
+		expect(entities.length).toBe(72)
 
 	})
 

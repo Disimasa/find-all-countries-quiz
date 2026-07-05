@@ -1,6 +1,7 @@
 import { area } from '@turf/turf'
 import { describe, expect, it } from 'vitest'
 import { subtractAreaFromEntity } from '$lib/dev/boundary_editor/area_subtract'
+import { normalizeFilledGeometry, stripFillArtifactHoles } from '$lib/dev/boundary_editor/geometry_cleanup'
 
 const target = {
 	type: 'Feature' as const,
@@ -92,6 +93,35 @@ describe('area_subtract', () => {
 		expect(result.areaAfterSqM).toBeLessThan(result.areaBeforeSqM)
 		if (result.feature.geometry.type === 'Polygon') {
 			expect(result.feature.geometry.coordinates.length).toBeGreaterThan(1)
+		}
+	})
+
+	it('hole survives editor normalize but not fill-artifact strip', () => {
+		const hole = {
+			...bite,
+			geometry: {
+				type: 'Polygon' as const,
+				coordinates: [
+					[
+						[30.4, 50.3],
+						[30.7, 50.3],
+						[30.7, 50.7],
+						[30.4, 50.7],
+						[30.4, 50.3]
+					]
+				]
+			}
+		}
+
+		const result = subtractAreaFromEntity(target, hole)
+		const normalized = normalizeFilledGeometry(result.feature)
+		if (normalized.geometry.type === 'Polygon') {
+			expect(normalized.geometry.coordinates.length).toBeGreaterThan(1)
+		}
+
+		const stripped = stripFillArtifactHoles(normalized, target)
+		if (stripped.geometry.type === 'Polygon') {
+			expect(stripped.geometry.coordinates).toHaveLength(1)
 		}
 	})
 })
