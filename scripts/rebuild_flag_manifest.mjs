@@ -36,6 +36,18 @@ for (const entity of entities) {
 const fetchedIds = new Set(manifest.map((m) => m.entityId))
 const skippedIds = entities.map((e) => e.id).filter((id) => !fetchedIds.has(id))
 
+for (const entity of entities) {
+	const entry = manifest.find((item) => item.entityId === entity.id)
+	if (!entry || entry.file.endsWith('.svg')) {
+		delete entity.flagAsset
+	} else {
+		entity.flagAsset = entry.file
+	}
+}
+
+const entitiesPath = path.join(root, `static/data/eras/${eraId}/entities.json`)
+fs.writeFileSync(entitiesPath, JSON.stringify(entities, null, 2) + '\n')
+
 fs.writeFileSync(path.join(flagsDir, 'manifest.json'), JSON.stringify(manifest, null, 2))
 fs.writeFileSync(
 	path.join(flagsDir, 'coverage.json'),
@@ -48,3 +60,4 @@ fs.writeFileSync(
 
 console.log(`Manifest: ${manifest.length}/${entities.length}`)
 if (skippedIds.length) console.log('Missing:', skippedIds.join(', '))
+console.log(`Updated flagAsset in ${entitiesPath}`)

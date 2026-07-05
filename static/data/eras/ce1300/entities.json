@@ -62,7 +62,8 @@
     "id": "champa",
     "nameEn": "Champa",
     "nameRu": "Чампа",
-    "region": "Champa"
+    "region": "Champa",
+    "flagAsset": "champa.jpg"
   },
   {
     "id": "chimu-empire",
@@ -410,7 +411,8 @@
     "id": "great-khanate",
     "nameEn": "Yuan",
     "nameRu": "Империя Юань",
-    "region": "Mongol Empire"
+    "region": "Mongol Empire",
+    "flagAsset": "great-khanate.png"
   },
   {
     "id": "zapotec-empire",

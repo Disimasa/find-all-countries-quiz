@@ -41,7 +41,7 @@ describe('ce1300 era flags manifest', () => {
 
 	it('has full flag coverage', () => {
 		expect(coverage.fetched).toBe(coverage.total)
-		expect(coverage.fetched).toBe(73)
+		expect(coverage.fetched).toBe(entities.length)
 	})
 
 	it('uses flagAsset for non-svg entities', () => {

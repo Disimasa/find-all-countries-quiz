@@ -18,7 +18,8 @@ export {
 	updateAutocomplete,
 	warmupPlay,
 	showEndGameSummary,
-	getSession
+	getSession,
+	openCountryList
 } from '../game/session_bridge.ts'
 
 export { parseConfig } from './parse_config.ts'

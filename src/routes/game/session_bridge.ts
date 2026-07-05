@@ -7,6 +7,8 @@ import { getLocale, messages } from '@i18n'
 import { clearSavedGame, saveGame, type SavedGameProgress } from '@persist'
 import { getSharedMapEra } from '../map_era.ts'
 import GameOverModal from '../play/ui/GameOverModal.svelte'
+import CountryListModal from '../play/ui/CountryListModal.svelte'
+import { sortEntitiesAlphabetically } from '../play/country_list.ts'
 
 export const gameSnapshot = writable<GameSnapshot>(EMPTY_SNAPSHOT)
 export const autocompleteResults = writable<GeoEntity[]>([])
@@ -162,4 +164,23 @@ export function showEndGameSummary(): void {
 
 export function getSession(): GameSession | null {
 	return session
+}
+
+export function openCountryList(): Promise<string | null> {
+	if (!session) return Promise.resolve(null)
+
+	const snapshot = session.getSnapshot()
+	if (snapshot.status !== 'playing') return Promise.resolve(null)
+
+	const m = messages[snapshot.locale]
+	const entities = sortEntitiesAlphabetically(session.getEra().getAllEntities(), snapshot.locale)
+
+	return openDialog<string | null>(CountryListModal, {
+		entities,
+		locale: snapshot.locale,
+		guessedIds: [...snapshot.guessedIds],
+		eraId: session.getEra().id,
+		title: m.countryList,
+		closeLabel: m.closeLabel
+	})
 }

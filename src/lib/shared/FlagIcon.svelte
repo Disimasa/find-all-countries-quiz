@@ -7,17 +7,21 @@
 	export let flagAsset: string | undefined = undefined
 	export let eraId: string = MODERN_ERA_ID
 	export let className = ''
+	export let size: 'sm' | 'lg' = 'sm'
 
 	$: src = getFlagIconUrl({ eraId, entityId, flagCode, flagAsset })
+	$: wrapperClass = size === 'lg' ? 'h-8 w-12' : 'h-3.5 w-[1.3125rem]'
 </script>
 
 {#if src}
-	<img
-		{src}
-		alt=""
-		aria-hidden="true"
-		loading="lazy"
-		decoding="async"
-		class="inline-block h-3.5 w-[1.3125rem] shrink-0 rounded-[1.5px] object-cover shadow-[0_1px_1.5px_rgb(0_0_0/0.16),0_3px_7px_rgb(0_0_0/0.1)] {className}"
-	/>
+	<span class="inline-flex shrink-0 items-center justify-center {wrapperClass}">
+		<img
+			{src}
+			alt=""
+			aria-hidden="true"
+			loading="lazy"
+			decoding="async"
+			class="flag-icon max-h-full max-w-full object-contain {className}"
+		/>
+	</span>
 {/if}

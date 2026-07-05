@@ -50,6 +50,11 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Chagatai khanate.svg"
   },
   {
+    "entityId": "champa",
+    "file": "champa.jpg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Champa.jpg"
+  },
+  {
     "entityId": "chimu-empire",
     "file": "chimu-empire.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Peru.svg"
@@ -87,11 +92,6 @@
   {
     "entityId": "galicia-volhynia",
     "file": "galicia-volhynia.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat of arms of Ruthenia (Герб Русі).svg"
-  },
-  {
-    "entityId": "chernigov",
-    "file": "chernigov.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat of arms of Ruthenia (Герб Русі).svg"
   },
   {
@@ -195,11 +195,6 @@
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
   },
   {
-    "entityId": "zapotec-empire",
-    "file": "zapotec-empire.svg",
-    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
-  },
-  {
     "entityId": "morocco",
     "file": "morocco.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Morocco.svg"
@@ -238,6 +233,11 @@
     "entityId": "portugal",
     "file": "portugal.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Portugal.svg"
+  },
+  {
+    "entityId": "chernigov",
+    "file": "chernigov.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat of arms of Ruthenia (Герб Русі).svg"
   },
   {
     "entityId": "polotsk",
@@ -348,5 +348,15 @@
     "entityId": "yemen",
     "file": "yemen.svg",
     "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Yemen.svg"
+  },
+  {
+    "entityId": "great-khanate",
+    "file": "great-khanate.png",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Catalan Atlas, Flag of Cathay (Chinese Empire).png"
+  },
+  {
+    "entityId": "zapotec-empire",
+    "file": "zapotec-empire.svg",
+    "source": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag of Mexico.svg"
   }
 ]
